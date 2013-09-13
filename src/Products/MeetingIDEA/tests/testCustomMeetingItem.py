@@ -24,11 +24,11 @@
 
 from DateTime import DateTime
 from plone.app.testing import login
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import \
-    MeetingCommunesTestCase
+from Products.MeetingIDEA.tests.MeetingIDEATestCase import \
+    MeetingIDEATestCase
 
 
-class testCustomMeetingItem(MeetingCommunesTestCase):
+class testCustomMeetingItem(MeetingIDEATestCase):
     """
         Tests the MeetingItem adapted methods
     """

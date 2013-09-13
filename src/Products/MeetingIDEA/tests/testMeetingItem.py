@@ -22,12 +22,12 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import \
-    MeetingCommunesTestCase
+from Products.MeetingIDEA.tests.MeetingIDEATestCase import \
+    MeetingIDEATestCase
 from Products.PloneMeeting.tests.testMeetingItem import testMeetingItem as pmtmi
 
 
-class testMeetingItem(MeetingCommunesTestCase, pmtmi):
+class testMeetingItem(MeetingIDEATestCase, pmtmi):
     """
         Tests the MeetingItem class methods.
     """

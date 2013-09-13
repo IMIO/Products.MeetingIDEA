@@ -22,11 +22,11 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import MeetingCommunesTestCase
+from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
 from Products.PloneMeeting.tests.testChangeItemOrderView import testChangeItemOrderView as pmciov
 
 
-class testChangeItemOrderView(MeetingCommunesTestCase, pmciov):
+class testChangeItemOrderView(MeetingIDEATestCase, pmciov):
     '''Tests the ChangeItemOrderView class methods.'''
 
     def test_subproduct_call_ChangeItemOrderMoveUpDown(self):

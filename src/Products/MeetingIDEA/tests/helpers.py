@@ -23,7 +23,7 @@
 from Products.PloneMeeting.tests.helpers import PloneMeetingTestingHelpers
 
 
-class MeetingCommunesTestingHelpers(PloneMeetingTestingHelpers):
+class MeetingIDEATestingHelpers(PloneMeetingTestingHelpers):
     '''Stub class that provides some helper methods about testing.'''
 
     TRANSITIONS_FOR_PUBLISHING_MEETING_1 = TRANSITIONS_FOR_PUBLISHING_MEETING_2 = ('freeze', 'publish', )

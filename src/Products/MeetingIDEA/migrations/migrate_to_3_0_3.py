@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------------------
 import logging
-logger = logging.getLogger('MeetingCommunes')
+logger = logging.getLogger('MeetingIDEA')
 from Products.PloneMeeting.migrations import Migrator
 
 
@@ -45,7 +45,7 @@ class Migrate_To_3_0_3(Migrator):
         self._updateCopyGroupsLocalRoles()
 
         # reinstall regarding changes in workflows
-        self.reinstall(profiles=[u'profile-Products.MeetingCommunes:default', ])
+        self.reinstall(profiles=[u'profile-Products.MeetingIDEA:default', ])
         self.finish()
 
 
@@ -53,7 +53,7 @@ class Migrate_To_3_0_3(Migrator):
 def migrate(context):
     '''This migration function:
 
-       1) Reinstall MeetingCommunes
+       1) Reinstall MeetingIDEA
     '''
     Migrate_To_3_0_3(context).run()
 # ------------------------------------------------------------------------------

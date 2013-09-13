@@ -25,12 +25,12 @@
 from DateTime import DateTime
 from AccessControl import Unauthorized
 from plone.app.testing import login
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import MeetingCommunesTestCase
+from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
 from Products.PloneMeeting.tests.testWorkflows import testWorkflows as pmtw
 
 
-class testWorkflows(MeetingCommunesTestCase, pmtw):
-    """Tests the default workflows implemented in MeetingCommunes."""
+class testWorkflows(MeetingIDEATestCase, pmtw):
+    """Tests the default workflows implemented in MeetingIDEA."""
 
     def test_subproduct_call_CreateItem(self):
         """

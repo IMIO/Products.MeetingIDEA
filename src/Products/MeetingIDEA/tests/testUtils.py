@@ -25,28 +25,28 @@
 from AccessControl import Unauthorized
 from plone.app.testing import login
 from Products.ExternalMethod.ExternalMethod import manage_addExternalMethod
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import \
-    MeetingCommunesTestCase
+from Products.MeetingIDEA.tests.MeetingIDEATestCase import \
+    MeetingIDEATestCase
 
 
-class testUtils(MeetingCommunesTestCase):
+class testUtils(MeetingIDEATestCase):
     """
         Tests the Extensions/utils methods.
     """
 
     def setUp(self):
-        MeetingCommunesTestCase.setUp(self)
+        MeetingIDEATestCase.setUp(self)
         #add the ExternalMethod export_meetinggroups in Zope
         manage_addExternalMethod(self.portal.aq_inner.aq_parent,
                                  'export_meetinggroups',
                                  '',
-                                 'Products.MeetingCommunes.utils',
+                                 'Products.MeetingIDEA.utils',
                                  'export_meetinggroups')
         #add the ExternalMethod import_meetinggroups in Zope
         manage_addExternalMethod(self.portal.aq_inner.aq_parent,
                                  'import_meetinggroups',
                                  '',
-                                 'Products.MeetingCommunes.utils',
+                                 'Products.MeetingIDEA.utils',
                                  'import_meetinggroups')
 
     def _exportMeetingGroups(self):

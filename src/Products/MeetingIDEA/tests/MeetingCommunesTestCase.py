@@ -22,12 +22,12 @@
 
 from Products.PloneMeeting.tests.PloneMeetingTestCase import PloneMeetingTestCase
 
-from Products.MeetingCommunes.testing import MC_TESTING_PROFILE_FUNCTIONAL
-from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
+from Products.MeetingIDEA.testing import MC_TESTING_PROFILE_FUNCTIONAL
+from Products.MeetingIDEA.tests.helpers import MeetingIDEATestingHelpers
 
 
-class MeetingCommunesTestCase(PloneMeetingTestCase, MeetingCommunesTestingHelpers):
-    """Base class for defining MeetingCommunes test cases."""
+class MeetingIDEATestCase(PloneMeetingTestCase, MeetingIDEATestingHelpers):
+    """Base class for defining MeetingIDEA test cases."""
 
     # Some default content
     descriptionText = '<p>Some description</p>'
@@ -55,5 +55,5 @@ class MeetingCommunesTestCase(PloneMeetingTestCase, MeetingCommunesTestingHelper
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(MeetingCommunesTestCase, prefix='test_testcasesubproduct_'))
+    suite.addTest(makeSuite(MeetingIDEATestCase, prefix='test_testcasesubproduct_'))
     return suite

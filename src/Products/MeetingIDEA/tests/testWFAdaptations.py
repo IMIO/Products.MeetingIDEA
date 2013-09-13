@@ -29,11 +29,11 @@ from plone.app.testing import login
 from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 from Products.PloneMeeting.tests.testWFAdaptations import testWFAdaptations as pmtwfa
 
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import \
-    MeetingCommunesTestCase
+from Products.MeetingIDEA.tests.MeetingIDEATestCase import \
+    MeetingIDEATestCase
 
 
-class testWFAdaptations(MeetingCommunesTestCase, pmtwfa):
+class testWFAdaptations(MeetingIDEATestCase, pmtwfa):
     '''See doc string in PloneMeeting.tests.testWFAdaptations.'''
 
     def test_subproduct_call_WFA_availableWFAdaptations(self):
@@ -130,14 +130,14 @@ class testWFAdaptations(MeetingCommunesTestCase, pmtwfa):
         self._add_published_state_inactive()
         # activate the wfAdaptation and check
         self.meetingConfig.setWorkflowAdaptations('add_published_state')
-        logger = logging.getLogger('MeetingCommunes: testing')
+        logger = logging.getLogger('MeetingIDEA: testing')
         performWorkflowAdaptations(self.portal, self.meetingConfig, logger)
         self._add_published_state_active()
         # test also for the meetingcouncil_workflow
         self.meetingConfig = self.meetingConfig2
         self._add_published_state_inactive()
         self.meetingConfig.setWorkflowAdaptations('add_published_state')
-        logger = logging.getLogger('MeetingCommunes: testing')
+        logger = logging.getLogger('MeetingIDEA: testing')
         performWorkflowAdaptations(self.portal, self.meetingConfig, logger)
         # check while the wfAdaptation is not activated
         self._add_published_state_active()

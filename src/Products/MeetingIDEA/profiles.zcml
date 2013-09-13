@@ -1,7 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-    i18n_domain="MeetingCommunes">
+    i18n_domain="MeetingIDEA">
 
   <include package="Products.GenericSetup" file="meta.zcml" />
 
@@ -10,12 +10,12 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="MeetingCommunes"
+      title="MeetingIDEA"
       directory="profiles/default"
-      description="Extension profile for MeetingCommunes."
+      description="Extension profile for MeetingIDEA."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
-
+  
   <!-- ##code-section profiles.zcml-bottom #fill in your manual code here -->
   <genericsetup:registerProfile
    name="demo"
@@ -46,20 +46,20 @@
    for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
   <genericsetup:upgradeStep
-      title="Go to MeetingCommunes 3.0"
+      title="Go to MeetingIDEA 3.0"
       description=""
       source="*"
       destination="3.0"
-      handler="Products.MeetingCommunes.migrations.migrate_to_3_0.migrate"
-      profile="Products.MeetingCommunes:default" />
+      handler="Products.MeetingIDEA.migrations.migrate_to_3_0.migrate"
+      profile="Products.MeetingIDEA:default" />
 
   <genericsetup:upgradeStep
-      title="Go to MeetingCommunes 3.0.3"
+      title="Go to MeetingIDEA 3.0.3"
       description=""
       source="3.0"
       destination="3.0.3"
-      handler="Products.MeetingCommunes.migrations.migrate_to_3_0_3.migrate"
-      profile="Products.MeetingCommunes:default" />
+      handler="Products.MeetingIDEA.migrations.migrate_to_3_0_3.migrate"
+      profile="Products.MeetingIDEA:default" />
 
   <!-- ##/code-section profiles.zcml-bottom -->
 

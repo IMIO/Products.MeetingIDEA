@@ -1,6 +1,6 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-           i18n_domain="MeetingCommunes">
+           i18n_domain="MeetingIDEA">
 
     <include file="configure.zcml"/>
 

@@ -22,12 +22,12 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import \
-    MeetingCommunesTestCase
+from Products.MeetingIDEA.tests.MeetingIDEATestCase import \
+    MeetingIDEATestCase
 from Products.PloneMeeting.tests.testPortlets import testPortlets as pmtp
 
 
-class testPortlets(MeetingCommunesTestCase, pmtp):
+class testPortlets(MeetingIDEATestCase, pmtp):
     '''Tests the portlets methods.'''
 
     def test_subproduct_call_PortletPMAvailableTemplates(self):

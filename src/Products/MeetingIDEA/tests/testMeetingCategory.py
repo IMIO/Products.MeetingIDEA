@@ -23,12 +23,12 @@
 #
 
 from plone.app.testing import logout
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import \
-    MeetingCommunesTestCase
+from Products.MeetingIDEA.tests.MeetingIDEATestCase import \
+    MeetingIDEATestCase
 from Products.PloneMeeting.tests.testMeetingCategory import testMeetingCategory as pmmc
 
 
-class testMeetingCategory(MeetingCommunesTestCase, pmmc):
+class testMeetingCategory(MeetingIDEATestCase, pmmc):
     '''Tests the MeetingCategory class methods.'''
 
     def test_subproduct_call_CanNotRemoveLinkedMeetingCategory(self):

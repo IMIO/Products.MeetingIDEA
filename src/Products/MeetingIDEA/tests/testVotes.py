@@ -23,11 +23,11 @@
 #
 
 from Products.PloneMeeting.tests.testVotes import testVotes as pmtv
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import \
-    MeetingCommunesTestCase
+from Products.MeetingIDEA.tests.MeetingIDEATestCase import \
+    MeetingIDEATestCase
 
 
-class testVotes(MeetingCommunesTestCase, pmtv):
+class testVotes(MeetingIDEATestCase, pmtv):
     '''Tests various aspects of votes management.
        Advices are enabled for PloneMeeting Assembly, not for PloneGov Assembly.
        By default, vote are encoded by 'theVoterHimself'.'''

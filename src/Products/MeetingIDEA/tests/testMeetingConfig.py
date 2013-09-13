@@ -22,11 +22,11 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import MeetingCommunesTestCase
+from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
 from Products.PloneMeeting.tests.testMeetingConfig import testMeetingConfig as pmtmc
 
 
-class testMeetingConfig(MeetingCommunesTestCase, pmtmc):
+class testMeetingConfig(MeetingIDEATestCase, pmtmc):
     '''Tests the MeetingConfig class methods.'''
 
     def test_subproduct_call_searchItemsToAdvice(self):

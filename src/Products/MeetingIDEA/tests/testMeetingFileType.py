@@ -22,12 +22,12 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import \
-    MeetingCommunesTestCase
+from Products.MeetingIDEA.tests.MeetingIDEATestCase import \
+    MeetingIDEATestCase
 from Products.PloneMeeting.tests.testMeetingFileType import testMeetingFileType as pmmft
 
 
-class testMeetingFileType(MeetingCommunesTestCase, pmmft):
+class testMeetingFileType(MeetingIDEATestCase, pmmft):
     '''Tests the MeetingFileType class methods.'''
 
     def test_subproduct_call_CanNotRemoveLinkedMeetingFileType(self):
