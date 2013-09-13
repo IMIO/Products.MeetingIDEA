@@ -3,7 +3,7 @@ import os
 
 version = '3.0.3'
 
-setup(name='Products.MeetingCommunes',
+setup(name='Products.MeetingIDEA',
       version=version,
       description="Official meetings management for college and council of belgian communes (PloneMeeting extension profile)",
       long_description=open("README.txt").read() + "\n" +
