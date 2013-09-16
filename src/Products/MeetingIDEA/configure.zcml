@@ -15,37 +15,22 @@
   <include package="collective.ckeditor"/>
   <include package="Products.PloneMeeting"/>
 
+  <!-- WF actions and conditions for Meeting and MeetingItem for CA and AG -->
   <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
-           factory="Products.MeetingIDEA.adapters.MeetingItemCollegeWorkflowActions"
-           provides="Products.MeetingIDEA.interfaces.IMeetingItemCollegeWorkflowActions"/>
-
-  <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
-           factory="Products.MeetingIDEA.adapters.MeetingItemCollegeWorkflowConditions"
-           provides="Products.MeetingIDEA.interfaces.IMeetingItemCollegeWorkflowConditions"/>
-
-  <adapter for="Products.PloneMeeting.interfaces.IMeeting"
-           factory="Products.MeetingIDEA.adapters.MeetingCollegeWorkflowActions"
-           provides="Products.MeetingIDEA.interfaces.IMeetingCollegeWorkflowActions"/>
-
-  <adapter for="Products.PloneMeeting.interfaces.IMeeting"
-           factory="Products.MeetingIDEA.adapters.MeetingCollegeWorkflowConditions"
-           provides="Products.MeetingIDEA.interfaces.IMeetingCollegeWorkflowConditions"/>
+           factory="Products.MeetingIDEA.adapters.MeetingItemCAIDEAWorkflowActions"
+           provides="Products.MeetingIDEA.interfaces.IMeetingItemCAIDEAWorkflowActions"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
-           factory="Products.MeetingIDEA.adapters.MeetingItemCouncilWorkflowActions"
-           provides="Products.MeetingIDEA.interfaces.IMeetingItemCouncilWorkflowActions"/>
-
-  <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
-           factory="Products.MeetingIDEA.adapters.MeetingItemCouncilWorkflowConditions"
-           provides="Products.MeetingIDEA.interfaces.IMeetingItemCouncilWorkflowConditions"/>
+           factory="Products.MeetingIDEA.adapters.MeetingItemCAIDEAWorkflowConditions"
+           provides="Products.MeetingIDEA.interfaces.IMeetingItemCAIDEAWorkflowConditions"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeeting"
-           factory="Products.MeetingIDEA.adapters.MeetingCouncilWorkflowActions"
-           provides="Products.MeetingIDEA.interfaces.IMeetingCouncilWorkflowActions"/>
+           factory="Products.MeetingIDEA.adapters.MeetingCAIDEAWorkflowActions"
+           provides="Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeeting"
-           factory="Products.MeetingIDEA.adapters.MeetingCouncilWorkflowConditions"
-           provides="Products.MeetingIDEA.interfaces.IMeetingCouncilWorkflowConditions"/>
+           factory="Products.MeetingIDEA.adapters.MeetingCAIDEAWorkflowConditions"
+           provides="Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowConditions"/>
 
   <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
            factory="Products.MeetingIDEA.adapters.CustomMeetingItem"

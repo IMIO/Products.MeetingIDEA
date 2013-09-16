@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<import-steps>
+ <import-step id="initializetool-MeetingIDEA" version="20110215-01"
+              handler="Products.MeetingIDEA.setuphandlers.initializeTool"
+              title="Initialize MeetingIDEA with examples.">
+  <dependency step="installMeetingMeetingIDEA"/>
+  Initialize portal_plonemeeting folders for IDEA Mons.
+ </import-step>
+</import-steps>

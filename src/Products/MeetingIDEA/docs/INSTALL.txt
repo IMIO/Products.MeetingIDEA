@@ -1,0 +1,9 @@
+MeetingIDEA pour PloneMeeting 3+
+========================================
+
+A la racine de Zope, ajouter un élément de type "Plone Site" :
+
+- Entrer un identifiant (minuscules alphanumériques sans espaces par exemple "idea")
+- Dans "Extension profiles", sélectionner les profils :
+  - "PloneMeeting / For l'IDEA Mons'"
+  - "iconified_document_actions"

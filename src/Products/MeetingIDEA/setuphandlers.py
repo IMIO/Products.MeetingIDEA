@@ -2,7 +2,7 @@
 #
 # File: setuphandlers.py
 #
-# Copyright (c) 2013 by CommunesPlone
+# Copyright (c) 2013 by IMIO
 # Generator: ArchGenXML Version 2.7
 #            http://plone.org/products/archgenxml
 #
@@ -26,17 +26,19 @@ from Products.PloneMeeting.exportimport.content import ToolInitializer
 from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 ##/code-section HEAD
 
+
 def isNotMeetingIDEAProfile(context):
     return context.readDataFile("MeetingIDEA_marker.txt") is None
-
 
 
 def updateRoleMappings(context):
     """after workflow changed update the roles mapping. this is like pressing
     the button 'Update Security Setting' and portal_workflow"""
-    if isNotMeetingIDEAProfile(context): return
+    if isNotMeetingIDEAProfile(context):
+        return
     wft = getToolByName(context.getSite(), 'portal_workflow')
     wft.updateRoleMappings()
+
 
 def postInstall(context):
     """Called as at the end of the setup process. """
@@ -51,7 +53,6 @@ def postInstall(context):
     reinstallPloneMeetingSkin(context, site)
 
 
-
 ##code-section FOOT
 def logStep(method, context):
     logger.info("Applying '%s' in profile '%s'" %
@@ -64,8 +65,10 @@ def isMeetingIDEAConfigureProfile(context):
         context.readDataFile("MeetingIDEA_cpas_marker.txt") or \
         context.readDataFile("MeetingIDEA_testing_marker.txt")
 
+
 def isNotMeetingIDEADemoProfile(context):
     return context.readDataFile("MeetingIDEA_demo_marker.txt") is None
+
 
 def isMeetingIDEATestingProfile(context):
     return context.readDataFile("MeetingIDEA_testing_marker.txt")
@@ -96,6 +99,7 @@ def initializeTool(context):
     #so install it manually
     _installPloneMeeting(context)
     return ToolInitializer(context, PROJECTNAME).run()
+
 
 def reinstallPloneMeeting(context, site):
     '''Reinstall PloneMeeting so after install methods are called and applied,

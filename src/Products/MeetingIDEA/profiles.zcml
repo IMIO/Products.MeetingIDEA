@@ -18,49 +18,25 @@
   
   <!-- ##code-section profiles.zcml-bottom #fill in your manual code here -->
   <genericsetup:registerProfile
-   name="demo"
-   title="PloneMeeting / Demo profile for Communes with french examples"
-   description="Demo profile for Communes with french examples"
+   name="idea"
+   title="MeetingIDEA / For l'IDEA Mons"
+   description="PloneMeeting for all meeting of IDEA"
+   provides="Products.GenericSetup.interfaces.EXTENSION"
+   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+  
+  <genericsetup:registerProfile
+   name="migrations"
+   title="MeetingIDEA / migration profile for IDEA"
+   description="MeetingIDEA Migration profile to version 2.1.3"
    provides="Products.GenericSetup.interfaces.EXTENSION"
    for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
   <genericsetup:registerProfile
-   name="examples"
-   title="PloneMeeting / Communes with english examples"
-   description="PloneMeeting for City College and Council (Belgium)"
+   name="tests"
+   title="MeetingIDEA / Unit testing profile for IDEA"
+   description="MeetingIDEA unit testing profile"
    provides="Products.GenericSetup.interfaces.EXTENSION"
    for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="examples_fr"
-   title="PloneMeeting / Communes with french examples"
-   description="PloneMeeting for City College and Council (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="zcpas"
-   title="PloneMeeting / CPAS"
-   description="PloneMeeting for CPAS (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:upgradeStep
-      title="Go to MeetingIDEA 3.0"
-      description=""
-      source="*"
-      destination="3.0"
-      handler="Products.MeetingIDEA.migrations.migrate_to_3_0.migrate"
-      profile="Products.MeetingIDEA:default" />
-
-  <genericsetup:upgradeStep
-      title="Go to MeetingIDEA 3.0.3"
-      description=""
-      source="3.0"
-      destination="3.0.3"
-      handler="Products.MeetingIDEA.migrations.migrate_to_3_0_3.migrate"
-      profile="Products.MeetingIDEA:default" />
-
   <!-- ##/code-section profiles.zcml-bottom -->
 
 </configure>
