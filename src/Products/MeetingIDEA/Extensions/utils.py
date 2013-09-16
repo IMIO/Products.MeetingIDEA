@@ -77,10 +77,9 @@ def import_meetingsGroups_from_csv(self, fname=None):
     for row in reader:
         row_id = normalizeString(row['title'], self)
         if not hasattr(pm, row_id):
-            deleg = row['delegation'].replace('#', '\n')
             groupId = pm.invokeFactory(type_name="MeetingGroup", id=row_id, title=row['title'],
                                        description=row['description'], acronym=row['acronym'],
-                                       givesMandatoryAdviceOn=row['givesMandatoryAdviceOn'], signatures=deleg)
+                                       givesMandatoryAdviceOn=row['givesMandatoryAdviceOn'])
             group = getattr(pm, groupId)
             group.processForm()
             out.append("MeetingGroup %s added" % row_id)
@@ -142,6 +141,10 @@ def import_meetingsUsersAndRoles_from_csv(self, fname=None):
             groups.append(grouptitle + '_reviewers')
         if row['advisers']:
             groups.append(grouptitle + '_advisers')
+        if row['departmentheads']:
+            groups.append(grouptitle + '_departmentheads')
+        if row['director']:
+            groups.append(grouptitle + '_director')
         for groupid in groups:
             pgr.addPrincipalToGroup(row_id, groupid)
             out.append("    -> Added in group '%s'" % groupid)

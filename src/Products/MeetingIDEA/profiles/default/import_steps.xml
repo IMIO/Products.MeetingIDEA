@@ -31,6 +31,16 @@
    <dependency step="MeetingIDEA-postInstall"/>
    Make sure CSS order is correct.
  </import-step>
+
+ <import-step 
+    id="MeetingIDEA-addMeetingCDGroup" 
+    handler="Products.MeetingIDEA.setuphandlers.addMeetingCDGroup"
+    title="Add a Meeting CD group for Direction's Council"
+    version="2011-02-01T15:00:00">
+   <dependency step="MeetingNamur-QI-dependencies"/>
+   Add a MeetingCD group
+ </import-step>
+
 <!-- ##/code-section ADDITIONALSTEPS -->
 
 </import-steps>
