@@ -6,12 +6,6 @@
         cookie_persistence="False"
         request_varname="plone_skin">
 
- <object name="meetingcommunes_styles"
-         meta_type="Filesystem Directory View"
-         directory="MeetingIDEA/skins/meetingcommunes_styles"/>
- <object name="meetingcommunes_templates"
-         meta_type="Filesystem Directory View"
-         directory="MeetingIDEA/skins/meetingcommunes_templates"/>
  <object name="meetingidea_images"
          meta_type="Filesystem Directory View"
          directory="MeetingIDEA/skins/meetingidea_images"/>
@@ -23,10 +17,6 @@
          directory="MeetingIDEA/skins/meetingidea_templates"/>
  
  <skin-path name="*">
-  <layer insert-after="custom" 
-         name="meetingcommunes_styles"/>
-  <layer insert-after="custom" 
-         name="meetingcommunes_templates"/>
   <layer insert-after="custom" 
          name="meetingidea_images"/>
   <layer insert-after="custom" 

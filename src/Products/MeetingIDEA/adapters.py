@@ -23,6 +23,8 @@
 import re
 from DateTime import DateTime
 from appy.gen import No
+from zope.i18n import translate
+from Products.Archetypes.atapi import DisplayList
 from AccessControl import getSecurityManager, ClassSecurityInfo
 from Globals import InitializeClass
 from zope.interface import implements
@@ -31,12 +33,18 @@ from Products.CMFCore.utils import getToolByName
 from Products.PloneMeeting.MeetingItem import MeetingItem, MeetingItemWorkflowConditions, MeetingItemWorkflowActions
 from Products.PloneMeeting.utils import checkPermission, spanifyLink, getCurrentMeetingObject
 from Products.PloneMeeting.Meeting import MeetingWorkflowActions, MeetingWorkflowConditions, Meeting
-from Products.PloneMeeting.interfaces import IMeetingCustom, IMeetingItemCustom
+from Products.PloneMeeting.interfaces import IMeetingCustom, IMeetingItemCustom, \
+    IMeetingGroupCustom, IMeetingConfigCustom, IToolPloneMeetingCustom
 from Products.MeetingIDEA.interfaces import \
     IMeetingItemCAIDEAWorkflowConditions, IMeetingItemCAIDEAWorkflowActions,\
     IMeetingCAIDEAWorkflowConditions, IMeetingCAIDEAWorkflowActions
 from zope.annotation.interfaces import IAnnotations
+from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.model.adaptations import *
+from Products.PloneMeeting.MeetingConfig import MeetingConfig
+from Products.PloneMeeting.MeetingGroup import MeetingGroup
+from Products.PloneMeeting.ToolPloneMeeting import ToolPloneMeeting
+from Products.PloneMeeting import PloneMeetingError
 
 # Names of available workflow adaptations.
 customwfAdaptations = list(MeetingConfig.wfAdaptations)

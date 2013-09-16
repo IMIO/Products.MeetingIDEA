@@ -1,159 +1,340 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: MeetingCommunes\n"
-"POT-Creation-Date: 2007-08-29 07:12-100\n"
+"Project-Id-Version: PloneMeeting\n"
+"POT-Creation-Date: 2011-03-01 09:00-100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
-"Language-Code: \n"
-"Language-Name: \n"
-"Preferred-Encodings: utf-8 latin1\n"
+"Language-code: \n"
+"Language-name: \n"
+"Preferred-encodings: utf-8 latin1\n"
 "Domain: plone\n"
 
-#. Default: "MeetingCollege"
-msgid "MeetingCollege"
+# types
+#. Default: "Point CA"
+msgid "MeetingItemCA"
 msgstr ""
 
-#. Default: "MeetingItemCollege"
-msgid "MeetingItemCollege"
+#. Default: "Point AG"
+msgid "MeetingItemAG"
 msgstr ""
 
-#. Default: "MeetincCouncil"
-msgid "MeetingCouncil"
+#. Default: "Meeting CA"
+msgid "MeetingCA"
 msgstr ""
 
-#. Default: "MeetingItemCouncil"
-msgid "MeetingItemCouncil"
+#. Default: "Meeting AG"
+msgid "MeetingAG"
 msgstr ""
 
-# College item workflow states specific vocabulary
-#. Default: "Accepted with modifications"
+# various
+# MeetingItem
+#. Default: "Decision"
+msgid "PloneMeeting_label_decision"
+msgstr ""
+
+#. Default: "accept but modify"
+msgid "accept_but_modify"
+msgstr ""
+
+#. Default: "Accept"
+msgid "accept"
+msgstr ""
+
+#. Default: "Accepted"
+msgid "accepted"
+msgstr ""
+
+#. Default: "accept_but_modify_done_descr"
+msgid "accept_but_modify_done_descr"
+msgstr ""
+
+#. Default: "accept_done_descr"
+msgid "accept_done_descr"
+msgstr ""
+
+#. Default: "Accepted but modified"
 msgid "accepted_but_modified"
+msgstr ""
+
+#. Default: "PloneMeeting"
+msgid "app_name"
+msgstr ""
+
+# Workflow transitions
+#. Default: "backToCreated_done_descr"
+msgid "backToCreated_done_descr"
+msgstr ""
+
+#. Default: "backToDecided_done_descr"
+msgid "backToDecided_done_descr"
+msgstr ""
+
+#. Default: "backToFrozen_done_descr"
+msgid "backToFrozen_done_descr"
+msgstr ""
+
+#. Default: "send back"
+msgid "backToItemCreated"
+msgstr ""
+
+#. Default: "This item is back in its initial state. The person who created it (or another creator within the same group) can now modify it and will need to propose it again once finished."
+msgid "backToItemCreated_done_descr"
+msgstr ""
+
+#. Default: "bo to item frozen"
+msgid "backToItemFrozen"
+msgstr ""
+
+#. Default: "The decision taken on this item has been canceled."
+msgid "backToItemFrozen_done_descr"
+msgstr ""
+
+#. Default: "send back"
+msgid "backToPresented"
+msgstr ""
+
+#. Default: "Item freeze has been cancelled."
+msgid "backToPresented_done_descr"
+msgstr ""
+
+#. Default: "send back"
+msgid "backToProposedToDepartmentHead"
+msgstr ""
+
+#. Default: "This item has been send back to the department head."
+msgid "backToProposedToDepartmentHead_done_descr"
+msgstr ""
+
+#. Default: "send back"
+msgid "backToProposedToDirector"
+msgstr ""
+
+#. Default: "This item has been send back to the director."
+msgid "backToProposedToDirector_done_descr"
+msgstr ""
+
+#. Default: "send back"
+msgid "backToProposedToSecretariat"
+msgstr ""
+
+#. Default: "This item has been send back to the secretariat for pre-validation."
+msgid "backToProposedToSecretariat_done_descr"
+msgstr ""
+
+#. Default: "send back"
+msgid "backToProposedToDG"
+msgstr ""
+
+#. Default: "This item has been send back to the general director."
+msgid "backToProposedToDG_done_descr"
+msgstr ""
+
+#. Default: "The item has been removed from the meeting agenda."
+msgid "backToValidated_done_descr"
+msgstr ""
+
+#. Default: "The definitive decisions have been confirmed."
+msgid "close_done_descr"
+msgstr ""
+
+#. Default: "Create a plonmeeting item from a ca item"
+msgid "create_to_meeting-config-ag_from_meeting-config-ca"
+msgstr ""
+
+#. Default: "decide_done_descr"
+msgid "decide_done_descr"
+msgstr ""
+
+#. Default: "Decisions"
+msgid "decisions"
+msgstr ""
+
+#. Default: "The item has been 'delayed'.  If it is the ca or ag, is has been duplicated."
+msgid "delay_done_descr"
+msgstr ""
+
+#. Default: "Freeze"
+msgid "freeze"
+msgstr ""
+
+# transitions descriptions
+#. Default: "freeze_done_descr"
+msgid "freeze_done_descr"
+msgstr ""
+
+#. Default: "frozen"
+msgid "frozen"
+msgstr ""
+
+#. Default: "In AG"
+msgid "in_AG"
+msgstr ""
+
+#. Default: "In AG"
+msgid "item_in_AG"
+msgstr ""
+
+# Workflow states
+#. Default: "itemfreeze_done_descr"
+msgid "itemfreeze_done_descr"
+msgstr ""
+
+#. Default: "frozen"
+msgid "itemfrozen"
+msgstr ""
+
+#. Default: "Description"
+msgid "meeting_item_description"
+msgstr ""
+
+#. Default: "pre accept"
+msgid "pre_accept"
+msgstr ""
+
+#. Default: "pre_accept_done_descr"
+msgid "pre_accept_done_descr"
 msgstr ""
 
 #. Default: "Pre accepted"
 msgid "pre_accepted"
 msgstr ""
 
-# College meeting workflow states specific vocabulary
-#. Default: "decided"
-msgid "decided"
+msgid "proposeToDepartmentHead"
 msgstr ""
 
-#. Default: "Frozen"
-msgid "frozen"
+#. Default: "proposeToDepartmentHead_done_descr"
+msgid "proposeToDepartmentHead_done_descr"
 msgstr ""
 
-# College meeting workflow transitions specific vocabulary
-#. Default: "Decide"
-msgid "decide"
+msgid "proposeToSecretariat"
 msgstr ""
 
-#. Default: "Itemfrozen"
-msgid "itemfrozen"
+#. Default: "proposeToSecretariat_done_descr"
+msgid "proposeToSecretariat_done_descr"
 msgstr ""
 
-#. Default: "Accept with modifications"
-msgid "accept_but_modify"
+msgid "proposeToDirector"
 msgstr ""
 
-#. Default: "Pre accept"
-msgid "pre_accept"
+#. Default: "proposeToDirector_done_descr"
+msgid "proposeToDirector_done_descr"
 msgstr ""
 
-#. Default: "Meeting BP"
-msgid "Meetingbp"
+#. Default: "Proposed to department head"
+msgid "proposed_to_departmenthead"
 msgstr ""
 
-#. Default: "Meeting item BP"
-msgid "MeetingItembp"
+#. Default: "Proposed to secretariat"
+msgid "proposed_to_secretariat"
 msgstr ""
 
-#. Default: "Meeting CAS"
-msgid "Meetingcas"
+#. Default: "Proposed to director"
+msgid "proposed_to_director"
 msgstr ""
 
-#. Default: "Meeting item CAS"
-msgid "MeetingItemcas"
+#. Default: "refuse_done_descr"
+msgid "refuse_done_descr"
 msgstr ""
 
-#. Default: "Meeting Comitee"
-msgid "Meetingcomitee"
+msgid "remove"
 msgstr ""
 
-#. Default: "Meeting item Comitee"
-msgid "MeetingItemcomitee"
+#. Default: "Removed from meeting"
+msgid "removed"
 msgstr ""
 
-#. Default: "UID not found!"
-msgid "UID not found!"
+msgid "return_to_secretary"
 msgstr ""
 
-#. Default: "The item has been successfully transfered to the council."
-msgid "sendto_meeting-config-council_success"
+#. Default: "return_to_secretary_done_descr"
+msgid "return_to_secretary_done_descr"
 msgstr ""
 
-#. Default: "The item has been successfully transfered to the college."
-msgid "sendto_meeting-config-college_success"
+msgid "return_to_secretary_in_ag"
 msgstr ""
 
-#. Default: "The item has been successfully transfered to the bp."
-msgid "sendto_meeting-config-bp_success"
+#. Default: "return_to_secretary_in_council_done_descr"
+msgid "return_to_secretary_in_council_done_descr"
 msgstr ""
 
-#. Default: "The item has been successfully transfered to the cas."
-msgid "sendto_meeting-config-cas_success"
+msgid "return_to_service"
 msgstr ""
 
-#. Default: "The item has been successfully transfered to the comitee."
-msgid "sendto_meeting-config-comitee_success"
+#. Default: "return_to_service_done_descr"
+msgid "return_to_service_done_descr"
 msgstr ""
 
-#. Default: "Back to created"
-msgid "backToCreated"
+#. Default: "Returned to service"
+msgid "returned_to_service"
 msgstr ""
 
-#. Default: "Back to decided"
-msgid "backToDecided"
+#. Default: "The item has been sent to the ca."
+msgid "sendto_meeting-config-ca_success"
 msgstr ""
 
-#. Default: "Back to frozen"
-msgid "backToFrozen"
+#. Default: "The item has been sent to the ag."
+msgid "sendto_meeting-config-ag_success"
 msgstr ""
 
-#. Default: "Back to item created"
-msgid "backToItemCreated"
+#. Default: "The creator of this item does not exist in the meeting config you try to send the item to!"
+msgid "sendtoag_error_no_corresponding_meetingconfigfolder"
 msgstr ""
 
-#. Default: "Back to item frozen"
-msgid "backToItemFrozen"
+#. Default: "The meeting config you try to send the item to does not exist!"
+msgid "sendtoag_error_no_existing_meetingconfig"
 msgstr ""
 
-#. Default: "Back to presented"
-msgid "backToPresented"
+msgid "setInAG"
 msgstr ""
 
-#. Default: "Back to pre-validated"
-msgid "backToPrevalidated"
+#. Default: "setInAG_done_descr"
+msgid "setInAG_done_descr"
 msgstr ""
 
-#. Default: "Back to proposed"
-msgid "backToProposed"
+msgid "setItemInAG"
 msgstr ""
 
-#. Default: "Back to published"
-msgid "backToPublished"
+#. Default: "setItemInAG_done_descr"
+msgid "setItemInAG_done_descr"
 msgstr ""
 
-#. Default: "Back to decisions published"
-msgid "backToDecisionsPublished"
+#. Default: "Some items are still under corrections in services"
+msgid "some_item_still_in_service"
 msgstr ""
 
-#. Default: "Decisions published"
-msgid "decisions_published"
+#. Default: "Validate"
+msgid "validate"
 msgstr ""
 
-#. Default: "Publish decisions"
-msgid "publish_decisions"
+msgid "validateByBudgetImpactReviewer"
+msgstr ""
+
+#. Default: "The item has been validated."
+msgid "validate_done_descr"
+msgstr ""
+
+#. Default: "Validated"
+msgid "validated"
+msgstr ""
+
+#. Default: "ItemValidateByCD"
+msgid "itemValidateByCD"
+msgstr ""
+
+#. Default: "validated_by_cd"
+msgid "validated_by_cd"
+msgstr ""
+
+#. Default: "send back"
+msgid "backToValidateByCD"
+msgstr ""
+
+#. Default: "validate by CD"
+msgid "validateByCD"
+msgstr ""
+
+#. Default: "back to validated by CD"
+msgid "backToValidatedByCD"
 msgstr ""
