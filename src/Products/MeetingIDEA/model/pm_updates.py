@@ -1,6 +1,7 @@
 from Products.Archetypes.atapi import *
 from Products.PloneMeeting.Meeting import Meeting
 from Products.PloneMeeting.MeetingItem import MeetingItem
+from Products.PloneMeeting.MeetingConfig import MeetingConfig
 
 
 def update_item_schema(baseSchema):
@@ -36,3 +37,31 @@ def update_meeting_schema(baseSchema):
     completeMeetingSchema = baseSchema + specificSchema.copy()
     return completeMeetingSchema
 Meeting.schema = update_meeting_schema(Meeting.schema)
+
+
+def update_config_schema(baseSchema):
+    specificSchema = Schema((
+        TextField(
+            name='itemDecisionReportText',
+            widget=TextAreaWidget(
+                description="ItemDecisionReportText",
+                description_msgid="item_decision_report_text_descr",
+                label='ItemDecisionReportText',
+                label_msgid='PloneMeeting_label_itemDecisionReportText',
+                i18n_domain='PloneMeeting',
+            ),
+            allowable_content_types=('text/plain',),
+            default_output_type="text/plain",
+        )
+    ),)
+    completeConfigSchema = baseSchema + specificSchema.copy()
+    completeConfigSchema.moveField('itemDecisionReportText', after='budgetDefault')
+    return completeConfigSchema
+MeetingConfig.schema = update_config_schema(MeetingConfig.schema)
+
+# Classes have already been registered, but we register them again here
+# because we have potentially applied some schema adaptations (see above).
+# Class registering includes generation of accessors and mutators, for
+# example, so this is why we need to do it again now.
+from Products.PloneMeeting.config import registerClasses
+registerClasses()

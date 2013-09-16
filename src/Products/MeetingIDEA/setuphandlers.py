@@ -21,22 +21,23 @@ import os
 from Products.CMFCore.utils import getToolByName
 import transaction
 ##code-section HEAD
-from DateTime import DateTime
 from Products.PloneMeeting.exportimport.content import ToolInitializer
-from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
+from Products.PloneMeeting.config import TOPIC_TYPE, TOPIC_SEARCH_SCRIPT, TOPIC_TAL_EXPRESSION
 ##/code-section HEAD
+
 
 def isNotMeetingIDEAProfile(context):
     return context.readDataFile("MeetingIDEA_marker.txt") is None
 
 
-
 def updateRoleMappings(context):
     """after workflow changed update the roles mapping. this is like pressing
     the button 'Update Security Setting' and portal_workflow"""
-    if isNotMeetingIDEAProfile(context): return
+    if isNotMeetingIDEAProfile(context):
+        return
     wft = getToolByName(context.getSite(), 'portal_workflow')
     wft.updateRoleMappings()
+
 
 def postInstall(context):
     """Called as at the end of the setup process. """
@@ -45,41 +46,87 @@ def postInstall(context):
         return
     logStep("postInstall", context)
     site = context.getSite()
+    add_CA_AG_Searches(context, site)
     #need to reinstall PloneMeeting after reinstalling MC workflows to re-apply wfAdaptations
     reinstallPloneMeeting(context, site)
     showHomeTab(context, site)
     reinstallPloneMeetingSkin(context, site)
 
 
-
 ##code-section FOOT
+def add_CA_AG_Searches(context, portal):
+    '''
+       Add additional searches to the 'meeting-config-ag' and 'meeting-config-ca' MeetingConfig
+    '''
+    if isNotMeetingIDEAProfile(context):
+        return
+
+    logStep("add_CA_AG_Searches", context)
+    topicsInfo = (
+        # Items in state 'proposed_to_departmenthead'
+        ('searchdepartmentheaditems', (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),),
+        ('proposed_to_departmenthead', ), '', 'python: not here.portal_plonemeeting.userIsAmong("departmenthead")',),
+        # Items in state 'proposed_to_director'
+        # Used in the "todo" portlet
+        ('searchdirectoritems', (('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ),
+        ('proposed_to_director', ), '', 'python: here.portal_plonemeeting.userIsAmong("director")',),
+        # Items in state 'proposed_to_secretariat
+        ('searchsecretariatitems', (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),),
+        ('proposed_to_secretariat', ), '', 'python: here.portal_plonemeeting.isManager()',),
+        # Items in state 'validated'
+        ('searchvalidateditems', (('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ), ('validated', ), '', '',),
+        # All 'decided' items
+        ('searchdecideditems', (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),),
+        ('accepted', 'refused', 'delayed', 'accepted_but_modified'), '', '',), )
+    mcs = portal.portal_plonemeeting.objectValues("MeetingConfig")
+    if not mcs:
+        return
+
+    #Add these searches by meeting config
+    for meetingConfig in mcs:
+        if not meetingConfig.getId() == 'meeting-config-CA' and not meetingConfig.getId() == 'meeting-config-AG':
+            continue
+        for topicId, topicCriteria, stateValues, topicSearchScript, topicTalExpr in topicsInfo:
+            #if reinstalling, we need to check if the topic does not already exist
+            if hasattr(meetingConfig.topics, topicId):
+                continue
+            meetingConfig.topics.invokeFactory('Topic', topicId)
+            topic = getattr(meetingConfig.topics, topicId)
+            topic.setExcludeFromNav(True)
+            topic.setTitle(topicId)
+            for criterionName, criterionType, criterionValue in topicCriteria:
+                criterion = topic.addCriterion(field=criterionName, criterion_type=criterionType)
+                topic.manage_addProperty(TOPIC_TYPE, criterionValue, 'string')
+                criterionValue = '%s%s' % (criterionValue, meetingConfig.getShortName())
+                criterion.setValue([criterionValue])
+
+            stateCriterion = topic.addCriterion(field='review_state', criterion_type='ATListCriterion')
+            stateCriterion.setValue(stateValues)
+            topic.manage_addProperty(TOPIC_SEARCH_SCRIPT, topicSearchScript, 'string')
+            topic.manage_addProperty(TOPIC_TAL_EXPRESSION, topicTalExpr, 'string')
+            topic.setLimitNumber(True)
+            topic.setItemCount(20)
+            topic.setSortCriterion('created', True)
+            topic.setCustomView(True)
+            topic.setCustomViewFields(['Title', 'CreationDate', 'Creator', 'review_state'])
+            topic.reindexObject()
+
+
 def logStep(method, context):
-    logger.info("Applying '%s' in profile '%s'" %
-                (method, '/'.join(context._profile_path.split(os.sep)[-3:])))
+    logger.info("Applying '%s' in profile '%s'" % (method, '/'.join(context._profile_path.split(os.sep)[-3:])))
 
 
-def isMeetingIDEAConfigureProfile(context):
-    return context.readDataFile("MeetingIDEA_examples_fr_marker.txt") or \
-        context.readDataFile("MeetingIDEA_examples_marker.txt") or \
-        context.readDataFile("MeetingIDEA_cpas_marker.txt") or \
-        context.readDataFile("MeetingIDEA_testing_marker.txt")
+def isNotMeetingIDEAIDEAProfile(context):
+    return context.readDataFile("MeetingIDEA_idea_marker.txt") is None
 
 
-def isNotMeetingIDEADemoProfile(context):
-    return context.readDataFile("MeetingIDEA_demo_marker.txt") is None
-
-
-def isMeetingIDEATestingProfile(context):
-    return context.readDataFile("MeetingIDEA_testing_marker.txt")
-
-
-def isMeetingIDEAMigrationProfile(context):
-    return context.readDataFile("MeetingIDEA_migrations_marker.txt")
+def isNotMeetingIDEAMigrationProfile(context):
+    return context.readDataFile("MeetingIdea_migrations_marker.txt") is None
 
 
 def installMeetingIDEA(context):
-    """ Run the default profile"""
-    if not isMeetingIDEAConfigureProfile(context):
+    """ Run the default profile before bing able to run the IDEA profile"""
+    if isNotMeetingIDEAIDEAProfile(context):
         return
     logStep("installMeetingIDEA", context)
     portal = context.getSite()
@@ -89,9 +136,8 @@ def installMeetingIDEA(context):
 def initializeTool(context):
     '''Initialises the PloneMeeting tool based on information from the current
        profile.'''
-    if not isMeetingIDEAConfigureProfile(context):
+    if isNotMeetingIDEAIDEAProfile(context):
         return
-
     logStep("initializeTool", context)
     #PloneMeeting is no more a dependency to avoid
     #magic between quickinstaller and portal_setup
@@ -106,7 +152,6 @@ def reinstallPloneMeeting(context, site):
 
     if isNotMeetingIDEAProfile(context):
         return
-
     logStep("reinstallPloneMeeting", context)
     _installPloneMeeting(context)
 
@@ -138,7 +183,7 @@ def reinstallPloneMeetingSkin(context, site):
        Reinstall Products.plonemeetingskin as the reinstallation of MeetingIDEA
        change the portal_skins layers order
     """
-    if isNotMeetingIDEAProfile(context) and not isMeetingIDEAConfigureProfile:
+    if isNotMeetingIDEAProfile(context):
         return
 
     logStep("reinstallPloneMeetingSkin", context)
@@ -156,23 +201,17 @@ def finalizeExampleInstance(context):
        Some parameters can not be handled by the PloneMeeting installation,
        so we handle this here
     """
-    if not isMeetingIDEAConfigureProfile(context):
+    if not isNotMeetingIDEAProfile(context):
         return
 
-    # finalizeExampleInstance will behave differently if on
-    # a Commune instance or CPAS instance
-    specialUserId = 'bourgmestre'
-    meetingConfig1Id = 'meeting-config-college'
-    meetingConfig2Id = 'meeting-config-council'
-    if context.readDataFile("MeetingIDEA_cpas_marker.txt"):
-        specialUserId = 'president'
-        meetingConfig1Id = 'meeting-config-bp'
-        meetingConfig2Id = 'meeting-config-cas'
+    specialUserId = 'president'
+    meetingConfig1Id = 'meeting-config-ca'
+    meetingConfig2Id = 'meeting-config-ag'
 
     site = context.getSite()
 
     logStep("finalizeExampleInstance", context)
-    # add the test user 'bourgmestre' to every '_powerobservers' groups
+    # add the test user 'president' to every '_powerobservers' groups
     member = site.portal_membership.getMemberById(specialUserId)
     if member:
         site.portal_groups.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig1Id)
@@ -182,27 +221,27 @@ def finalizeExampleInstance(context):
     if member:
         site.portal_groups.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig2Id)
 
-    # define some parameters for 'meeting-config-college'
-    # items are sendable to the 'meeting-config-council'
-    mc_college_or_bp = getattr(site.portal_plonemeeting, meetingConfig1Id)
-    mc_college_or_bp.setMeetingConfigsToCloneTo([meetingConfig2Id, ])
+    # define some parameters for 'meeting-config-ca'
+    # items are sendable to the 'meeting-config-ag'
+    mc_ca_or_ag = getattr(site.portal_plonemeeting, meetingConfig1Id)
+    mc_ca_or_ag.setMeetingConfigsToCloneTo([meetingConfig2Id, ])
     # add some topcis to the portlet_todo
-    mc_college_or_bp.setToDoListTopics(
-        [getattr(mc_college_or_bp.topics, 'searchdecideditems'),
-         getattr(mc_college_or_bp.topics, 'searchitemstovalidate'),
-         getattr(mc_college_or_bp.topics, 'searchallitemsincopy'),
-         getattr(mc_college_or_bp.topics, 'searchallitemstoadvice'),
+    mc_ca_or_ag.setToDoListTopics(
+        [getattr(mc_ca_or_ag.topics, 'searchdecideditems'),
+         getattr(mc_ca_or_ag.topics, 'searchitemstovalidate'),
+         getattr(mc_ca_or_ag.topics, 'searchallitemsincopy'),
+         getattr(mc_ca_or_ag.topics, 'searchallitemstoadvice'),
          ])
     # call updateCloneToOtherMCActions inter alia
-    mc_college_or_bp.at_post_edit_script()
+    mc_ca_or_ag.at_post_edit_script()
 
     # define some parameters for 'meeting-config-council'
-    mc_council_or_cas = getattr(site.portal_plonemeeting, meetingConfig2Id)
+    mc_ca_or_ag = getattr(site.portal_plonemeeting, meetingConfig2Id)
     # add some topcis to the portlet_todo
-    mc_council_or_cas.setToDoListTopics(
-        [getattr(mc_council_or_cas.topics, 'searchdecideditems'),
-         getattr(mc_council_or_cas.topics, 'searchitemstovalidate'),
-         getattr(mc_council_or_cas.topics, 'searchallitemsincopy'),
+    mc_ca_or_ag.setToDoListTopics(
+        [getattr(mc_ca_or_ag.topics, 'searchdecideditems'),
+         getattr(mc_ca_or_ag.topics, 'searchitemstovalidate'),
+         getattr(mc_ca_or_ag.topics, 'searchallitemsincopy'),
          ])
 
     # finally, re-launch plonemeetingskin and MeetingIDEA skins step
@@ -210,11 +249,6 @@ def finalizeExampleInstance(context):
     site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingIDEA:default', 'skins')
     site.portal_setup.runImportStepFromProfile(u'profile-plonetheme.imioapps:default', 'skins')
     site.portal_setup.runImportStepFromProfile(u'profile-plonetheme.imioapps:plonemeetingskin', 'skins')
-    # define default workflowAdaptations for council
-    # due to some weird problems, the wfAdaptations can not be defined
-    # thru the import_data...
-    mc_council_or_cas.setWorkflowAdaptations(['no_global_observation', 'no_publication'])
-    performWorkflowAdaptations(site, mc_council_or_cas, logger)
 
 
 def reorderCss(context):
@@ -222,7 +256,7 @@ def reorderCss(context):
        Make sure CSS are correctly reordered in portal_css so things
        work as expected...
     """
-    if isNotMeetingIDEAProfile(context) and not isMeetingIDEAConfigureProfile(context):
+    if isNotMeetingIDEAProfile(context):
         return
 
     site = context.getSite()
@@ -233,7 +267,7 @@ def reorderCss(context):
     css = ['plonemeeting.css',
            'meeting.css',
            'meetingitem.css',
-           'MeetingIDEA.css',
+           'meetingidea.css',
            'imioapps.css',
            'plonemeetingskin.css',
            'imioapps_IEFixes.css',
@@ -242,118 +276,19 @@ def reorderCss(context):
         portal_css.moveResourceToBottom(resource)
 
 
-def addDemoData(context):
-    ''' '''
-    if isNotMeetingIDEADemoProfile(context):
+def addMeetingCDGroup(context):
+    """
+      Add a Plone group configured to receive Direction Council
+      These users can modify the items in prsented state
+      This group recieved the MeetingPowerObserverRôle
+    """
+    if isNotMeetingIDEAProfile(context):
         return
-
-    site = context.getSite()
-    tool = getToolByName(site, 'portal_plonemeeting')
-    wfTool = getToolByName(site, 'portal_workflow')
-    pTool = getToolByName(site, 'plone_utils')
-    # we will create elements for some users, make sure their personal
-    # area is correctly configured
-    site.portal_membership.createMemberArea('agentPers')
-    site.portal_membership.createMemberArea('agentInfo')
-    site.portal_membership.createMemberArea('agentCompta')
-    # create 5 meetings : 2 passed, 1 current and 2 future
-    today = DateTime()
-    dates = [today-13, today-6, today+1, today+8, today+15]
-    # login as 'secretaire'
-    site.portal_membership.createMemberArea('secretaire')
-    secrFolder = tool.getPloneMeetingFolder('meeting-config-college', 'secretaire')
-    for date in dates:
-        meetingId = secrFolder.invokeFactory('MeetingCollege', id=date.strftime('%Y%m%d'))
-        meeting = getattr(secrFolder, meetingId)
-        meeting.setDate(date)
-        pTool.changeOwnershipOf(meeting, 'secretaire')
-        meeting.processForm()
-        # -13 meeting is closed
-        if date == today-13:
-            wfTool.doActionFor(meeting, 'freeze')
-            wfTool.doActionFor(meeting, 'decide')
-            wfTool.doActionFor(meeting, 'close')
-        # -6 meeting is frozen
-        if date == today-6:
-            wfTool.doActionFor(meeting, 'freeze')
-            wfTool.doActionFor(meeting, 'decide')
-        meeting.reindexObject()
-
-    # items dict here : the key is the user we will create the item for
-    # we use item templates so content is created for the demo
-    items = {'agentPers': ({'templateId': 'template3',
-                            'title': u'Engagement temporaire d\'un informaticien',
-                            'budgetRelated': False,
-                            'review_state': 'validated', },
-                           {'templateId': 'template2',
-                            'title': u'Contrôle médical de Mr Antonio',
-                            'budgetRelated': False,
-                            'review_state': 'proposed', },
-                           {'templateId': 'template2',
-                            'title': u'Contrôle médical de Mlle Debbeus',
-                            'budgetRelated': False,
-                            'review_state': 'proposed', },
-                           {'templateId': 'template2',
-                            'title': u'Contrôle médical de Mme Hanck',
-                            'budgetRelated': False,
-                            'review_state': 'validated', },
-                           {'templateId': 'template4',
-                            'title': u'Prestation réduite Mme Untelle, instritutrice maternelle',
-                            'budgetRelated': False,
-                            'review_state': 'validated', },),
-             'agentInfo': ({'templateId': 'template5',
-                            'title': u'Achat nouveaux serveurs',
-                            'budgetRelated': True,
-                            'review_state': 'validated',
-                            },
-                           {'templateId': 'template5',
-                            'title': u'Marché public, contestation entreprise Untelle SA',
-                            'budgetRelated': False,
-                            'review_state': 'validated',
-                            },),
-             'agentCompta': ({'templateId': 'template5',
-                              'title': u'Présentation budget 2014',
-                              'budgetRelated': True,
-                              'review_state': 'validated',
-                              },
-                             {'templateId': 'template5',
-                              'title': u'Plainte de Mme Daise, taxe immondice',
-                              'budgetRelated': False,
-                              'review_state': 'validated',
-                              },
-                             {'templateId': 'template5',
-                              'title': u'Plainte de Mme Uneautre, taxe piscine',
-                              'budgetRelated': False,
-                              'review_state': 'proposed',
-                              },),
-             'secretaire': ({'templateId': 'template1',
-                             'title': u'Tutelle CPAS : point 1 BP du 15 juin',
-                             'budgetRelated': False,
-                             'review_state': 'created',
-                             },
-                            {'templateId': 'template5',
-                             'title': u'Tutelle CPAS : point 2 BP du 15 juin',
-                             'budgetRelated': False,
-                             'review_state': 'proposed',
-                             },
-                            {'templateId': 'template5',
-                             'title': u'Tutelle CPAS : point 16 BP du 15 juin',
-                             'budgetRelated': True,
-                             'review_state': 'validated',
-                             },),
-             }
-    for userId in items:
-        userFolder = tool.getPloneMeetingFolder('meeting-config-college', userId)
-        for item in items[userId]:
-            # get the template then clone it
-            template = getattr(tool.getMeetingConfig(userFolder).recurringitems, item['templateId'])
-            newItem = template.clone(newOwnerId=userId)
-            newItem.setTitle(item['title'])
-            newItem.setBudgetRelated(item['budgetRelated'])
-            if item['review_state'] in ['proposed', 'validated', ]:
-                wfTool.doActionFor(newItem, 'propose')
-            if item['review_state'] == 'validated':
-                wfTool.doActionFor(newItem, 'validate')
-            newItem.reindexObject()
+    logStep("addCDGroup", context)
+    portal = context.getSite()
+    groupId = "meetingCD"
+    if not groupId in portal.portal_groups.listGroupIds():
+        portal.portal_groups.addGroup(groupId, title=portal.utranslate("meetingCDGroupTitle", domain='PloneMeeting'))
+        portal.portal_groups.setRolesForGroup(groupId, ('MeetingObserverGlobal', 'MeetingCD'))
 
 ##/code-section FOOT

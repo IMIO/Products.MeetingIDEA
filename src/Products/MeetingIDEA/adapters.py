@@ -45,6 +45,7 @@ from Products.PloneMeeting.MeetingConfig import MeetingConfig
 from Products.PloneMeeting.MeetingGroup import MeetingGroup
 from Products.PloneMeeting.ToolPloneMeeting import ToolPloneMeeting
 from Products.PloneMeeting import PloneMeetingError
+from Products.PloneMeeting.config import ITEM_NO_PREFERRED_MEETING_VALUE
 
 # Names of available workflow adaptations.
 customwfAdaptations = list(MeetingConfig.wfAdaptations)
@@ -517,8 +518,9 @@ class CustomMeeting(Meeting):
         # equal to the date of this meeting (self)
         meetings = meeting.portal_catalog(
             portal_type=meetingConfig.getMeetingTypeName(),
-            getDate={'query': meeting.getDate(), 'range': 'max'},)
+            getDate={'query': meeting.getDate(), 'range': 'max'}, )
         meetingUids = [b.getObject().UID() for b in meetings]
+        meetingUids.append(ITEM_NO_PREFERRED_MEETING_VALUE)
         # Then, get the items whose preferred meeting is None or is among
         # those meetings.
         itemsUids = meeting.portal_catalog(
@@ -1383,6 +1385,56 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
                         res = True
                 else:
                     res = True
+        return res
+
+    security.declarePublic('mayProposeToDepartmentHead')
+    def mayProposeToDepartmentHead(self):
+        """
+          Check that the user has the 'Review portal content'
+        """
+        res = False
+        if checkPermission(ReviewPortalContent, self.context):
+                res = True
+        return res
+
+    security.declarePublic('mayProposeToDirector')
+    def mayProposeToDirector(self):
+        """
+          Check that the user has the 'Review portal content'
+        """
+        res = False
+        if checkPermission(ReviewPortalContent, self.context):
+                res = True
+        return res
+
+    security.declarePublic('mayProposeToSecretariat')
+    def mayProposeToSecretariat(self):
+        """
+          Check that the user has the 'Review portal content'
+        """
+        res = False
+        if checkPermission(ReviewPortalContent, self.context):
+                res = True
+        return res
+
+    security.declarePublic('mayRemove')
+    def mayRemove(self):
+        """
+          We may remove an item if the linked meeting is in the 'decided'
+          state.  For now, this is the same behaviour as 'mayDecide'
+        """
+        res = False
+        meeting = self.context.getMeeting()
+        if checkPermission(ReviewPortalContent, self.context) and \
+           meeting and (meeting.queryState() in ['decided', 'closed']):
+            res = True
+        return res
+
+    security.declarePublic('mayValidateByCD')
+    def mayValidateByCD(self):
+        res = False
+        if checkPermission(ReviewPortalContent, self.context):
+            return True
         return res
 
 

@@ -18,10 +18,9 @@ groups = context.portal_groups.getGroupsForPrincipal(member)
 
 reviewSuffixes = ('_reviewers', '_director', '_departmentheads')
 statesMapping = {
-                 '_reviewers': ('proposed_to_departmenthead','proposed_to_director','proposed_to_secretariat','proposed_to_validation_by_director','proposed_to_validation_by_secretariat','proposed_to_general_director'),
-                 '_n2': ('proposed_to_departmenthead','proposed_to_director'),
-                 '_departmentheads': 'proposed_to_departmenthead',
-                }
+    '_reviewers': ('proposed_to_departmenthead', 'proposed_to_director', 'proposed_to_secretariat',),
+    '_n2': ('proposed_to_departmenthead', 'proposed_to_director'),
+    '_departmentheads': 'proposed_to_departmenthead', }
 
 foundGroups = {}
 #check that we have a real PM group, not "echevins", or "Administrators"
@@ -47,10 +46,10 @@ for foundGroup in foundGroups:
             break
 
 #now we have in the dict foundGroups the group the user is in in the key and the highest level in the value
-res=[]
+res = []
 for foundGroup in foundGroups:
-    brains = context.portal_catalog(portal_type='MeetingItemCA', getProposingGroup=foundGroup, review_state=statesMapping[foundGroups[foundGroup]])
+    brains = context.portal_catalog(portal_type='MeetingItemCA', getProposingGroup=foundGroup,
+                                    review_state=statesMapping[foundGroups[foundGroup]])
     res = res+list(brains)
 
 return res
-

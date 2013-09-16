@@ -243,7 +243,7 @@ msgid "refuse_done_descr"
 msgstr "Le point a été refusé."
 
 msgid "remove"
-msgstr "Retirer de la séance"
+msgstr "Retirer"
 
 #. Default: "Removed from meeting"
 msgid "removed"
