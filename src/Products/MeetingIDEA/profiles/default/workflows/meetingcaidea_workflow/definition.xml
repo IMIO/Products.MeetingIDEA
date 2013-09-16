@@ -20,6 +20,7 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
    <permission-role>MeetingCD</permission-role>
+   <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
@@ -39,6 +40,7 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
    <permission-role>MeetingCD</permission-role>
+   <permission-role>Reader</permission-role>
   </permission-map>
  </state>
  <state state_id="created"
@@ -51,6 +53,7 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
    <permission-role>MeetingCD</permission-role>
+   <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
@@ -73,6 +76,7 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
    <permission-role>MeetingCD</permission-role>
+   <permission-role>Reader</permission-role>
   </permission-map>
  </state>
  <state state_id="decided"
@@ -86,6 +90,7 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
    <permission-role>MeetingCD</permission-role>
+   <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
@@ -108,6 +113,7 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
    <permission-role>MeetingCD</permission-role>
+   <permission-role>Reader</permission-role>
   </permission-map>
  </state>
  <state state_id="frozen"
@@ -121,6 +127,7 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
    <permission-role>MeetingCD</permission-role>
+   <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
@@ -143,6 +150,7 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
    <permission-role>MeetingCD</permission-role>
+   <permission-role>Reader</permission-role>
   </permission-map>
  </state>
  <state state_id="validated_by_cd"
@@ -156,6 +164,7 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
    <permission-role>MeetingCD</permission-role>
+   <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
@@ -178,6 +187,7 @@
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
    <permission-role>MeetingCD</permission-role>
+   <permission-role>Reader</permission-role>
   </permission-map>
  </state>
  <transition transition_id="backToCreated"

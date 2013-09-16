@@ -25,13 +25,6 @@
    for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
   
   <genericsetup:registerProfile
-   name="migrations"
-   title="MeetingIDEA / migration profile for IDEA"
-   description="MeetingIDEA Migration profile to version 2.1.3"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
    name="tests"
    title="MeetingIDEA / Unit testing profile for IDEA"
    description="MeetingIDEA unit testing profile"

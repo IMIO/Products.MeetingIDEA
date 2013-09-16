@@ -2,7 +2,7 @@
 #
 # File: MeetingIDEA.py
 #
-# Copyright (c) 2013 by IMIO
+# Copyright (c) 2013 by CommunesPlone
 # Generator: ArchGenXML Version 2.7
 #            http://plone.org/products/archgenxml
 #

@@ -2,7 +2,7 @@
 #
 # File: setuphandlers.py
 #
-# Copyright (c) 2013 by IMIO
+# Copyright (c) 2013 by CommunesPlone
 # Generator: ArchGenXML Version 2.7
 #            http://plone.org/products/archgenxml
 #
@@ -26,19 +26,17 @@ from Products.PloneMeeting.exportimport.content import ToolInitializer
 from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 ##/code-section HEAD
 
-
 def isNotMeetingIDEAProfile(context):
     return context.readDataFile("MeetingIDEA_marker.txt") is None
+
 
 
 def updateRoleMappings(context):
     """after workflow changed update the roles mapping. this is like pressing
     the button 'Update Security Setting' and portal_workflow"""
-    if isNotMeetingIDEAProfile(context):
-        return
+    if isNotMeetingIDEAProfile(context): return
     wft = getToolByName(context.getSite(), 'portal_workflow')
     wft.updateRoleMappings()
-
 
 def postInstall(context):
     """Called as at the end of the setup process. """
@@ -51,6 +49,7 @@ def postInstall(context):
     reinstallPloneMeeting(context, site)
     showHomeTab(context, site)
     reinstallPloneMeetingSkin(context, site)
+
 
 
 ##code-section FOOT
