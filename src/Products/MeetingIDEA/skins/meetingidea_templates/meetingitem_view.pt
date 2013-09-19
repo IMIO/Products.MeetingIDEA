@@ -286,10 +286,10 @@
     
     <!--xxx specific field for idea-->
     <tal:comment replace="nothing">Internal communication</tal:comment>
-    <fieldset tal:condition="python: 'internalCommunication' in usedAttrs and context.portal_plonemeeting.isManager()">
-      <legend i18n:translate="PloneMeeting_label_internalCommunication">Internal communication</legend>
-      <div tal:replace="structure context/getInternalCommunication"></div>
-    </fieldset>
+    <tal:field define="fieldName python: 'internalCommunication'; ajaxEdit python:True">
+       <metal:f use-macro="context/hs_macros/macros/viewContentField"/>
+    </tal:field>
+
     <!--xxx end specific field for idea-->
 
     <tal:comment replace="nothing">Fields that appear only if the item is defined in a configuration</tal:comment>

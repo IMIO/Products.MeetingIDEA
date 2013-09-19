@@ -50,7 +50,7 @@ def postInstall(context):
     #need to reinstall PloneMeeting after reinstalling MC workflows to re-apply wfAdaptations
     reinstallPloneMeeting(context, site)
     showHomeTab(context, site)
-    reinstallPloneMeetingSkin(context, site)
+    reorderSkinsLayers(context, site)
 
 
 ##code-section FOOT
@@ -178,21 +178,22 @@ def showHomeTab(context, site):
         logger.info("The 'Home' tab does not exist !!!")
 
 
-def reinstallPloneMeetingSkin(context, site):
+def reorderSkinsLayers(context, site):
     """
-       Reinstall Products.plonemeetingskin as the reinstallation of MeetingIDEA
-       change the portal_skins layers order
+       Re-apply MeetingIDEA skins.xml step
+       as the reinstallation of MeetingIDEA and PloneMeeting changes the portal_skins layers order
     """
     if isNotMeetingIDEAProfile(context):
         return
 
-    logStep("reinstallPloneMeetingSkin", context)
+    logStep("reorderSkinsLayers", context)
     try:
+        site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingIDEA:default', 'skins')
         site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:default')
         site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:plonemeetingskin')
     except KeyError:
-        # if the Products.plonemeetingskin profile is not available
-        # (not using plonemeetingskin or in testing?) we pass...
+        # if the Products.MeetingIDEA profile is not available
+        # (not using MeetingIDEA or in testing?) we pass...
         pass
 
 

@@ -130,10 +130,10 @@
                    condition="python: 'observations' in usedAttrs" >
           <metal:f use-macro="context/hs_macros/macros/editContentField"/>
         </tal:field>
-       
+
         <!--xxx specific field for idea>
         <tal:field define="fieldName python: 'internalCommunication'"
-                   condition="python: 'internalCommunication' in usedAttrs" >
+                   condition="python: 'internalCommunication' in usedAttrs">
           <metal:f use-macro="context/hs_macros/macros/editContentField"/>
         </tal:field>
         <!--xxx end specific field for idea-->
