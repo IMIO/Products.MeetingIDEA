@@ -9,7 +9,7 @@ def update_item_schema(baseSchema):
     specificSchema = Schema((
         TextField(
             name='internalCommunication',
-            widget=TextAreaWidget(
+            widget=RichWidget(
                 condition="python: here.portal_plonemeeting.isManager()",
                 description="InternalCommunication",
                 description_msgid="item_internalCommunication_descr",
@@ -18,6 +18,9 @@ def update_item_schema(baseSchema):
                 i18n_domain='PloneMeeting',
             ),
             optional=True,
+            default_content_type="text/html",
+            allowable_content_types=('text/html',),
+            default_output_type="text/x-html-safe",
         ),)
     )
 
