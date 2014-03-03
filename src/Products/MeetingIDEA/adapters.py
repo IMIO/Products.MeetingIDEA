@@ -751,7 +751,7 @@ class CustomMeeting(Meeting):
     security.declarePublic('getIdeaAssembly')
     def getIdeaAssembly(self, filter):
         '''return formated assembly
-           filer is 'present', 'excused', 'procuration' or '*' for all
+           filer is 'present', 'excused', 'procuration', 'absent' or '*' for all
            This method is used on template
         '''
         #suppress paragraph
@@ -767,6 +767,10 @@ class CustomMeeting(Meeting):
             #ass line "Procurations:" is used for defined list of persons who recieve a procuration
             if ass.upper().find('PROCURATION') >= 0:
                 status = 'procuration'
+                continue
+            #ass line "Absents:" is used for define list of persons who are excused
+            if ass.upper().find('ABSENT') >= 0:
+                status = 'absentee'
                 continue
             if filter == '*' or status == filter:
                 res.append(ass)
