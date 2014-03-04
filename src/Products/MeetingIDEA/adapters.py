@@ -717,7 +717,7 @@ class CustomMeeting(Meeting):
     def getPresenceList(self, filter):
         '''return list of presence in the form of dictionnary
            keys are fullname, status [0=present;1:excused;2=procuration]
-           filer on status : 0,1 or 2 or * for all
+           filer on status : 0,1,2 or 3 or * for all
            This method is used on template
         '''
         #suppress paragraph
@@ -740,9 +740,13 @@ class CustomMeeting(Meeting):
                 if a.find('xcus') >= 0:
                     status = 1
                     continue
+                #a line "Absents:" is used for define list of persons who are absentee
+                if a.upper().find('ABSENT') >= 0:
+                    status = 2
+                    continue
                 #a line "Procurations:" is used for defined list of persons who recieve a procuration
                 if a.upper().find('PROCURATION') >= 0:
-                    status = 2
+                    status = 3
                     continue
                 if filter == '*' or status in filter:
                     res.append({'fullname': a, 'status': status})
