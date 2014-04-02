@@ -20,19 +20,91 @@
 # 02110-1301, USA.
 #
 
-from Products.PloneMeeting.tests.helpers import PloneMeetingTestingHelpers
+from DateTime import DateTime
+from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
 
 
-class MeetingIDEATestingHelpers(PloneMeetingTestingHelpers):
+class MeetingIDEATestingHelpers(MeetingCommunesTestingHelpers):
     '''Stub class that provides some helper methods about testing.'''
 
-    TRANSITIONS_FOR_PUBLISHING_MEETING_1 = TRANSITIONS_FOR_PUBLISHING_MEETING_2 = ('freeze', 'publish', )
-    TRANSITIONS_FOR_FREEZING_MEETING_1 = TRANSITIONS_FOR_FREEZING_MEETING_2 = ('freeze', )
-    TRANSITIONS_FOR_DECIDING_MEETING_1 = ('freeze', 'decide', )
-    TRANSITIONS_FOR_DECIDING_MEETING_2 = ('freeze', 'publish', 'decide', )
-    TRANSITIONS_FOR_CLOSING_MEETING_1 = TRANSITIONS_FOR_CLOSING_MEETING_2 = ('freeze',
-                                                                             'publish',
-                                                                             'decide',
-                                                                             'close', )
-    TRANSITIONS_FOR_ACCEPTING_ITEMS_1 = ('freeze', 'decide', )
-    TRANSITIONS_FOR_ACCEPTING_ITEMS_2 = ('freeze', 'publish', 'decide', )
+    TRANSITIONS_FOR_PROPOSING_ITEM_1 = ('proposeToDepartmentHead',
+                                        'proposeToDirector',
+                                        'proposeToSecretariat', )
+    TRANSITIONS_FOR_PROPOSING_ITEM_2 = ('validate', )
+    TRANSITIONS_FOR_VALIDATING_ITEM_1 = ('proposeToDepartmentHead',
+                                         'proposeToDirector',
+                                         'proposeToSecretariat',
+                                         'validate', )
+    TRANSITIONS_FOR_VALIDATING_ITEM_2 = ('validate', )
+    TRANSITIONS_FOR_PRESENTING_ITEM_1 = ('proposeToDepartmentHead',
+                                         'proposeToDirector',
+                                         'proposeToSecretariat',
+                                         'validate', 
+                                         'present', )
+    TRANSITIONS_FOR_PRESENTING_ITEM_2 = ('validate', 'present', )
+    TRANSITIONS_FOR_ACCEPTING_ITEMS_1 = ('validateByCD', 'freeze', 'decide', )
+    TRANSITIONS_FOR_ACCEPTING_ITEMS_2 = ('validateByCD', 'freeze', 'decide', )
+
+    TRANSITIONS_FOR_DECIDING_MEETING_1 = ('validateByCD', 'freeze', 'decide', )
+    TRANSITIONS_FOR_DECIDING_MEETING_2 = ('validateByCD', 'freeze', 'decide', )
+    TRANSITIONS_FOR_CLOSING_MEETING_1 = ('validateByCD', 'freeze', 'decide', 'close', )
+    TRANSITIONS_FOR_CLOSING_MEETING_2 = ('validateByCD', 'freeze', 'decide', 'close', )
+    BACK_TO_WF_PATH_1 = {
+        # Meeting
+        'created': ('backToPublished',
+                    'backToFrozen',
+                    'backToCreated',),
+        # MeetingItem
+        'itemcreated': ('backToItemFrozen',
+                        'backToValidateByCD',
+                        'backToPresented',
+                        'backToValidated',
+                        'backToProposedToSecretariat',
+                        'backToProposedToDirector',
+                        'backToProposedToDepartmentHead',
+                        'backToItemCreated'),
+        'proposed': ('backToItemFrozen',
+                     'backToValidateByCD',
+                     'backToPresented',
+                     'backToValidated',
+                     'backToProposedToSecretariat', ),
+        'validated': ('backToItemFrozen',
+                      'backToValidateByCD',
+                      'backToPresented',
+                      'backToValidated', )}
+    BACK_TO_WF_PATH_2 = {
+        # MeetingItem
+        'itemcreated': ('backToItemFrozen',
+                        'backToValidateByCD',
+                        'backToPresented',
+                        'backToValidated',
+                        'backToProposedToSecretariat',
+                        'backToProposedToDirector',
+                        'backToProposedToDepartmentHead',
+                        'backToItemCreated'),
+        'proposed': ('backToItemFrozen',
+                     'backToValidateByCD',
+                     'backToPresented',
+                     'backToValidated',
+                     'backToProposedToSecretariat', ),
+        'validated': ('backToItemFrozen',
+                      'backToValidateByCD',
+                      'backToPresented',
+                      'backToValidated', )}
+
+    WF_STATE_NAME_MAPPINGS = {'proposed': 'proposed_to_director',
+                              'validated': 'validated'}
+
+    def _createMeetingWithItems(self, withItems=True, meetingDate=DateTime()):
+        '''Create a meeting with a bunch of items.
+           Overrided to do it as 'Manager' to be able
+           to add recurring items.'''
+        from plone.app.testing.helpers import setRoles
+        currentMember = self.portal.portal_membership.getAuthenticatedMember()
+        currentMemberRoles = currentMember.getRoles()
+        setRoles(self.portal, currentMember.getId(), currentMemberRoles + ['Manager', ])
+        meeting = MeetingCommunesTestingHelpers._createMeetingWithItems(self,
+                                                                        withItems=withItems,
+                                                                        meetingDate=meetingDate)
+        setRoles(self.portal, currentMember.getId(), currentMemberRoles)
+        return meeting

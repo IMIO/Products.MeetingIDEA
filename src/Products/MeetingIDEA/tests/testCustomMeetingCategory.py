@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# File: testCustomMeetingGroup.py
+# File: testCustomMeetingCategory.py
 #
-# Copyright (c) 2007-2013 by Imio.be
+# Copyright (c) 2007-2012 by CommunesPlone.org
 #
 # GNU General Public License (GPL)
 #
@@ -22,17 +22,11 @@
 # 02110-1301, USA.
 #
 
-from plone.app.testing import login
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import \
     MeetingIDEATestCase
 
 
-class testCustomMeetingGroup(MeetingIDEATestCase):
+class testCustomMeetingCategory(MeetingIDEATestCase):
     '''Tests the MeetingGroup adapted methods.'''
 
-    def testListEchevinServices(self):
-        login(self.portal, 'admin')
-        from Products.Archetypes.atapi import DisplayList
-        les = DisplayList([('developers', u'Developers'), ('vendors', u'Vendors')])
-        meetingGroups = self.tool.objectValues('MeetingGroup')
-        self.assertEquals(meetingGroups[0].listEchevinServices(), les)
+    pass

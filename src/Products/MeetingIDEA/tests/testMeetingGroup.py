@@ -22,26 +22,12 @@
 # 02110-1301, USA.
 #
 
-from plone.app.testing import logout
-from Products.MeetingIDEA.tests.MeetingIDEATestCase import \
-    MeetingIDEATestCase
-from Products.PloneMeeting.tests.testMeetingGroup import testMeetingGroup as pmmg
+from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
+from Products.MeetingCommunes.tests.testMeetingGroup import testMeetingGroup as mctmg
 
 
-class testMeetingGroup(MeetingIDEATestCase, pmmg):
+class testMeetingGroup(MeetingIDEATestCase, mctmg):
     '''Tests the testMeetingGroup class methods.'''
-
-    def test_subproduct_call_CanNotRemoveUsedMeetingGroup(self):
-        '''Run the testCanNotRemoveUsedMeetingCategory from PloneMeeting.'''
-        # remove every recurring items in existing meetingConfigs except template2 in self.meetingConfig
-        self.changeUser('admin')
-        self.meetingConfig.recurringitems.manage_delObjects(
-            [item.getId() for item in (self.meetingConfig.getItems() +
-                                       [self.meetingConfig.recurringitems.template1, ])])
-        self.meetingConfig2.recurringitems.manage_delObjects(
-            [item.getId() for item in (self.meetingConfig2.recurringitems.objectValues('MeetingItem'))])
-        logout()
-        self.test_pm_CanNotRemoveUsedMeetingGroup()
 
 
 def test_suite():

@@ -22,45 +22,12 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingIDEA.tests.MeetingIDEATestCase import \
-    MeetingIDEATestCase
-from Products.PloneMeeting.tests.testToolPloneMeeting import testToolPloneMeeting as pmtt
+from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
+from Products.MeetingCommunes.tests.testToolPloneMeeting import testToolPloneMeeting as mctt
 
 
-class testToolPloneMeeting(MeetingIDEATestCase, pmtt):
+class testToolPloneMeeting(MeetingIDEATestCase, mctt):
     '''Tests the ToolPloneMeeting class methods.'''
-
-    def test_subproduct_call_GetMeetingGroup(self):
-        '''Run the testGetMeetingGroup from PloneMeeting.'''
-        self.test_pm_GetMeetingGroup()
-
-    def test_subproduct_call_MoveMeetingGroups(self):
-        '''Run the testMoveMeetingGroups from PloneMeeting.'''
-        self.test_pm_MoveMeetingGroups()
-
-    def test_subproduct_call_CloneItem(self):
-        '''Run the testCloneItem from PloneMeeting.'''
-        self.test_pm_CloneItem()
-
-    def test_subproduct_call_CloneItemWithContent(self):
-        '''Run the testCloneItemWithContent from PloneMeeting.'''
-        self.test_pm_CloneItemWithContent()
-
-    def test_subproduct_call_CloneItemWithContentNotRemovableByPermission(self):
-        '''Run the testCloneItemWithContentNotRemovableByPermission from PloneMeeting.'''
-        self.test_pm_CloneItemWithContentNotRemovableByPermission()
-
-    def test_subproduct_call_PasteItems(self):
-        '''Run the testPasteItems from PloneMeeting.'''
-        self.test_pm_PasteItems()
-
-    def test_subproduct_call_ShowPloneMeetingTab(self):
-        '''Run the testShowPloneMeetingTab from PloneMeeting.'''
-        self.test_pm_ShowPloneMeetingTab()
-
-    def test_subproduct_call_SetupProcessForCreationFlag(self):
-        '''Run the testSetupProcessForCreationFlag from PloneMeeting.'''
-        self.test_pm_SetupProcessForCreationFlag()
 
 
 def test_suite():

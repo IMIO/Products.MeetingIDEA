@@ -2,7 +2,7 @@
 #
 # File: testMeetingItem.py
 #
-# Copyright (c) 2013 by Imio.be
+# Copyright (c) 2007-2012 by CommunesPlone.org
 #
 # GNU General Public License (GPL)
 #
@@ -22,93 +22,73 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingIDEA.tests.MeetingIDEATestCase import \
-    MeetingIDEATestCase
-from Products.PloneMeeting.tests.testMeetingItem import testMeetingItem as pmtmi
+from DateTime import DateTime
+
+from Products.PloneMeeting.config import POWEROBSERVERS_GROUP_SUFFIX
+from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
+from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
 
 
-class testMeetingItem(MeetingIDEATestCase, pmtmi):
+class testMeetingItem(MeetingIDEATestCase, mctmi):
     """
         Tests the MeetingItem class methods.
     """
 
-    def test_subproduct_call_ListProposingGroup(self):
-        """
-           Run the testListProposingGroup from PloneMeeting
-        """
-        #we do the test for the college config
-        self.setMeetingConfig(self.meetingConfig.getId())
-        self.test_pm_ListProposingGroup()
-        #we do the test for the council config
-        self.setMeetingConfig(self.meetingConfig2.getId())
-        self.test_pm_ListProposingGroup()
-
-    def test_subproduct_call_UsedColorSystemGetColoredLink(self):
-        """
-           Test the selected system of color while getting a colored link
-        """
-        #we do the test for the college config
-        self.setMeetingConfig(self.meetingConfig.getId())
-        self.test_pm_UsedColorSystemGetColoredLink()
-        #we do the test for the council config
-        self.setMeetingConfig(self.meetingConfig2.getId())
-        self.test_pm_UsedColorSystemGetColoredLink()
-
-    def test_subproduct_call_UsedColorSystemShowColors(self):
-        """
-           Test the selected system of color
-        """
-        #we do the test for the college config
-        self.setMeetingConfig(self.meetingConfig.getId())
-        self.test_pm_UsedColorSystemShowColors()
-        #we do the test for the council config
-        self.setMeetingConfig(self.meetingConfig2.getId())
-        self.test_pm_UsedColorSystemShowColors()
-
-    def test_subproduct_call_SendItemToOtherMC(self):
-        '''Test the send an item to another meetingConfig functionnality'''
-        #we do the test for the college config, to send an item to the council
-        self.setMeetingConfig(self.meetingConfig.getId())
-        self.test_pm_SendItemToOtherMC()
-
-    def test_subproduct_call_SelectableCategories(self):
-        '''Categories are available if isSelectable returns True.  By default,
-           isSelectable will return active categories for wich intersection
-           between MeetingCategory.usingGroups and current member
-           proposingGroups is not empty.'''
-        #we do the test for the council config
-        self.setMeetingConfig(self.meetingConfig2.getId())
-        self.meetingConfig.useGroupsAsCategories = False
-        self.test_pm_SelectableCategories()
-
-    def test_subproduct_call_AddAutoCopyGroups(self):
-        '''Test the functionnality of automatically adding some copyGroups depending on
-           the TAL expression defined on every MeetingGroup.asCopyGroupOn.'''
-        self.test_pm_AddAutoCopyGroups()
-
-    def test_subproduct_call_UpdateAdvices(self):
-        '''See doc string in PloneMeeting.'''
-        self.test_pm_UpdateAdvices()
-
-    def test_subproduct_call_SendItemToOtherMCWithAnnexes(self):
-        '''See doc string in PloneMeeting.'''
-        self.test_pm_SendItemToOtherMCWithAnnexes()
-
-    def test_subproduct_call_CopyGroups(self):
-        '''See doc string in PloneMeeting.'''
-        self.test_pm_CopyGroups()
-
-    def test_subproduct_call_PowerObserversGroups(self):
-        '''See doc string in PloneMeeting.'''
-        self.test_pm_PowerObserversGroups()
-
-    def test_subproduct_call_ItemIsSigned(self):
-        '''See doc string in PloneMeeting.'''
-        self.test_pm_ItemIsSigned()
-
     def test_subproduct_call_IsPrivacyViewable(self):
-        '''See doc string in PloneMeeting.'''
-        self.test_pm_IsPrivacyViewable()
+        '''
+          Original test, see doc string in PloneMeeting.
+          Here, as soon as a user can access an item, the item isPrivacyViewable.
+          See adapters.isPrivacyViewable overrided method.
+        '''
+        self.setMeetingConfig(self.meetingConfig2.getId())
+        # we will use the copyGroups to check who can fully access item and who can not
+        self.meetingConfig.setItemCopyGroupsStates(('presented', ))
+        # make powerobserver1 a PowerObserver
+        self.portal.portal_groups.addPrincipalToGroup('powerobserver1', '%s_%s' %
+                                                      (self.meetingConfig.getId(), POWEROBSERVERS_GROUP_SUFFIX))
+        # create a 'public' and a 'secret' item
+        self.changeUser('pmManager')
+        # add copyGroups that check that 'external' viewers can access the item but not isPrivacyViewable
+        publicItem = self.create('MeetingItem')
+        publicItem.setCategory('development')
+        publicItem.setCopyGroups('vendors_reviewers')
+        publicItem.reindexObject()
+        secretItem = self.create('MeetingItem')
+        secretItem.setPrivacy('secret')
+        secretItem.setCategory('development')
+        secretItem.setCopyGroups('vendors_reviewers')
+        secretItem.reindexObject()
+        self.create('Meeting', date=DateTime('2013/06/01 08:00:00'))
+        self.presentItem(publicItem)
+        self.presentItem(secretItem)
+        # log in as a user that is in copyGroups
+        self.changeUser('pmReviewer2')
+        member = self.portal.portal_membership.getAuthenticatedMember()
+        # the user can see the item because he is in the copyGroups
+        # not because he is in the same proposing group
+        secretItemPloneGroupsOfProposingGroup = getattr(self.tool,
+                                                        secretItem.getProposingGroup()).getPloneGroups(idsOnly=True)
+        self.failIf(set(secretItemPloneGroupsOfProposingGroup).intersection
+                    (set(self.portal.portal_groups.getGroupsForPrincipal(member))))
+        # pmReviewer2 can access the item and isPrivacyViewable
+        self.failUnless(self.hasPermission('View', secretItem))
+        self.failUnless(self.hasPermission('View', publicItem))
+        # XXX Begin change for MeetingIDEA
+        self.failUnless(secretItem.isPrivacyViewable())
+        # XXX End change for MeetingIDEA
+        self.failUnless(publicItem.isPrivacyViewable())
+        # a user in the same proposingGroup can fully access the secret item
+        self.changeUser('pmCreator1')
+        self.failUnless(secretItem.isPrivacyViewable())
+        self.failUnless(publicItem.isPrivacyViewable())
+        # MeetingManager
+        self.changeUser('pmManager')
+        self.failUnless(secretItem.isPrivacyViewable())
+        self.failUnless(publicItem.isPrivacyViewable())
+        # PowerObserver
+        self.changeUser('powerobserver1')
+        self.failUnless(secretItem.isPrivacyViewable())
+        self.failUnless(publicItem.isPrivacyViewable())
 
 
 def test_suite():

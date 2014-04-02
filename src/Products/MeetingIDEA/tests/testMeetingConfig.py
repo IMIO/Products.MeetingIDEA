@@ -21,29 +21,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
-
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testMeetingConfig import testMeetingConfig as pmtmc
+from Products.MeetingCommunes.tests.testMeetingConfig import testMeetingConfig as mctmc
 
 
-class testMeetingConfig(MeetingIDEATestCase, pmtmc):
-    '''Tests the MeetingConfig class methods.'''
+class testMeetingConfig(MeetingIDEATestCase, mctmc):
+    '''Call testMeetingConfig tests.'''
 
-    def test_subproduct_call_searchItemsToAdvice(self):
-        '''Run the test_pm_searchItemsToAdvice from PloneMeeting.'''
-        pmtmc.test_pm_searchItemsToAdvice(self)
+    def test_subproduct_call_searchItemsToPrevalidate(self):
+        '''No sense...'''
+        pass
 
-    def test_subproduct_call_searchAdvisedItems(self):
-        '''Run the test_pm_searchAdvisedItems from PloneMeeting.'''
-        pmtmc.test_pm_searchAdvisedItems(self)
+    def test_subproduct_call_searchItemsToValidate(self):
+        '''Not used here...'''
+        pass
 
-    def test_subproduct_call_searchItemsInCopy(self):
-        '''Run the test_pm_searchItemsInCopy from PloneMeeting.'''
-        pmtmc.test_pm_searchItemsInCopy(self)
-
-    def test_subproduct_call_searchItemsWithFilters(self):
-        '''Run the test_pm_searchItemsWithFilters from PloneMeeting.'''
-        pmtmc.test_pm_searchItemsWithFilters(self)
+    def test_subproduct_call_searchReviewableItems(self):
+        '''Test the searchReviewableItems search.'''
+        pass
 
 
 def test_suite():

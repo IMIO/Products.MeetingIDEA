@@ -21,35 +21,21 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
-
-from Products.MeetingIDEA.tests.MeetingIDEATestCase import \
-    MeetingIDEATestCase
-from Products.PloneMeeting.tests.testAdvices import testAdvices as pmta
+from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
+from Products.MeetingCommunes.tests.testAdvices import testAdvices as mcta
 
 
-class testAdvices(MeetingIDEATestCase, pmta):
+class testAdvices(MeetingIDEATestCase, mcta):
     '''Tests various aspects of advices management.
        Advices are enabled for PloneGov Assembly, not for PloneMeeting Assembly.'''
 
-    def test_subproduct_call_ViewItemToAdvice(self):
-        '''Run the testViewItemToAdvice from PloneMeeting.'''
-        pmta.test_pm_ViewItemToAdvice(self)
-
-    def test_subproduct_call_AddEditDeleteAdvices(self):
-        '''Run the testAddEditDeleteAdvices from PloneMeeting.'''
-        pmta.test_pm_AddEditDeleteAdvices(self)
-
-    def test_subproduct_call_CanNotGiveAdviceIfNotAsked(self):
-        '''Run the testCanNotGiveAdviceIfNotAsked from PloneMeeting.'''
-        pmta.test_pm_CanNotGiveAdviceIfNotAsked(self)
-
-    def test_subproduct_call_GiveAdviceOnCreatedItem(self):
-        '''Run the testGiveAdviceOnCreatedItem from PloneMeeting.'''
-        pmta.test_pm_GiveAdviceOnCreatedItem(self)
-
-    def test_subproduct_call_AdvicesInvalidation(self):
-        '''Run the testAdvicesInvalidation from PloneMeeting.'''
-        pmta.test_pm_AdvicesInvalidation(self)
+    def setUp(self):
+        """Redefine advices related states."""
+        super(mcta, self).setUp()
+        self.setMeetingConfig(self.meetingConfig2.getId())
+        self.meetingConfig.setItemAdviceStates(('proposed_to_director', 'validated', ))
+        self.meetingConfig.setItemAdviceEditStates(('proposed_to_director', ))
+        self.meetingConfig.setItemAdviceViewStates(('presented', ))
 
 
 def test_suite():
