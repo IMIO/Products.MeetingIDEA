@@ -400,7 +400,7 @@ class CustomMeeting(Meeting):
         if printableItemsByCat in ann:
             return ann[printableItemsByCat]
         if 'activeGroupes' not in ann:
-            ann['activeGroupes'] = self.context.portal_plonemeeting.getActiveGroups()
+            ann['activeGroupes'] = self.context.portal_plonemeeting.getMeetingGroups()
         res = []
         items = []
         previousCatId = None
@@ -923,7 +923,7 @@ class CustomMeetingItem(MeetingItem):
         '''Returns all echevins defined for the proposing group'''
         res = []
         pmtool = getToolByName(self.context, "portal_plonemeeting")
-        for group in pmtool.getActiveGroups():
+        for group in pmtool.getMeetingGroups():
             if self.context.getProposingGroup() in group.getEchevinServices():
                 res.append(group.id)
         return res
@@ -1014,7 +1014,7 @@ class CustomMeetingGroup(MeetingGroup):
         res = []
         pmtool = getToolByName(self, "portal_plonemeeting")
         # Get every Plone group related to a MeetingGroup
-        for group in pmtool.getActiveGroups():
+        for group in pmtool.getMeetingGroups():
             res.append((group.id, group.getProperty('title')))
 
         return DisplayList(tuple(res))
