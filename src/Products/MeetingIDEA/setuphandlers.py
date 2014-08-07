@@ -2,7 +2,7 @@
 #
 # File: setuphandlers.py
 #
-# Copyright (c) 2014 by CommunesPlone
+# Copyright (c) 2014 by Imio
 # Generator: ArchGenXML Version 2.7
 #            http://plone.org/products/archgenxml
 #
@@ -115,14 +115,14 @@ def logStep(method, context):
     logger.info("Applying '%s' in profile '%s'" % (method, '/'.join(context._profile_path.split(os.sep)[-3:])))
 
 
-def isNotMeetingIDEAConfigureProfile(context):
-    return context.readDataFile("MeetingIDEA_idea_marker.txt") is None or \
-        context.readDataFile("MeetingIDEA_test_marker.txt") is None
+def istMeetingIDEAConfigureProfile(context):
+    return context.readDataFile("MeetingIDEA_idea_marker.txt") or \
+        context.readDataFile("MeetingIDEA_test_marker.txt")
 
 
 def installMeetingIDEA(context):
     """ Run the default profile before bing able to run the IDEA profile"""
-    if not isNotMeetingIDEAConfigureProfile(context):
+    if not istMeetingIDEAConfigureProfile(context):
         return
     logStep("installMeetingIDEA", context)
     portal = context.getSite()
@@ -132,7 +132,7 @@ def installMeetingIDEA(context):
 def initializeTool(context):
     '''Initialises the PloneMeeting tool based on information from the current
        profile.'''
-    if not isNotMeetingIDEAConfigureProfile(context):
+    if not istMeetingIDEAConfigureProfile(context):
         return
     logStep("initializeTool", context)
     #PloneMeeting is no more a dependency to avoid
@@ -179,7 +179,7 @@ def reorderSkinsLayers(context, site):
        Reinstall Products.plonemeetingskin and re-apply MeetingIDEA skins.xml step
        as the reinstallation of MeetingIDEA and PloneMeeting changes the portal_skins layers order
     """
-    if isNotMeetingIDEAProfile(context) and not isNotMeetingIDEAConfigureProfile:
+    if isNotMeetingIDEAProfile(context) and not istMeetingIDEAConfigureProfile:
         return
 
     logStep("reorderSkinsLayers", context)
@@ -198,7 +198,7 @@ def finalizeExampleInstance(context):
        Some parameters can not be handled by the PloneMeeting installation,
        so we handle this here
     """
-    if not isNotMeetingIDEAConfigureProfile(context):
+    if not istMeetingIDEAConfigureProfile(context):
         return
 
     specialUserId = 'president'
@@ -253,7 +253,7 @@ def reorderCss(context):
        Make sure CSS are correctly reordered in portal_css so things
        work as expected...
     """
-    if isNotMeetingIDEAProfile(context) and not isNotMeetingIDEAConfigureProfile:
+    if isNotMeetingIDEAProfile(context) and istMeetingIDEAConfigureProfile:
         return
 
     site = context.getSite()

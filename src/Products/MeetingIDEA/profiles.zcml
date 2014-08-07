@@ -16,6 +16,15 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
   
+  <genericsetup:upgradeStep
+      title="Go to MeetingIDEA 3.2.0"
+      description=""
+      source="3.1.0"
+      destination="3.2.0"
+      handler="Products.MeetingIDEA.migrations.migrate_to_3_2_0.migrate"
+      profile="Products.MeetingIDEA:default" />
+
+  
   <!-- ##code-section profiles.zcml-bottom #fill in your manual code here -->
   <!-- ##/code-section profiles.zcml-bottom -->
 
