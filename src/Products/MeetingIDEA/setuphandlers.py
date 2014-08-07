@@ -2,7 +2,7 @@
 #
 # File: setuphandlers.py
 #
-# Copyright (c) 2013 by CommunesPlone
+# Copyright (c) 2014 by CommunesPlone
 # Generator: ArchGenXML Version 2.7
 #            http://plone.org/products/archgenxml
 #
@@ -25,19 +25,17 @@ from Products.PloneMeeting.exportimport.content import ToolInitializer
 from Products.PloneMeeting.config import TOPIC_TYPE, TOPIC_SEARCH_SCRIPT, TOPIC_TAL_EXPRESSION
 ##/code-section HEAD
 
-
 def isNotMeetingIDEAProfile(context):
     return context.readDataFile("MeetingIDEA_marker.txt") is None
+
 
 
 def updateRoleMappings(context):
     """after workflow changed update the roles mapping. this is like pressing
     the button 'Update Security Setting' and portal_workflow"""
-    if isNotMeetingIDEAProfile(context):
-        return
+    if isNotMeetingIDEAProfile(context): return
     wft = getToolByName(context.getSite(), 'portal_workflow')
     wft.updateRoleMappings()
-
 
 def postInstall(context):
     """Called as at the end of the setup process. """
@@ -51,6 +49,7 @@ def postInstall(context):
     reinstallPloneMeeting(context, site)
     showHomeTab(context, site)
     reorderSkinsLayers(context, site)
+
 
 
 ##code-section FOOT
@@ -116,17 +115,14 @@ def logStep(method, context):
     logger.info("Applying '%s' in profile '%s'" % (method, '/'.join(context._profile_path.split(os.sep)[-3:])))
 
 
-def isNotMeetingIDEAIDEAProfile(context):
-    return context.readDataFile("MeetingIDEA_idea_marker.txt") is None
-
-
-def isNotMeetingIDEAMigrationProfile(context):
-    return context.readDataFile("MeetingIdea_migrations_marker.txt") is None
+def isNotMeetingIDEAConfigureProfile(context):
+    return context.readDataFile("MeetingIDEA_idea_marker.txt") is None or \
+        context.readDataFile("MeetingIDEA_test_marker.txt") is None
 
 
 def installMeetingIDEA(context):
     """ Run the default profile before bing able to run the IDEA profile"""
-    if isNotMeetingIDEAIDEAProfile(context):
+    if not isNotMeetingIDEAConfigureProfile(context):
         return
     logStep("installMeetingIDEA", context)
     portal = context.getSite()
@@ -136,7 +132,7 @@ def installMeetingIDEA(context):
 def initializeTool(context):
     '''Initialises the PloneMeeting tool based on information from the current
        profile.'''
-    if isNotMeetingIDEAIDEAProfile(context):
+    if not isNotMeetingIDEAConfigureProfile(context):
         return
     logStep("initializeTool", context)
     #PloneMeeting is no more a dependency to avoid
@@ -180,10 +176,10 @@ def showHomeTab(context, site):
 
 def reorderSkinsLayers(context, site):
     """
-       Re-apply MeetingIDEA skins.xml step
+       Reinstall Products.plonemeetingskin and re-apply MeetingIDEA skins.xml step
        as the reinstallation of MeetingIDEA and PloneMeeting changes the portal_skins layers order
     """
-    if isNotMeetingIDEAProfile(context):
+    if isNotMeetingIDEAProfile(context) and not isNotMeetingIDEAConfigureProfile:
         return
 
     logStep("reorderSkinsLayers", context)
@@ -202,7 +198,7 @@ def finalizeExampleInstance(context):
        Some parameters can not be handled by the PloneMeeting installation,
        so we handle this here
     """
-    if not isNotMeetingIDEAProfile(context):
+    if not isNotMeetingIDEAConfigureProfile(context):
         return
 
     specialUserId = 'president'
@@ -257,7 +253,7 @@ def reorderCss(context):
        Make sure CSS are correctly reordered in portal_css so things
        work as expected...
     """
-    if isNotMeetingIDEAProfile(context):
+    if isNotMeetingIDEAProfile(context) and not isNotMeetingIDEAConfigureProfile:
         return
 
     site = context.getSite()

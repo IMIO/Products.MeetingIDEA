@@ -45,6 +45,7 @@ class Migrate_To_3_2_0(Migrator):
         self._addDefaultAdviceAnnexesFileTypes()
         # reinstall so skins and so on are correct
         self.reinstall(profiles=[u'profile-Products.MeetingIDEA:default', ])
+        self.refreshDatabase(catalogs=False, workflows=True)
         self.finish()
 
 

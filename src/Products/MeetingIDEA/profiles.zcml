@@ -17,19 +17,6 @@
       />
   
   <!-- ##code-section profiles.zcml-bottom #fill in your manual code here -->
-  <genericsetup:registerProfile
-   name="idea"
-   title="MeetingIDEA / For l'IDEA Mons"
-   description="PloneMeeting for all meeting of IDEA"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-  
-  <genericsetup:upgradeStep
-      title="Go to MeetingIDEA 3.2.0"
-      description=""
-      source="3.1.0"
-      destination="3.2.0"
-      handler="Products.MeetingIDEA.migrations.migrate_to_3_2_0.migrate"
-      profile="Products.MeetingIDEA:default" />
+  <!-- ##/code-section profiles.zcml-bottom -->
 
 </configure>
