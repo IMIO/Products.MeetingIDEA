@@ -30,7 +30,7 @@ class MeetingIDEATestingHelpers(MeetingCommunesTestingHelpers):
     TRANSITIONS_FOR_PROPOSING_ITEM_1 = ('proposeToDepartmentHead',
                                         'proposeToDirector',
                                         'proposeToSecretariat', )
-    TRANSITIONS_FOR_PROPOSING_ITEM_2 = ('validate', )
+    TRANSITIONS_FOR_PROPOSING_ITEM_2 = ('validate', 'backToProposedToSecretariat', )
     TRANSITIONS_FOR_VALIDATING_ITEM_1 = ('proposeToDepartmentHead',
                                          'proposeToDirector',
                                          'proposeToSecretariat',
@@ -39,12 +39,14 @@ class MeetingIDEATestingHelpers(MeetingCommunesTestingHelpers):
     TRANSITIONS_FOR_PRESENTING_ITEM_1 = ('proposeToDepartmentHead',
                                          'proposeToDirector',
                                          'proposeToSecretariat',
-                                         'validate', 
+                                         'validate',
                                          'present', )
     TRANSITIONS_FOR_PRESENTING_ITEM_2 = ('validate', 'present', )
     TRANSITIONS_FOR_ACCEPTING_ITEMS_1 = ('validateByCD', 'freeze', 'decide', )
     TRANSITIONS_FOR_ACCEPTING_ITEMS_2 = ('validateByCD', 'freeze', 'decide', )
 
+    TRANSITIONS_FOR_FREEZING_MEETING_1 = TRANSITIONS_FOR_FREEZING_MEETING_2 = ('validateByCD', 'freeze', )
+    TRANSITIONS_FOR_PUBLISHING_MEETING_1 = TRANSITIONS_FOR_PUBLISHING_MEETING_2 = ('validateByCD', 'freeze', 'decide', )
     TRANSITIONS_FOR_DECIDING_MEETING_1 = ('validateByCD', 'freeze', 'decide', )
     TRANSITIONS_FOR_DECIDING_MEETING_2 = ('validateByCD', 'freeze', 'decide', )
     TRANSITIONS_FOR_CLOSING_MEETING_1 = ('validateByCD', 'freeze', 'decide', 'close', )
@@ -53,6 +55,7 @@ class MeetingIDEATestingHelpers(MeetingCommunesTestingHelpers):
         # Meeting
         'created': ('backToPublished',
                     'backToFrozen',
+                    'backToValidatedByCD',
                     'backToCreated',),
         # MeetingItem
         'itemcreated': ('backToItemFrozen',
@@ -63,11 +66,11 @@ class MeetingIDEATestingHelpers(MeetingCommunesTestingHelpers):
                         'backToProposedToDirector',
                         'backToProposedToDepartmentHead',
                         'backToItemCreated'),
-        'proposed': ('backToItemFrozen',
-                     'backToValidateByCD',
-                     'backToPresented',
-                     'backToValidated',
-                     'backToProposedToSecretariat', ),
+        'proposed_to_secretariat': ('backToItemFrozen',
+                                    'backToValidateByCD',
+                                    'backToPresented',
+                                    'backToValidated',
+                                    'backToProposedToSecretariat', ),
         'validated': ('backToItemFrozen',
                       'backToValidateByCD',
                       'backToPresented',
@@ -82,18 +85,21 @@ class MeetingIDEATestingHelpers(MeetingCommunesTestingHelpers):
                         'backToProposedToDirector',
                         'backToProposedToDepartmentHead',
                         'backToItemCreated'),
-        'proposed': ('backToItemFrozen',
-                     'backToValidateByCD',
-                     'backToPresented',
-                     'backToValidated',
-                     'backToProposedToSecretariat', ),
+        'proposed_to_secretariat': ('backToItemFrozen',
+                                    'backToValidateByCD',
+                                    'backToPresented',
+                                    'backToValidated',
+                                    'backToProposedToSecretariat', ),
         'validated': ('backToItemFrozen',
                       'backToValidateByCD',
                       'backToPresented',
                       'backToValidated', )}
 
-    WF_STATE_NAME_MAPPINGS = {'proposed': 'proposed_to_director',
-                              'validated': 'validated'}
+    WF_STATE_NAME_MAPPINGS = {'itemcreated': 'itemcreated',
+                              'proposed': 'proposed_to_secretariat',
+                              'proposed_to_secretariat': 'proposed_to_secretariat',
+                              'validated': 'validated',
+                              'presented': 'presented'}
 
     def _createMeetingWithItems(self, withItems=True, meetingDate=DateTime()):
         '''Create a meeting with a bunch of items.

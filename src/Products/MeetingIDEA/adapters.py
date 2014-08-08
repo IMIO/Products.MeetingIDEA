@@ -27,7 +27,8 @@ from zope.i18n import translate
 from AccessControl import getSecurityManager, ClassSecurityInfo
 from Globals import InitializeClass
 from zope.interface import implements
-from Products.CMFCore.permissions import ReviewPortalContent, ModifyPortalContent
+
+from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.utils import getToolByName
 from Products.PloneMeeting.MeetingItem import MeetingItem, MeetingItemWorkflowConditions, MeetingItemWorkflowActions
 from Products.PloneMeeting.utils import checkPermission, getCurrentMeetingObject
@@ -807,20 +808,11 @@ class MeetingCAIDEAWorkflowActions(MeetingWorkflowActions):
         wfTool = getToolByName(self.context, 'portal_workflow')
         for item in self.context.getAllItems():
             if item.queryState() == 'presented':
+                wfTool.doActionFor(item, 'itemValidateByCD')
+            if item.queryState() == 'validated_by_cd':
                 wfTool.doActionFor(item, 'itemfreeze')
             if item.queryState() in ['itemfrozen', 'pre_accepted', ]:
                 wfTool.doActionFor(item, 'accept')
-
-    security.declarePrivate('doClose')
-    def doClose(self, stateChange):
-        # Every item that is "presented" will be automatically set to "accepted"
-        for item in self.context.getAllItems():
-            if item.queryState() == 'presented':
-                self.context.portal_workflow.doActionFor(item, 'itemValidateByCD')
-            if item.queryState() == 'validated_by_cd':
-                self.context.portal_workflow.doActionFor(item, 'itemfreeze')
-            if item.queryState() in ['itemfrozen', 'pre_accepted', ]:
-                self.context.portal_workflow.doActionFor(item, 'accept')
 
     security.declarePrivate('doDecide')
     def doDecide(self, stateChange):
@@ -1074,12 +1066,9 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
         # presented, we have to check if the Meeting is in the "created" state
         # and not "published".
         res = MeetingItemWorkflowConditions.mayCorrect(self)
-        # Item state
-        currentState = self.context.queryState()
         # Manage our own behaviour now when the item is linked to a meeting,
         # a MeetingManager can correct anything except if the meeting is closed
-        if not res and currentState in ['presented', 'validated_by_cd', 'itemfrozen',
-           'delayed', 'refused', 'accepted', 'accepted_but_modified', 'pre_accepted', 'removed']:
+        if not res is True:
             if checkPermission(ReviewPortalContent, self.context):
                 # Get the meeting
                 meeting = self.context.getMeeting()

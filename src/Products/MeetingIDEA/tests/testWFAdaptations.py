@@ -36,7 +36,7 @@ class testWFAdaptations(MeetingIDEATestCase, mctwfa):
     def test_subproduct_call_WFA_availableWFAdaptations(self):
         '''Most of wfAdaptations makes no sense, just make sure most are disabled.'''
         self.assertEquals(set(self.meetingConfig.listWorkflowAdaptations()),
-                          set(('archiving', 'local_meeting_managers', 'return_to_proposing_group', )))
+                          set(('return_to_proposing_group', )))
 
     def test_subproduct_call_WFA_no_publication(self):
         '''No sense...'''
@@ -74,6 +74,14 @@ class testWFAdaptations(MeetingIDEATestCase, mctwfa):
         '''No sense...'''
         pass
 
+    def test_subproduct_call_WFA_local_meeting_managers(self):
+        '''No sense...'''
+        pass
+
+    def test_subproduct_call_WFA_hide_decisions_when_under_writing(self):
+        '''No sense...'''
+        pass
+
     def _return_to_proposing_group_inactive(self):
         '''Tests while 'return_to_proposing_group' wfAdaptation is inactive.'''
         # this is active by default in MeetingIDEA council wf
@@ -107,14 +115,14 @@ class testWFAdaptations(MeetingIDEATestCase, mctwfa):
         self.validateItem(item)
         # create a Meeting and add the item to it
         self.changeUser('pmManager')
-        meeting = self.create('Meeting', date=DateTime())
+        self.create('Meeting', date=DateTime())
         self.presentItem(item)
-        # now that it is presented, the pmCreator1/pmReviewer1 can not edit it anymore
-        for userId in ('pmCreator1', 'pmReviewer1'):
+        # now that it is presented, some persons can not edit it anymore
+        for userId in ('pmCreator1', 'pmDepartmentHead1'):
             self.changeUser(userId)
             self.failIf(self.hasPermission('Modify portal content', item))
         # the item can be send back to the proposing group by the MeetingManagers only
-        for userId in ('pmCreator1', 'pmReviewer1'):
+        for userId in ('pmCreator1', 'pmDepartmentHead1', 'pmReviewer1'):
             self.changeUser(userId)
             self.failIf(self.wfTool.getTransitionsFor(item))
         self.changeUser('pmManager')
@@ -139,15 +147,6 @@ class testWFAdaptations(MeetingIDEATestCase, mctwfa):
         # send the item back to proposing group, set the meeting in_committee then send the item back to the meeting
         # the item should be now in the item state corresponding to the meeting frozen state, so 'itemfrozen'
         self.do(item, 'return_to_proposing_group')
-        self.do(meeting, 'setInCommittee')
-        self.do(item, 'backTo_item_in_committee_from_returned_to_proposing_group')
-        self.assertEquals(item.queryState(), 'item_in_committee')
-
-    def test_subproduct_call_WFA_hide_decisions_when_under_writing(self):
-        '''Only launch the test for meetingConfig not for meetingConfig2 as no
-           'decided' state exists in meetingConfig2 for the 'Meeting'.'''
-        self.meetingConfig2.setMeetingWorkflow(self.meetingConfig.getMeetingWorkflow())
-        mctwfa.test_pm_WFA_hide_decisions_when_under_writing(self)
 
 
 def test_suite():

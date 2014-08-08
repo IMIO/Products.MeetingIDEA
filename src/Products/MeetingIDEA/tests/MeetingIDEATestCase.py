@@ -22,7 +22,7 @@
 
 from Products.PloneMeeting.tests.PloneMeetingTestCase import PloneMeetingTestCase
 
-from Products.MeetingIDEA.testing import MC_TESTING_PROFILE_FUNCTIONAL
+from Products.MeetingIDEA.testing import MIDEA_TESTING_PROFILE_FUNCTIONAL
 from Products.MeetingIDEA.tests.helpers import MeetingIDEATestingHelpers
 
 
@@ -37,17 +37,7 @@ class MeetingIDEATestCase(PloneMeetingTestCase, MeetingIDEATestingHelpers):
     # attribute to take these files into account
     #subproductIgnoredTestFiles = ['testPerformances.py', ]
 
-    layer = MC_TESTING_PROFILE_FUNCTIONAL
-
-    def setUp(self):
-        PloneMeetingTestCase.setUp(self)
-        self.meetingConfig = getattr(self.tool, 'meeting-config-CA')
-        #self.meetingConfig2 = getattr(self.tool, 'meeting-config-council')
-        # Set the default file and file type for adding annexes
-        self.annexFile = 'INSTALL.TXT'
-        self.annexFileType = 'annexeBudget'
-        self.annexFileTypeDecision = 'annexeDecision'
-        self.transitionsToCloseAMeeting = ('freeze', 'publish', 'decide', 'close')
+    layer = MIDEA_TESTING_PROFILE_FUNCTIONAL
 
 
 # this is necessary to execute base test
