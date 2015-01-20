@@ -40,10 +40,24 @@ class Migrate_To_3_2_0(Migrator):
                     cfg.addFileType(mft, source=mcProfilePath)
         logger.info('Done.')
 
+    def _valideItemInProposed_to_secretariat(self):
+        '''In 3.3, the state "proposed_to_secretariat" is removed
+        '''
+        logger.info('Validate Item in proposed to secretariat')
+        brains = self.portal.portal_catalog(meta_type=('MeetingItem', ))
+        logger.info('Check Items %d and validate if state of item is in proposed to secretariat' % len(brains))
+        for brain in brains:
+            item = brain.getObject()
+            do = item.portal_workflow.doActionFor
+            if item.queryState() == 'proposed_to_secretariat':
+                do(item, 'validate')
+        logger.info('Done.')
+
     def run(self):
         logger.info('Migrating to MeetingIDEA 3.2.0...')
         self._addDefaultAdviceAnnexesFileTypes()
         # reinstall so skins and so on are correct
+        self._valideItemInProposed_to_secretariat()
         self.reinstall(profiles=[u'profile-Products.MeetingIDEA:default', ])
         self.refreshDatabase(catalogs=False, workflows=True)
         self.finish()
