@@ -4,7 +4,6 @@
     <role name="MeetingBudgetImpactEditor"/>
     <role name="MeetingCD"/>
     <role name="MeetingDepartmentHead"/>
-    <role name="MeetingDirector"/>
     <role name="MeetingManager"/>
     <role name="MeetingMember"/>
     <role name="MeetingObserverGlobal"/>

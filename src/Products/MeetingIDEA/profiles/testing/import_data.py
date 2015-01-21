@@ -86,9 +86,9 @@ developers.advisers.append(pmManager)
 developers.departmentheads.append(pmDepartmentHead1)
 developers.departmentheads.append(pmReviewer1)
 developers.departmentheads.append(pmManager)
-developers.director.append(pmReviewer1)
-developers.director.append(pmDirector1)
-developers.director.append(pmManager)
+developers.reviewers.append(pmReviewer1)
+developers.reviewers.append(pmDirector1)
+developers.reviewers.append(pmManager)
 # reviewers
 
 setattr(developers, 'signatures', 'developers signatures')
@@ -163,8 +163,8 @@ caMeeting.meetingAppDefaultView = 'topic_searchmyitems'
 caMeeting.itemDocFormats = ('odt', 'pdf')
 caMeeting.meetingDocFormats = ('odt', 'pdf')
 caMeeting.useAdvices = False
-caMeeting.itemAdviceStates = ['proposed_to_secretariat', ]
-caMeeting.itemAdviceEditStates = ['proposed_to_secretariat', 'validated']
+caMeeting.itemAdviceStates = ['proposed_to_director', ]
+caMeeting.itemAdviceEditStates = ['proposed_to_director', 'validated']
 caMeeting.itemAdviceViewStates = ['presented', ]
 caMeeting.enforceAdviceMandatoriness = False
 caMeeting.itemPowerObserversStates = ('itemcreated', 'presented', 'accepted', 'delayed', 'refused')
@@ -273,8 +273,8 @@ agMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned',
 agMeeting.sortingMethodOnAddItem = 'on_categories'
 agMeeting.useGroupsAsCategories = False
 agMeeting.useAdvices = True
-agMeeting.itemAdviceStates = ['proposed_to_secretariat', ]
-agMeeting.itemAdviceEditStates = ['proposed_to_secretariat', 'validated']
+agMeeting.itemAdviceStates = ['proposed_to_director', ]
+agMeeting.itemAdviceEditStates = ['proposed_to_director', 'validated']
 agMeeting.itemAdviceViewStates = ['presented', ]
 agMeeting.transitionReinitializingDelays = 'backToItemCreated'
 agMeeting.enforceAdviceMandatoriness = False

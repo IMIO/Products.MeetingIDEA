@@ -67,14 +67,9 @@ class testWorkflows(MeetingIDEATestCase, mctw):
         self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
-        # the Director validation level
+        # the reviwer (Director) can validate item
         self.changeUser('pmDirector1')
         self.failUnless(self.hasPermission('Modify portal content', (item1, annex1)))
-        self.do(item1, 'proposeToSecretariat')
-        self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
-        self.failIf(self.transitions(item1))  # He may trigger no more action
-        self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
-        # the reviwer (secretariat) can validate item
         self.changeUser('pmReviewer1')
         self.do(item1, 'validate')
         # pmManager creates a meeting
@@ -95,7 +90,6 @@ class testWorkflows(MeetingIDEATestCase, mctw):
         # do the complete validation
         self.changeUser('admin')
         self.do(item2, 'proposeToDirector')
-        self.do(item2, 'proposeToSecretariat')
         # pmManager inserts item1 into the meeting and publishes it
         self.changeUser('pmManager')
         managerAnnex = self.addAnnex(item1)

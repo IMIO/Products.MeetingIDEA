@@ -120,14 +120,6 @@ msgid "backToProposedToDirector_done_descr"
 msgstr "Le point a été renvoyé au directeur."
 
 #. Default: "send back"
-msgid "backToProposedToSecretariat"
-msgstr "Renvoyer au secrétariat"
-
-#. Default: "This item has been send back to the secretariat."
-msgid "backToProposedToSecretariat_done_descr"
-msgstr "Le point a été renvoyé au secrétariat"
-
-#. Default: "send back"
 msgid "backToProposedToDG"
 msgstr "Renvoyer au directeur général"
 
@@ -212,13 +204,6 @@ msgstr "Proposer au chef de service"
 msgid "proposeToDepartmentHead_done_descr"
 msgstr "Le point a été envoyé au chef de service."
 
-msgid "proposeToSecretariat"
-msgstr "Proposer au secrétariat"
-
-#. Default: "proposeToSecretariat_done_descr"
-msgid "proposeToSecretariat_done_descr"
-msgstr "Le point a été envoyé au secrétariat"
-
 msgid "proposeToDirector"
 msgstr "Proposer au directeur"
 
@@ -229,10 +214,6 @@ msgstr "Le point a été envoyé au directeur."
 #. Default: "Proposed to department head"
 msgid "proposed_to_departmenthead"
 msgstr "Proposé au chef de service"
-
-#. Default: "Proposed to secretariat"
-msgid "proposed_to_secretariat"
-msgstr "Proposé au secrétariat"
 
 #. Default: "Proposed to director"
 msgid "proposed_to_director"
@@ -248,20 +229,6 @@ msgstr "Retirer"
 #. Default: "Removed from meeting"
 msgid "removed"
 msgstr "Retiré de la séance"
-
-msgid "return_to_secretary"
-msgstr "Renvoyer au secrétariat"
-
-#. Default: "return_to_secretary_done_descr"
-msgid "return_to_secretary_done_descr"
-msgstr "Le point a été renvoyé au Secrétariat."
-
-msgid "return_to_secretary_in_ag"
-msgstr "Renvoyer au secrétariat"
-
-#. Default: "return_to_secretary_in_council_done_descr"
-msgid "return_to_secretary_in_council_done_descr"
-msgstr "Le point a été renvoyé au Secrétariat."
 
 msgid "return_to_service"
 msgstr "Renvoyer au service pour corrections"

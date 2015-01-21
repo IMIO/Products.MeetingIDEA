@@ -41,9 +41,8 @@ class Migrate_To_3_2_0(Migrator):
         logger.info('Done.')
 
     def _valideItemInProposed_to_secretariat(self):
-        '''In 3.3, the state "proposed_to_secretariat" is removed
+        '''The state "proposed_to_secretariat" is removed.
         '''
-        logger.info('Validate Item in proposed to secretariat')
         brains = self.portal.portal_catalog(meta_type=('MeetingItem', ))
         logger.info('Check Items %d and validate if state of item is in proposed to secretariat' % len(brains))
         for brain in brains:
@@ -51,13 +50,46 @@ class Migrate_To_3_2_0(Migrator):
             do = item.portal_workflow.doActionFor
             if item.queryState() == 'proposed_to_secretariat':
                 do(item, 'validate')
+            item.updateLocalRoles()
+        logger.info('Done.')
+
+    def _migrateDirectorsInReviewersGroups(self):
+        ''' MeetingDirector was removed, we must use reviewer suffix for roles.
+            We must change selectableCopyGroups (replace director by reviewer).
+        '''
+        logger.info('Place director in reviewer group')
+        pg = self.portal.portal_groups
+        pgroups = pg.listGroups()
+        for pgroup in pgroups:
+            # if the group suffix is director (ie. xxx_director), get corresponding reviewer group (ie.xxx_reviewer)
+            # and add the same member. After that, remove director's group
+            if pgroup.id.endswith('_director'):
+                directors = pgroup.getGroupMembers()
+                group_reviewerID = pgroup.id.replace('_director', '_reviewers')
+                group_reviewer = pg.getGroupById(group_reviewerID)
+                # add member
+                for director in directors:
+                    group_reviewer.addMember(director.id)
+                # remove group
+                pg.removeGroup(pgroup.id)
+            if pgroup.id.endswith('_reviewers'):
+                # change title secretariat in director
+                new_groupName = pgroup.getGroupTitleOrName().replace('(Secrétariat)', '(Directeur)')
+                pgroup.setProperties(title=new_groupName)
+        #replace selectable group for each meetingConfig
+        for cfg in self.portal.portal_plonemeeting.objectValues('MeetingConfig'):
+            new_scg = []
+            for scg in cfg.getSelectableCopyGroups():
+                new_scg.append(scg.replace('_director', '_reviewers'))
+            cfg.setSelectableCopyGroups(new_scg)
         logger.info('Done.')
 
     def run(self):
         logger.info('Migrating to MeetingIDEA 3.2.0...')
         self._addDefaultAdviceAnnexesFileTypes()
-        # reinstall so skins and so on are correct
         self._valideItemInProposed_to_secretariat()
+        self._migrateDirectorsInReviewersGroups()
+        # reinstall so skins and so on are correct
         self.reinstall(profiles=[u'profile-Products.MeetingIDEA:default', ])
         self.refreshDatabase(catalogs=False, workflows=True)
         self.finish()
