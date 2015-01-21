@@ -56,45 +56,45 @@ adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = RETURN_TO_PROPOSING_GRO
 RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
     # view permissions
     'Access contents information':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingDirector',
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingDepartmentHead',
      'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
     'View':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingDirector',
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingDepartmentHead',
      'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
     'PloneMeeting: Read decision':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingDirector',
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingDepartmentHead',
      'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
     'PloneMeeting: Read optional advisers':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingDirector',
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingDepartmentHead',
      'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
     'PloneMeeting: Read decision annex':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingDirector',
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingDepartmentHead',
      'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
     'PloneMeeting: Read item observations':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingDirector',
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingDepartmentHead',
      'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
     'PloneMeeting: Read budget infos':
-    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingDirector',
+    ('Manager', 'MeetingManager', 'MeetingMember', 'MeetingDepartmentHead',
      'MeetingReviewer', 'MeetingObserverLocal', 'Reader', ),
     # edit permissions
     'Modify portal content':
-    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingManager', ),
+    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingReviewer', 'MeetingManager', ),
     'PloneMeeting: Write decision':
-    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingManager', ),
+    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingReviewer', 'MeetingManager', ),
     'Review portal content':
-    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingManager', ),
+    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingReviewer', 'MeetingManager', ),
     'Add portal content':
-    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingManager', ),
+    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingReviewer', 'MeetingManager', ),
     'PloneMeeting: Add annex':
-    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingManager', ),
+    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingReviewer', 'MeetingManager', ),
     'PloneMeeting: Add MeetingFile':
-    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingManager', ),
+    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingReviewer', 'MeetingManager', ),
     'PloneMeeting: Write decision annex':
-    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingManager', ),
+    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingReviewer', 'MeetingManager', ),
     'PloneMeeting: Write optional advisers':
-    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingManager', ),
+    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingReviewer', 'MeetingManager', ),
     'PloneMeeting: Write optional advisers':
-    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingDirector', 'MeetingReviewer', 'MeetingManager', ),
+    ('Manager', 'MeetingMember', 'MeetingDepartmentHead', 'MeetingReviewer', 'MeetingManager', ),
     'PloneMeeting: Write budget infos':
     ('Manager', 'MeetingMember', 'MeetingOfficeManager', 'MeetingManager', 'MeetingBudgetImpactEditor', ),
     # MeetingManagers edit permissions
@@ -119,6 +119,7 @@ class CustomMeeting(Meeting):
 
     # Implements here methods that will be used by templates
     security.declarePublic('getPrintableItems')
+
     def getPrintableItems(self, itemUids, late=False, ignore_review_states=[],
                           privacy='*', oralQuestion='both', toDiscuss='both', categories=[],
                           excludedCategories=[], firstNumber=1, renumber=False):
@@ -255,6 +256,7 @@ class CustomMeeting(Meeting):
             self._insertGroupInCategory(categoryList, group, groupPrefixes, groups, item)
 
     security.declarePublic('getPrintableItemsByCategory')
+
     def getPrintableItemsByCategory(self, itemUids=[], late=False,
                                     ignore_review_states=[], by_proposing_group=False, group_prefixes={},
                                     oralQuestion='both', toDiscuss='both', excludeCategories=[],
@@ -401,6 +403,7 @@ class CustomMeeting(Meeting):
         return res
 
     security.declarePublic('getAvailableItems')
+
     def getAvailableItems(self):
         '''Items are available to the meeting no matter the meeting state (except 'closed').
            In the 'created' state, every validated items are availble, in other states, only items
@@ -434,6 +437,7 @@ class CustomMeeting(Meeting):
         return res
 
     security.declarePublic('getNumberOfItems')
+
     def getNumberOfItems(self, itemUids, privacy='*', categories=[], late=False):
         '''Returns the number of items depending on parameters.
            This is used in templates to know how many items of a particular kind exist and
@@ -458,6 +462,7 @@ class CustomMeeting(Meeting):
         return len(filteredItemUids)
 
     security.declarePublic('getPrintableItemsByNumCategory')
+
     def getPrintableItemsByNumCategory(self, late=False, uids=[],
                                        catstoexclude=[], exclude=True, allItems=False):
         '''Returns a list of items ordered by category number. If there are many
@@ -555,6 +560,7 @@ class CustomMeeting(Meeting):
         return ressort
 
     security.declarePublic('getPreviousMeeting')
+
     def getPreviousMeeting(self, searchMeetingsInterval=60):
         '''Gets the previous meeting based on meeting date. We only search among
            meetings in the previous p_searchMeetingsInterval, which is a number
@@ -580,11 +586,13 @@ class CustomMeeting(Meeting):
         return res
 
     security.declarePublic('showItemAdvices')
+
     def showItemAdvices(self):
         '''See doc in interfaces.py.'''
         return True
 
     security.declarePublic('showAllItemsAtOnce')
+
     def showAllItemsAtOnce(self):
         """
           Monkeypatch for hiding the allItemsAtOnce field
@@ -593,6 +601,7 @@ class CustomMeeting(Meeting):
     Meeting.showAllItemsAtOnce = showAllItemsAtOnce
 
     security.declarePrivate('validate_preMeetingDate')
+
     def validate_preMeetingDate(self, value):
         '''Checks that the preMeetingDate comes before the meeting date.'''
         if not value:
@@ -611,6 +620,7 @@ class CustomMeeting(Meeting):
     Meeting.validate_preMeetingDate = validate_preMeetingDate
 
     security.declarePublic('getPresenceList')
+
     def getPresenceList(self, filter):
         '''return list of presence in the form of dictionnary
            keys are fullname, status [0=present;1:excused;2=procuration]
@@ -650,6 +660,7 @@ class CustomMeeting(Meeting):
         return res
 
     security.declarePublic('getIdeaAssembly')
+
     def getIdeaAssembly(self, filter):
         '''return formated assembly
            filer is 'present', 'excused', 'procuration', 'absent' or '*' for all
@@ -688,7 +699,7 @@ class CustomMeetingItem(MeetingItem):
     MeetingItem.itemPositiveDecidedStates = customItemPositiveDecidedStates
 
     customBeforePublicationStates = ('itemcreated', 'proposed_to_departmenthead', 'proposed_to_director',
-                                     'proposed_to_secretariat', 'validated', )
+                                     'validated', )
     MeetingItem.customBeforePublicationStates = customBeforePublicationStates
 
     customMeetingNotClosedStates = ('validated_by_cd', 'frozen', 'decided', )
@@ -705,6 +716,7 @@ class CustomMeetingItem(MeetingItem):
         self.context = item
 
     security.declarePublic('getMeetingsAcceptingItems')
+
     def getMeetingsAcceptingItems(self):
         '''Overrides the default method so we only display meetings that are
            in the 'created' or 'frozen' state.'''
@@ -724,6 +736,7 @@ class CustomMeetingItem(MeetingItem):
         return res
 
     security.declarePublic('mayBeLinkedToTasks')
+
     def mayBeLinkedToTasks(self):
         '''See doc in interfaces.py.'''
         item = self.getSelf()
@@ -733,6 +746,7 @@ class CustomMeetingItem(MeetingItem):
         return res
 
     security.declarePublic('getIcons')
+
     def getIcons(self, inMeeting, meeting):
         '''Check docstring in PloneMeeting interfaces.py.'''
         item = self.getSelf()
@@ -748,8 +762,6 @@ class CustomMeetingItem(MeetingItem):
             res.append(('proposeToDepartmentHead.png', 'proposed_to_DepartmentHead'))
         elif itemState == 'proposed_to_director':
             res.append(('proposeToDirector.png', 'proposed_to_director'))
-        elif itemState == 'proposed_to_secretariat':
-            res.append(('proposeToSecretariat.png', 'proposed_to_secretariat'))
         return res
 
 
@@ -768,6 +780,7 @@ class CustomMeetingConfig(MeetingConfig):
     MeetingConfig.listItemStatesInitExcepted = MeetingConfig.listItemStates
 
     security.declarePublic('searchItemsToValidate')
+
     def searchItemsToValidate(self, sortKey, sortOrder, filterKey, filterValue, **kwargs):
         '''See docstring in Products.PloneMeeting.MeetingConfig.
            We override it here because relevant groupIds and wf state are no the same...'''
@@ -780,7 +793,7 @@ class CustomMeetingConfig(MeetingConfig):
 
         params = {'portal_type': self.getItemTypeName(),
                   'getProposingGroup': res,
-                  'review_state': 'proposed_to_secretariat',
+                  'review_state': 'proposed_to_director',
                   'sort_on': sortKey,
                   'sort_order': sortOrder
                   }
@@ -815,6 +828,7 @@ class MeetingCAIDEAWorkflowActions(MeetingWorkflowActions):
                 wfTool.doActionFor(item, 'accept')
 
     security.declarePrivate('doDecide')
+
     def doDecide(self, stateChange):
         '''We pass every item that is 'presented' in the 'itemfrozen'
            state.  It is the case for late items.'''
@@ -825,6 +839,7 @@ class MeetingCAIDEAWorkflowActions(MeetingWorkflowActions):
                 self.context.portal_workflow.doActionFor(item, 'itemfreeze')
 
     security.declarePrivate('doFreeze')
+
     def doFreeze(self, stateChange):
         '''When freezing the meeting, every items must be automatically set to
            "itemfrozen".'''
@@ -835,12 +850,14 @@ class MeetingCAIDEAWorkflowActions(MeetingWorkflowActions):
                 self.context.portal_workflow.doActionFor(item, 'itemfreeze')
 
     security.declarePrivate('doBackToCreated')
+
     def doBackToCreated(self, stateChange):
         '''When a meeting go back to the "created" state, for example the
            meeting manager wants to add an item, we do not do anything.'''
         pass
 
     security.declarePrivate('doValidateByCD')
+
     def doValidateByCD(self, stateChange):
         for item in self.context.getAllItems(ordered=True):
             if item.queryState() == 'presented':
@@ -849,6 +866,7 @@ class MeetingCAIDEAWorkflowActions(MeetingWorkflowActions):
         self.initSequenceNumber()
 
     security.declarePrivate('doBackToValidatedByCD')
+
     def doBackToValidatedByCD(self, stateChange):
         pass
 
@@ -867,6 +885,7 @@ class MeetingCAIDEAWorkflowConditions(MeetingWorkflowConditions):
         self.acceptItemsStates = customAcceptItemsStates
 
     security.declarePublic('mayValidateByCD')
+
     def mayValidateByCD(self):
         res = False
         if checkPermission(ReviewPortalContent, self.context):
@@ -876,6 +895,7 @@ class MeetingCAIDEAWorkflowConditions(MeetingWorkflowConditions):
         return res
 
     security.declarePublic('mayFreeze')
+
     def mayFreeze(self):
         res = False
         if checkPermission(ReviewPortalContent, self.context):
@@ -885,6 +905,7 @@ class MeetingCAIDEAWorkflowConditions(MeetingWorkflowConditions):
         return res
 
     security.declarePublic('mayClose')
+
     def mayClose(self):
         res = False
         # The user just needs the "Review portal content" permission on the
@@ -894,6 +915,7 @@ class MeetingCAIDEAWorkflowConditions(MeetingWorkflowConditions):
         return res
 
     security.declarePublic('mayDecide')
+
     def mayDecide(self):
         res = False
         if checkPermission(ReviewPortalContent, self.context) and \
@@ -911,14 +933,17 @@ class MeetingItemCAIDEAWorkflowActions(MeetingItemWorkflowActions):
     security = ClassSecurityInfo()
 
     security.declarePrivate('doAccept_but_modify')
+
     def doAccept_but_modify(self, stateChange):
         pass
 
     security.declarePrivate('doPre_accept')
+
     def doPre_accept(self, stateChange):
         pass
 
     security.declarePrivate('doDelay')
+
     def doDelay(self, stateChange):
         '''When an item is delayed, we will duplicate it: the copy is back to
            the initial state and will be linked to this one.
@@ -945,26 +970,27 @@ class MeetingItemCAIDEAWorkflowActions(MeetingItemWorkflowActions):
             self.context.setDecision(res)
 
     security.declarePrivate('doRemove')
+
     def doRemove(self, stateChange):
         pass
 
     security.declarePrivate('doProposeToDepartmentHead')
+
     def doProposeToDepartmentHead(self, stateChange):
         pass
 
     security.declarePrivate('doProposeToDirector')
+
     def doProposeToDirector(self, stateChange):
         pass
 
-    security.declarePrivate('doProposeToSecretariat')
-    def doProposeToSecretariat(self, stateChange):
-        pass
-
     security.declarePrivate('doItemValidateByCD')
+
     def doItemValidateByCD(self, stateChange):
         pass
 
     security.declarePrivate('doPresent')
+
     def doPresent(self, stateChange, forceNormal=False):
         '''Presents an item into a meeting. If p_forceNormal is True, and the
            item should be inserted as a late item, it is nevertheless inserted
@@ -999,10 +1025,11 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
         self.context = item  # Implements IMeetingItem
         self.sm = getSecurityManager()
         self.useHardcodedTransitionsForPresentingAnItem = True
-        self.transitionsForPresentingAnItem = ('proposeToDepartmentHead', 'proposeToDirector', 'proposeToSecretariat',
+        self.transitionsForPresentingAnItem = ('proposeToDepartmentHead', 'proposeToDirector',
                                                'validate', 'present')
 
     security.declarePublic('mayDelete')
+
     def mayDelete(self):
         '''
           By default it is not possible to delete an item if some
@@ -1011,6 +1038,7 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
         return True
 
     security.declarePublic('mayDecide')
+
     def mayDecide(self):
         '''We may decide an item if the linked meeting is in relevant state.'''
         res = False
@@ -1021,6 +1049,7 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
         return res
 
     security.declarePublic('isLateFor')
+
     def isLateFor(self, meeting):
         res = False
         if meeting and (meeting.queryState() in MeetingItem.meetingAlreadyFrozenStates) and \
@@ -1033,6 +1062,7 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
         return res
 
     security.declarePublic('mayValidate')
+
     def mayValidate(self):
         """
           Either the alderman or the MeetingManager can validate
@@ -1051,6 +1081,7 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
         return res
 
     security.declarePublic('mayFreeze')
+
     def mayFreeze(self):
         res = False
         if checkPermission(ReviewPortalContent, self.context):
@@ -1060,6 +1091,7 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
         return res
 
     security.declarePublic('mayCorrect')
+
     def mayCorrect(self):
         # Check with the default PloneMeeting method and our test if res is
         # False. The diffence here is when we correct an item from itemfrozen to
@@ -1086,6 +1118,7 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
         return res
 
     security.declarePublic('mayProposeToDepartmentHead')
+
     def mayProposeToDepartmentHead(self):
         """
           Check that the user has the 'Review portal content'
@@ -1096,6 +1129,7 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
         return res
 
     security.declarePublic('mayProposeToDirector')
+
     def mayProposeToDirector(self):
         """
           Check that the user has the 'Review portal content'
@@ -1105,17 +1139,8 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
                 res = True
         return res
 
-    security.declarePublic('mayProposeToSecretariat')
-    def mayProposeToSecretariat(self):
-        """
-          Check that the user has the 'Review portal content'
-        """
-        res = False
-        if checkPermission(ReviewPortalContent, self.context):
-                res = True
-        return res
-
     security.declarePublic('mayRemove')
+
     def mayRemove(self):
         """
           We may remove an item if the linked meeting is in the 'decided'
@@ -1129,6 +1154,7 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
         return res
 
     security.declarePublic('mayValidateByCD')
+
     def mayValidateByCD(self):
         res = False
         if checkPermission(ReviewPortalContent, self.context):
@@ -1144,6 +1170,7 @@ class CustomToolPloneMeeting(ToolPloneMeeting):
     security = ClassSecurityInfo()
 
     security.declarePublic('getSpecificAssemblyFor')
+
     def getSpecificAssemblyFor(self, assembly, startTxt=''):
         ''' Return the Assembly between two tag.
             This method is use in template

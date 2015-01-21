@@ -146,8 +146,6 @@ def import_meetingsUsersAndRoles_from_csv(self, fname=None):
             groups.append(grouptitle + '_advisers')
         if row['departmentheads']:
             groups.append(grouptitle + '_departmentheads')
-        if row['director']:
-            groups.append(grouptitle + '_director')
         for groupid in groups:
             pgr.addPrincipalToGroup(row_id, groupid)
             out.append("    -> Added in group '%s'" % groupid)

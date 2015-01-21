@@ -107,11 +107,6 @@ msgid "default_meetingitem_decision"
 msgstr ""
 
 # Suffix
-#. Default: "directors"
-msgid "directors"
-msgstr ""
-
-# Suffix
 #. Default: "department heads"
 msgid "departmentheads"
 msgstr ""
@@ -147,11 +142,6 @@ msgstr ""
 
 #. Default: "Description"
 msgid "meeting_item_description"
-msgstr ""
-
-# Suffix
-#. Default: "director"
-msgid "director"
 msgstr ""
 
 #. Default: "Choose advisers that will have to issue an optional advice for this item"

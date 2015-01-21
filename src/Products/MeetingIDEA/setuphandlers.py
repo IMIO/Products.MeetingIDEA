@@ -2,7 +2,7 @@
 #
 # File: setuphandlers.py
 #
-# Copyright (c) 2014 by Imio
+# Copyright (c) 2015 by CommunesPlone
 # Generator: ArchGenXML Version 2.7
 #            http://plone.org/products/archgenxml
 #
@@ -68,10 +68,7 @@ def add_CA_AG_Searches(context, portal):
         # Items in state 'proposed_to_director'
         # Used in the "todo" portlet
         ('searchdirectoritems', (('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ),
-        ('proposed_to_director', ), '', 'python: here.portal_plonemeeting.userIsAmong("director")',),
-        # Items in state 'proposed_to_secretariat
-        ('searchsecretariatitems', (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),),
-        ('proposed_to_secretariat', ), '', 'python: here.portal_plonemeeting.isManager()',),
+        ('proposed_to_director', ), '', 'python: here.portal_plonemeeting.userIsAmong("reviewer")',),
         # Items in state 'validated'
         ('searchvalidateditems', (('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ), ('validated', ), '', '',),
         # All 'decided' items

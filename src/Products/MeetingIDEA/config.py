@@ -2,7 +2,7 @@
 #
 # File: MeetingIDEA.py
 #
-# Copyright (c) 2014 by CommunesPlone
+# Copyright (c) 2015 by CommunesPlone
 # Generator: ArchGenXML Version 2.7
 #            http://plone.org/products/archgenxml
 #
@@ -47,7 +47,6 @@ PRODUCT_DEPENDENCIES = []
 from Products.PloneMeeting import config as PMconfig
 IDEAROLES = {}
 IDEAROLES['departmentheads'] = 'MeetingDepartmentHead'
-IDEAROLES['director'] = 'MeetingDirector'
 PMconfig.MEETINGROLES.update(IDEAROLES)
 PMconfig.MEETING_GROUP_SUFFIXES = PMconfig.MEETINGROLES.keys()
 

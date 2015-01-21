@@ -96,7 +96,7 @@ CAMeeting.itemConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingIte
 CAMeeting.itemActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCAIDEAWorkflowActions'
 CAMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowConditions'
 CAMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
-CAMeeting.itemTopicStates = ('itemcreated', 'proposedToDepartmentHead', 'proposedToDirector', 'proposedToSecretariat',
+CAMeeting.itemTopicStates = ('itemcreated', 'proposedToDepartmentHead', 'proposedToDirector',
                              'validated', 'presented', 'validated_by_cd', 'itemfrozen', 'accepted', 'refused',
                              'delayed', 'pre_accepted', 'removed',)
 CAMeeting.meetingTopicStates = ('created', 'validated_by_cd', 'frozen')
@@ -144,7 +144,7 @@ AGMeeting.itemActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCA
 AGMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowConditions'
 AGMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
 #show every items states
-AGMeeting.itemTopicStates = ('itemcreated', 'proposedToDepartmentHead', 'proposedToDirector', 'proposedToSecretariat',
+AGMeeting.itemTopicStates = ('itemcreated', 'proposedToDepartmentHead', 'proposedToDirector',
                              'validated', 'presented', 'validated_by_cd', 'itemfrozen', 'accepted', 'refused',
                              'delayed', 'pre_accepted', 'removed',)
 AGMeeting.meetingTopicStates = ('created', 'validated_by_cd', 'frozen')

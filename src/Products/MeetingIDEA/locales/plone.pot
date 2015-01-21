@@ -116,14 +116,6 @@ msgid "backToProposedToDirector_done_descr"
 msgstr ""
 
 #. Default: "send back"
-msgid "backToProposedToSecretariat"
-msgstr ""
-
-#. Default: "This item has been send back to the secretariat for pre-validation."
-msgid "backToProposedToSecretariat_done_descr"
-msgstr ""
-
-#. Default: "send back"
 msgid "backToProposedToDG"
 msgstr ""
 
@@ -208,13 +200,6 @@ msgstr ""
 msgid "proposeToDepartmentHead_done_descr"
 msgstr ""
 
-msgid "proposeToSecretariat"
-msgstr ""
-
-#. Default: "proposeToSecretariat_done_descr"
-msgid "proposeToSecretariat_done_descr"
-msgstr ""
-
 msgid "proposeToDirector"
 msgstr ""
 
@@ -224,10 +209,6 @@ msgstr ""
 
 #. Default: "Proposed to department head"
 msgid "proposed_to_departmenthead"
-msgstr ""
-
-#. Default: "Proposed to secretariat"
-msgid "proposed_to_secretariat"
 msgstr ""
 
 #. Default: "Proposed to director"
@@ -243,20 +224,6 @@ msgstr ""
 
 #. Default: "Removed from meeting"
 msgid "removed"
-msgstr ""
-
-msgid "return_to_secretary"
-msgstr ""
-
-#. Default: "return_to_secretary_done_descr"
-msgid "return_to_secretary_done_descr"
-msgstr ""
-
-msgid "return_to_secretary_in_ag"
-msgstr ""
-
-#. Default: "return_to_secretary_in_council_done_descr"
-msgid "return_to_secretary_in_council_done_descr"
 msgstr ""
 
 msgid "return_to_service"

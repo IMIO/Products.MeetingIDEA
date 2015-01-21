@@ -28,17 +28,14 @@ class MeetingIDEATestingHelpers(MeetingCommunesTestingHelpers):
     '''Stub class that provides some helper methods about testing.'''
 
     TRANSITIONS_FOR_PROPOSING_ITEM_1 = ('proposeToDepartmentHead',
-                                        'proposeToDirector',
-                                        'proposeToSecretariat', )
-    TRANSITIONS_FOR_PROPOSING_ITEM_2 = ('validate', 'backToProposedToSecretariat', )
+                                        'proposeToDirector', )
+    TRANSITIONS_FOR_PROPOSING_ITEM_2 = ('validate', 'backToProposedToDirector', )
     TRANSITIONS_FOR_VALIDATING_ITEM_1 = ('proposeToDepartmentHead',
                                          'proposeToDirector',
-                                         'proposeToSecretariat',
                                          'validate', )
     TRANSITIONS_FOR_VALIDATING_ITEM_2 = ('validate', )
     TRANSITIONS_FOR_PRESENTING_ITEM_1 = ('proposeToDepartmentHead',
                                          'proposeToDirector',
-                                         'proposeToSecretariat',
                                          'validate',
                                          'present', )
     TRANSITIONS_FOR_PRESENTING_ITEM_2 = ('validate', 'present', )
@@ -62,15 +59,14 @@ class MeetingIDEATestingHelpers(MeetingCommunesTestingHelpers):
                         'backToValidateByCD',
                         'backToPresented',
                         'backToValidated',
-                        'backToProposedToSecretariat',
                         'backToProposedToDirector',
                         'backToProposedToDepartmentHead',
                         'backToItemCreated'),
-        'proposed_to_secretariat': ('backToItemFrozen',
-                                    'backToValidateByCD',
-                                    'backToPresented',
-                                    'backToValidated',
-                                    'backToProposedToSecretariat', ),
+        'proposed_to_director': ('backToItemFrozen',
+                                 'backToValidateByCD',
+                                 'backToPresented',
+                                 'backToValidated',
+                                 'backToProposedToDirector', ),
         'validated': ('backToItemFrozen',
                       'backToValidateByCD',
                       'backToPresented',
@@ -81,23 +77,22 @@ class MeetingIDEATestingHelpers(MeetingCommunesTestingHelpers):
                         'backToValidateByCD',
                         'backToPresented',
                         'backToValidated',
-                        'backToProposedToSecretariat',
                         'backToProposedToDirector',
                         'backToProposedToDepartmentHead',
                         'backToItemCreated'),
-        'proposed_to_secretariat': ('backToItemFrozen',
-                                    'backToValidateByCD',
-                                    'backToPresented',
-                                    'backToValidated',
-                                    'backToProposedToSecretariat', ),
+        'proposed_to_director': ('backToItemFrozen',
+                                 'backToValidateByCD',
+                                 'backToPresented',
+                                 'backToValidated',
+                                 'backToProposedToDirector', ),
         'validated': ('backToItemFrozen',
                       'backToValidateByCD',
                       'backToPresented',
                       'backToValidated', )}
 
     WF_STATE_NAME_MAPPINGS = {'itemcreated': 'itemcreated',
-                              'proposed': 'proposed_to_secretariat',
-                              'proposed_to_secretariat': 'proposed_to_secretariat',
+                              'proposed': 'proposed_to_director',
+                              'proposed_to_director': 'proposed_to_director',
                               'validated': 'validated',
                               'presented': 'presented'}
 

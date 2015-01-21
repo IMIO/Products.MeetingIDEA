@@ -111,11 +111,6 @@ msgid "default_meetingitem_decision"
 msgstr "Définissez ici le texte prédéfini qui sera présent dans le champ 'Délibération/Extrait du Procès-verbal' chaque fois qu'un utilisateur crée un nouveau point."
 
 # Suffix
-#. Default: "directors"
-msgid "directors"
-msgstr "Directeurs"
-
-# Suffix
 #. Default: "Department heads"
 msgid "departmentheads"
 msgstr "Chefs de service"
@@ -152,11 +147,6 @@ msgstr "Date"
 #. Default: "Description"
 msgid "meeting_item_description"
 msgstr "Description dans l'Ordre du jour"
-
-# Suffix
-#. Default: "director"
-msgid "director"
-msgstr "Directeur"
 
 #. Default: "Choose advisers that will have to issue an optional advice for this item"
 msgid "optional_advisers_item_descr"
@@ -200,7 +190,7 @@ msgstr "Le point '${itemTitle}' vous a été renvoyé pour corrections par le Se
 # Suffix
 #. Default: "reviewers"
 msgid "reviewers"
-msgstr "Secrétariat"
+msgstr "Directeur"
 
 #. Default: "Configure PloneMeeting"
 msgid "search_advanced"

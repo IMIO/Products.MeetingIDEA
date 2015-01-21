@@ -16,10 +16,9 @@ groups = context.portal_groups.getGroupsForPrincipal(member)
 #so find the different groups (a user could be divisionhead in groupA and director in groupB)
 #and find the different states we have to search for this group (proposingGroup of the item)
 
-reviewSuffixes = ('_reviewers', '_director', '_departmentheads')
+reviewSuffixes = ('_reviewers', '_departmentheads')
 statesMapping = {
-    '_reviewers': ('proposed_to_departmenthead', 'proposed_to_director', 'proposed_to_secretariat',),
-    '_n2': ('proposed_to_departmenthead', 'proposed_to_director'),
+    '_reviewers': ('proposed_to_departmenthead', 'proposed_to_director', ),
     '_departmentheads': 'proposed_to_departmenthead', }
 
 foundGroups = {}
