@@ -702,14 +702,14 @@ class CustomMeetingItem(MeetingItem):
                                      'validated', )
     MeetingItem.customBeforePublicationStates = customBeforePublicationStates
 
-    customMeetingNotClosedStates = ('validated_by_cd', 'frozen', 'decided', )
+    customMeetingNotClosedStates = ('validated_by_cd', 'frozen', 'decided', 'published')
     MeetingItem.meetingNotClosedStates = customMeetingNotClosedStates
 
-    customMeetingTransitionsAcceptingRecurringItems = ('_init_', 'validateByCD', 'freeze', 'decide')
+    customMeetingTransitionsAcceptingRecurringItems = ('_init_', 'validateByCD', 'freeze', 'decide', 'published')
     MeetingItem.meetingTransitionsAcceptingRecurringItems = customMeetingTransitionsAcceptingRecurringItems
 
     #this list is used by doPresent defined in PloneMeeting
-    customMeetingAlreadyFrozenStates = ('validated_by_cd', 'frozen', 'decided', )
+    customMeetingAlreadyFrozenStates = ('validated_by_cd', 'frozen', 'decided', 'published')
     MeetingItem.meetingAlreadyFrozenStates = customMeetingAlreadyFrozenStates
 
     def __init__(self, item):
@@ -763,6 +763,42 @@ class CustomMeetingItem(MeetingItem):
         elif itemState == 'proposed_to_director':
             res.append(('proposeToDirector.png', 'proposed_to_director'))
         return res
+
+    security.declarePublic('getObservations')
+
+    def getObservations(self, **kwargs):
+        '''Overridden version of 'observations' field accessor.
+           Hides the observations for non-managers if meeting state is 'decided.'''
+        item = self.getSelf()
+        res = item.getField('observations').get(item, **kwargs)
+        tool = getToolByName(item, 'portal_plonemeeting')
+        if item.hasMeeting() and item.getMeeting().queryState() == 'decided' and not tool.isManager():
+            return translate('intervention_under_edit',
+                             domain='PloneMeeting',
+                             context=item.REQUEST,
+                             default='<p>The intervention is currently under edit by managers, you can not access it.</p>')
+        return res
+    MeetingItem.getObservations = getObservations
+    MeetingItem.getRawObservations = getObservations
+
+    security.declarePublic('getStrategicAxis')
+
+    def getStrategicAxisView(self, **kwargs):
+        '''View Strategic Axis Title in page template.'''
+        item = self.getSelf()
+        res = []
+        for sa in item.getStrategicAxis():
+            res.append(sa.Title())
+        res.sort()
+        return '<br />'.join(res)
+
+    security.declarePublic('mustShowItemReference')
+
+    def mustShowItemReference(self):
+        '''See doc in interfaces.py'''
+        item = self.getSelf()
+        if item.hasMeeting():
+            return True
 
 
 class CustomMeetingConfig(MeetingConfig):
@@ -827,16 +863,14 @@ class MeetingCAIDEAWorkflowActions(MeetingWorkflowActions):
             if item.queryState() in ['itemfrozen', 'pre_accepted', ]:
                 wfTool.doActionFor(item, 'accept')
 
-    security.declarePrivate('doDecide')
+    security.declarePrivate('doValidateByCD')
 
-    def doDecide(self, stateChange):
-        '''We pass every item that is 'presented' in the 'itemfrozen'
-           state.  It is the case for late items.'''
-        for item in self.context.getAllItems(ordered=False):
+    def doValidateByCD(self, stateChange):
+        for item in self.context.getAllItems(ordered=True):
             if item.queryState() == 'presented':
                 self.context.portal_workflow.doActionFor(item, 'itemValidateByCD')
-            if item.queryState() == 'validated_by_cd':
-                self.context.portal_workflow.doActionFor(item, 'itemfreeze')
+        #manage meeting number
+        self.initSequenceNumber()
 
     security.declarePrivate('doFreeze')
 
@@ -849,6 +883,20 @@ class MeetingCAIDEAWorkflowActions(MeetingWorkflowActions):
             if item.queryState() == 'validated_by_cd':
                 self.context.portal_workflow.doActionFor(item, 'itemfreeze')
 
+    security.declarePrivate('doDecide')
+
+    def doDecide(self, stateChange):
+        '''We pass every item that is 'presented' in the 'itemfrozen'
+           state.  It is the case for late items. Call doFreeze'''
+        self.doFreeze(stateChange)
+
+    security.declarePrivate('doPublish')
+
+    def doPublish(self, stateChange):
+        '''We pass every item that is 'presented' in the 'itemfrozen'
+           state.  It is the case for late items. Call doFreeze'''
+        self.doFreeze(stateChange)
+
     security.declarePrivate('doBackToCreated')
 
     def doBackToCreated(self, stateChange):
@@ -856,18 +904,15 @@ class MeetingCAIDEAWorkflowActions(MeetingWorkflowActions):
            meeting manager wants to add an item, we do not do anything.'''
         pass
 
-    security.declarePrivate('doValidateByCD')
-
-    def doValidateByCD(self, stateChange):
-        for item in self.context.getAllItems(ordered=True):
-            if item.queryState() == 'presented':
-                self.context.portal_workflow.doActionFor(item, 'itemValidateByCD')
-        #manage meeting number
-        self.initSequenceNumber()
-
     security.declarePrivate('doBackToValidatedByCD')
 
     def doBackToValidatedByCD(self, stateChange):
+        pass
+
+    security.declarePrivate('doBackToPublished')
+
+    def doBackToPublished(self, stateChange):
+        '''We do not impact items while going back from decided.'''
         pass
 
 
@@ -1044,7 +1089,7 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
         res = False
         meeting = self.context.getMeeting()
         if checkPermission(ReviewPortalContent, self.context) and \
-           meeting and (meeting.queryState() in ['decided', 'closed', 'decisions_published', ]):
+           meeting and (meeting.queryState() in ['decided', 'published', 'closed', 'decisions_published', ]):
             res = True
         return res
 
@@ -1086,7 +1131,7 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
         res = False
         if checkPermission(ReviewPortalContent, self.context):
             if self.context.hasMeeting() and \
-               (self.context.getMeeting().queryState() in ('frozen', 'decided', 'closed', 'decisions_published', )):
+               (self.context.getMeeting().queryState() in ('frozen', 'decided', 'published', 'closed', 'decisions_published', )):
                 res = True
         return res
 

@@ -43,11 +43,12 @@ class MeetingIDEATestingHelpers(MeetingCommunesTestingHelpers):
     TRANSITIONS_FOR_ACCEPTING_ITEMS_2 = ('validateByCD', 'freeze', 'decide', )
 
     TRANSITIONS_FOR_FREEZING_MEETING_1 = TRANSITIONS_FOR_FREEZING_MEETING_2 = ('validateByCD', 'freeze', )
-    TRANSITIONS_FOR_PUBLISHING_MEETING_1 = TRANSITIONS_FOR_PUBLISHING_MEETING_2 = ('validateByCD', 'freeze', 'decide', )
+    TRANSITIONS_FOR_PUBLISHING_MEETING_1 = TRANSITIONS_FOR_PUBLISHING_MEETING_2 = ('validateByCD',
+                                                                                   'freeze', 'decide', 'publish', )
     TRANSITIONS_FOR_DECIDING_MEETING_1 = ('validateByCD', 'freeze', 'decide', )
     TRANSITIONS_FOR_DECIDING_MEETING_2 = ('validateByCD', 'freeze', 'decide', )
-    TRANSITIONS_FOR_CLOSING_MEETING_1 = ('validateByCD', 'freeze', 'decide', 'close', )
-    TRANSITIONS_FOR_CLOSING_MEETING_2 = ('validateByCD', 'freeze', 'decide', 'close', )
+    TRANSITIONS_FOR_CLOSING_MEETING_1 = ('validateByCD', 'freeze', 'decide', 'publish', 'close', )
+    TRANSITIONS_FOR_CLOSING_MEETING_2 = ('validateByCD', 'freeze', 'decide', 'publish', 'close', )
     BACK_TO_WF_PATH_1 = {
         # Meeting
         'created': ('backToPublished',
