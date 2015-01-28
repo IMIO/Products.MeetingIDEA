@@ -1,4 +1,5 @@
 from Products.Archetypes.atapi import *
+from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 from Products.PloneMeeting.Meeting import Meeting
 from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
@@ -21,6 +22,30 @@ def update_item_schema(baseSchema):
             default_content_type="text/html",
             allowable_content_types=('text/html',),
             default_output_type="text/x-html-safe",
+        ),
+
+        ReferenceField(
+            name='strategicAxis',
+            keepReferencesOnCopy=True,
+            widget=ReferenceBrowserWidget(
+                description="StrategicAxis",
+                description_msgid="item_strategicAxis_descr",
+                condition="python: here.attributeIsUsed('strategicAxis')",
+                allow_search=True,
+                allow_browse=False,
+                startup_directory_method="classifierStartupDirectory",
+                force_close_on_insert=False,
+                restrict_browsing_to_startup_directory=True,
+                base_query="classifierBaseQuery",
+                show_results_without_query=True,
+                label='StrategicAxis',
+                label_msgid='PloneMeeting_label_strategicAxis',
+                i18n_domain='PloneMeeting',
+            ),
+            multiValued=True,
+            relationship="ItemStrategicAxis",
+            allowed_types=('MeetingCategory',),
+            optional=True,
         ),)
     )
 

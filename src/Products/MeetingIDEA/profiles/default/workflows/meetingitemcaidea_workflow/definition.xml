@@ -517,7 +517,6 @@
   <permission-map name="PloneMeeting: Write item observations"
                   acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>MeetingMember</permission-role>
   </permission-map>
   <permission-map name="PloneMeeting: Write optional advisers"
                   acquired="False">
@@ -958,8 +957,6 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingCD</permission-role>
-   <permission-role>MeetingReviewer</permission-role>
   </permission-map>
   <permission-map name="PloneMeeting: Write optional advisers"
                   acquired="False">
@@ -1083,7 +1080,6 @@
   <permission-map name="PloneMeeting: Write item observations"
                   acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>MeetingDepartmentHead</permission-role>
   </permission-map>
   <permission-map name="PloneMeeting: Write optional advisers"
                   acquired="False">
@@ -1108,8 +1104,8 @@
         title="proposed_to_director"
         i18n:attributes="title">
   <exit-transition transition_id="backToProposedToDepartmentHead"/>
-  <exit-transition transition_id="backToItemCreated"/>
   <exit-transition transition_id="validate"/>
+  <exit-transition transition_id="backToItemCreated"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -1209,7 +1205,6 @@
   <permission-map name="PloneMeeting: Write item observations"
                   acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>MeetingReviewer</permission-role>
   </permission-map>
   <permission-map name="PloneMeeting: Write optional advisers"
                   acquired="False">
@@ -1501,8 +1496,8 @@
         title="validated"
         i18n:attributes="title">
   <exit-transition transition_id="present"/>
-  <exit-transition transition_id="backToItemCreated"/>
   <exit-transition transition_id="backToProposedToDirector"/>
+  <exit-transition transition_id="backToItemCreated"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>

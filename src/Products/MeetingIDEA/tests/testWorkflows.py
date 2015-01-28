@@ -115,6 +115,7 @@ class testWorkflows(MeetingIDEATestCase, mctw):
         self.do(item1, 'refuse')
         self.assertEquals(item1.queryState(), 'refused')
         self.assertEquals(item2.queryState(), 'itemfrozen')
+        self.do(meeting, 'publish')
         self.do(meeting, 'close')
         self.assertEquals(item1.queryState(), 'refused')
         # every items without a decision are automatically accepted
@@ -136,6 +137,8 @@ class testWorkflows(MeetingIDEATestCase, mctw):
         self.do(meeting, 'freeze')
         self.failUnless(len(meeting.getAllItems()) == 2)
         self.do(meeting, 'decide')
+        self.failUnless(len(meeting.getAllItems()) == 2)
+        self.do(meeting, 'publish')
         self.failUnless(len(meeting.getAllItems()) == 2)
         self.do(meeting, 'close')
         self.failUnless(len(meeting.getAllItems()) == 2)
@@ -230,6 +233,8 @@ class testWorkflows(MeetingIDEATestCase, mctw):
         self.do(item4, 'accept_but_modify')
         self.do(item5, 'refuse')
         self.do(item6, 'accept')
+        #we publish the meeting
+        self.do(meeting, 'publish')
         #we close the meeting
         self.do(meeting, 'close')
         #every items must be in the 'decided' state if we close the meeting

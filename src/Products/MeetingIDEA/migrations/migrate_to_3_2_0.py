@@ -84,14 +84,24 @@ class Migrate_To_3_2_0(Migrator):
             cfg.setSelectableCopyGroups(new_scg)
         logger.info('Done.')
 
+    def _transferClassifierToStartegicAxis(self):
+        '''We use Strategic Axis instead of Classifier, because it's multivalued field.'''
+        brains = self.portal.portal_catalog(meta_type=('MeetingItem', ))
+        logger.info('Transfer Classifier in Strategic Axis for %d items.' % len(brains))
+        for brain in brains:
+            item = brain.getObject()
+            item.setStrategicAxis((item.getClassifier(), ))
+        logger.info('Done.')
+
     def run(self):
         logger.info('Migrating to MeetingIDEA 3.2.0...')
         self._addDefaultAdviceAnnexesFileTypes()
         self._valideItemInProposed_to_secretariat()
         self._migrateDirectorsInReviewersGroups()
+        self._transferClassifierToStartegicAxis()
         # reinstall so skins and so on are correct
         self.reinstall(profiles=[u'profile-Products.MeetingIDEA:default', ])
-        self.refreshDatabase(catalogs=False, workflows=True)
+        self.refreshDatabase(workflows=True)
         self.finish()
 
 

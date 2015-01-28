@@ -13,7 +13,7 @@
  <state state_id="closed"
         title="closed"
         i18n:attributes="title">
-  <exit-transition transition_id="backToDecided"/>
+  <exit-transition transition_id="backToPublish"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -83,7 +83,7 @@
         title="decided"
         i18n:attributes="title">
   <exit-transition transition_id="backToFrozen"/>
-  <exit-transition transition_id="close"/>
+  <exit-transition transition_id="publish"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -121,6 +121,43 @@
         i18n:attributes="title">
   <exit-transition transition_id="decide"/>
   <exit-transition transition_id="backToValidatedByCD"/>
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+   <permission-role>MeetingObserverGlobal</permission-role>
+   <permission-role>MeetingCD</permission-role>
+   <permission-role>Reader</permission-role>
+  </permission-map>
+  <permission-map name="Delete objects"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+  </permission-map>
+  <permission-map name="Review portal content"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+  </permission-map>
+  <permission-map name="View"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+   <permission-role>MeetingObserverGlobal</permission-role>
+   <permission-role>MeetingCD</permission-role>
+   <permission-role>Reader</permission-role>
+  </permission-map>
+ </state>
+ <state state_id="published"
+        title="published"
+        i18n:attributes="title">
+  <exit-transition transition_id="close"/>
+  <exit-transition transition_id="backToDecided"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
@@ -226,6 +263,18 @@
     <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
  </transition>
+ <transition transition_id="backToPublish"
+             title="backToPublish"
+             new_state="published"
+             trigger="USER"
+             before_script=""
+             after_script=""
+             i18n:attributes="title">
+  <action url="" category="workflow" i18n:translate="">backToPublish</action>
+  <guard>
+    <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
+  </guard>
+ </transition>
  <transition transition_id="backToValidatedByCD"
              title="backToValidatedByCD"
              new_state="validated_by_cd"
@@ -272,6 +321,18 @@
   <action url="" category="workflow" i18n:translate="">freeze</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayFreeze()</guard-expression>
+  </guard>
+ </transition>
+ <transition transition_id="publish"
+             title="publish"
+             new_state="published"
+             trigger="USER"
+             before_script=""
+             after_script=""
+             i18n:attributes="title">
+  <action url="" category="workflow" i18n:translate="">publish</action>
+  <guard>
+    <guard-expression>python:here.wfConditions().mayPublish()</guard-expression>
   </guard>
  </transition>
  <transition transition_id="validateByCD"
