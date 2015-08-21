@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <object name="portal_workflow" meta_type="Plone Workflow Tool">
+ <!-- first remove then re-apply so workflows are correct regarding workflow adaptations... -->
+ <object name="meetingcaidea_workflow" meta_type="Workflow" remove="True"/>
+ <object name="meetingitemcaidea_workflow" meta_type="Workflow" remove="True"/>
  <object name="meetingcaidea_workflow" meta_type="Workflow"/>
  <object name="meetingitemcaidea_workflow" meta_type="Workflow"/>
 <!-- ##code-section workflowobjects -->

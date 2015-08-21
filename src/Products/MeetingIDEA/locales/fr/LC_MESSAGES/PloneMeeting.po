@@ -24,26 +24,13 @@ msgstr "Conseil d'administration"
 msgid "Meeting config IDEA AG"
 msgstr "Assemblée générale"
 
-#. Default: "If you don't fill this field, meeting assembly will be used for this item."
-msgid "MeetingIDEA_descr_assembly"
-msgstr "Laissez ce champ vide pour utiliser l'assemblée qui sera définie sur la séance"
-
 #. Default: "Transcription of interventions"
 msgid "MeetingIDEA_descr_interventions"
 msgstr "Retranscription des interventions"
 
-# MeetingGroup
-#. Default: "Leave empty to use the signatures defined on the meeting"
-msgid "MeetingIDEA_descr_signatures"
-msgstr "Si vous ne remplissez pas le champ, les signatures certifiées définies sur la configuration de séance seront utilisées.  Si vous utilisez ce champ, il est obligatoire de définir 12 lignes (les 6 premières pour le CA et les 6 dernières pour l'AG).  Si une signature ne doit pas être surchagée, utilisez des tirets '-'."
-
 #. Default: "Default value for the item decision field"
 msgid "MeetingIDEA_label_defaultMeetingItemDecision"
 msgstr "Valeur par défaut du champ 'Délibération/Extrait du Procès-verbal'"
-
-#. Default: "Assembly which are specific to this meeting item"
-msgid "MeetingIDEA_label_itemAssembly"
-msgstr "Assemblée spécifique liée à ce point"
 
 #. Default: "Premeeting observations"
 msgid "MeetingIDEA_label_meetingAGobservations"
@@ -51,7 +38,7 @@ msgstr "Avant-séance"
 
 # MeetingItem
 #. Default: "Signatures delegation"
-msgid "MeetingIDEA_label_signatures"
+msgid "MeetingCommunes_descr_echevinServices" 
 msgstr "Délégation de signatures"
 
 # import what was done in MeetingCommunes
@@ -94,18 +81,6 @@ msgstr "Attention, comme ce point provient du CA communal, vous devez définir l
 msgid "check_intitiator_and_category"
 msgstr "Attention, en général si vous sélectionnez une personne 'A l'initative de ce point', la catégorie 'Points AG' doit être également sélectionnée.  Vérifiez vos données, si elles sont justes, ignorez cet avertissement, il disparaîtra une fois le point 'validé'."
 
-#. Default: "Item created from a CA item"
-msgid "create_to_meeting-config-AG_from_meeting-config-CA_comments"
-msgstr "Point créé depuis un point CA"
-
-#. Default: "Decision"
-msgid "decision"
-msgstr "Extrait du Procès-verbal"
-
-#. Default: "Decisions"
-msgid "decisions"
-msgstr "Procès-verbal"
-
 #. Default: "Default value for the item decision field"
 msgid "default_meetingitem_decision"
 msgstr "Définissez ici le texte prédéfini qui sera présent dans le champ 'Délibération/Extrait du Procès-verbal' chaque fois qu'un utilisateur crée un nouveau point."
@@ -123,19 +98,6 @@ msgstr "Configurer PloneMeeting"
 msgid "hs_welcome_title"
 msgstr "Bienvenue sur PloneMeeting!"
 
-#. Default: "Public meeting"
-msgid "ip_public"
-msgstr "Séance publique"
-
-#. Default: "Closed session"
-msgid "ip_secret"
-msgstr "Huis clos"
-
-# Other
-#. Default: "Late items"
-msgid "late_presented_items"
-msgstr "Points ajoutés à la séance après validation par le CD de celle-ci"
-
 #. Default: "Assembly"
 msgid "listingheader_premeeting_assembly"
 msgstr "Assemblée"
@@ -151,14 +113,6 @@ msgstr "Description dans l'Ordre du jour"
 #. Default: "Choose advisers that will have to issue an optional advice for this item"
 msgid "optional_advisers_item_descr"
 msgstr "Sélectionnez les groupes qui pourront remettre un avis sur ce point. Sélectionnez plusieurs groupes à l'aide de CTRL+clic"
-
-#. Default: "Decision"
-msgid "portletdecisions_title"
-msgstr "Procès-verbaux"
-
-#. Default: "Meeting"
-msgid "portletmeetings_title"
-msgstr "Ordres du jour"
 
 #. Default: "PowerObservers"
 msgid "powerObserversGroupTitle"
@@ -195,10 +149,6 @@ msgstr "Directeur"
 #. Default: "Configure PloneMeeting"
 msgid "search_advanced"
 msgstr "Configurer PloneMeeting"
-
-#. Default: "Every decisions"
-msgid "searchalldecisions"
-msgstr "tous les PVs"
 
 #. Default: "corrected items"
 msgid "searchcorrecteditems"
@@ -297,14 +247,6 @@ msgstr "A évoquer en séance, cliquez sur l'image pour prendre acte de ce point
 msgid "meetingCDGroupTitle"
 msgstr "Conseil de Direction"
 
-#. Default: "Decision used when the item is delayed"
-msgid "PloneMeeting_label_itemDecisionReportText"
-msgstr "Décision du point lors d'un report"
-
-#. Default: "When an item is delay, the decision will be replace by the text defined here, as a TAL (Tag Attribute Language) expression whose context includes the name 'here' that represents the impacted item. If you don't know TAL, you may learn it <a href=\"http://zope.org/Documentation/Books/ZopeBook/2_6Edition/ZPT.stx\">here</a>."
-msgid "item_decision_report_text_descr"
-msgstr "Lorsque le point est reporté, la décision sera remplacée par le texte défini ici, sous la forme d'une expression TAL (Tag Attribute Language) dans laquelle le nom 'here', représentant le point courant, peut être utilisé. Voici un exemple (sans les guillemets) : \"python:'&lt;p&gt;%s&lt;/p&gt;&lt;p&gt;Le collège décide de reporter le point&lt;/p&gt;' % here.getDecision()\""
-
 #. Default: "Observations"
 msgid "PloneMeeting_itemObservations"
 msgstr "Interventions en séance"
@@ -320,3 +262,11 @@ msgstr "Choississez vos axes stratégiques"
 #. Default: "StrategicAxis"
 msgid "PloneMeeting_label_strategicAxis"
 msgstr "Axes Stratégiques"
+
+#. Default: "Initialize the item decision when deciding meeting" 
+msgid "MeetingCommunes_label_initItemDecisionIfEmptyOnDecide" 
+msgstr "" 
+ 
+#. Default: "If you check this box, when a meeting will be decided, if an item does not have a decision defined, this decision will be automatically filled with title and description of the item" 
+msgid "init_item_decision_if_empty_on_decide" 
+msgstr "Si cette case est cochée, lorsqu'une séance passera 'En rédaction du PV', pour tous les points dont le champ 'Décision' est vide, ce champ sera automatiquement rempli avec une concaténation de ce qui est défini dans le titre et la description du point"

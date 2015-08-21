@@ -1,20 +1,17 @@
 from setuptools import setup, find_packages
 import os
 
-version = '3.2.0.1-dev'
+version = '3.3.0-dev'
 
 setup(name='Products.MeetingIDEA',
       version=version,
-      description="Official meetings management for college and council of belgian communes (PloneMeeting extension profile)",
-      long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
-      classifiers=[
-        "Programming Language :: Python",
-        ],
+      description="PloneMeeting profile for IDEA, IC",
+      long_description=open("README.txt").read() + "\n" + open(os.path.join("docs", "HISTORY.txt")).read(),
+      classifiers=["Programming Language :: Python", ],
       keywords='',
       author='',
       author_email='',
-      url='http://www.communesplone.org/les-outils/applications-metier/gestion-des-deliberations',
+      url='http://www.imio.be/produits/gestion-des-deliberations',
       license='GPL',
       packages=find_packages('src'),
       package_dir={'': 'src'},
@@ -22,20 +19,21 @@ setup(name='Products.MeetingIDEA',
       include_package_data=True,
       zip_safe=False,
       extras_require=dict(
-            test=['unittest2', 'zope.testing', 'plone.testing',
-                  'plone.app.testing','communesplone.iconified_document_actions',
-                  'Products.CMFPlacefulWorkflow', 'zope.testing',
-                  'Products.PloneTestCase', 'collective.ckeditor', 'plonetheme.imioapps'],
-            templates=['Genshi',
-                  ]),
+          test=['unittest2',
+                'zope.testing',
+                'plone.testing',
+                'plone.app.testing',
+                'plone.app.robotframework',
+                'Products.CMFPlacefulWorkflow',
+                'zope.testing',
+                'Products.MeetingCommunes',
+                'Products.PloneTestCase'],
+              templates=['Genshi',
+                         ]),
       install_requires=[
           'setuptools',
-          'appy',
           'Products.CMFPlone',
           'Pillow',
-          'communesplone.iconified_document_actions',
-          'Products.PloneMeeting',
-          'collective.ckeditor',
-          'plonetheme.imioapps'],
+          'Products.PloneMeeting', ],
       entry_points={},
       )

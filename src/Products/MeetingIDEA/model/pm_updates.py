@@ -1,5 +1,10 @@
-from Products.Archetypes.atapi import *
+from Products.Archetypes.atapi import RichWidget
 from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
+from Products.Archetypes.atapi import TextField
+from Products.Archetypes.atapi import ReferenceField
+from Products.PloneMeeting.config import WriteRiskyConfig
+from Products.Archetypes.atapi import BooleanField
+from Products.Archetypes.atapi import Schema
 from Products.PloneMeeting.Meeting import Meeting
 from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
@@ -69,21 +74,19 @@ Meeting.schema = update_meeting_schema(Meeting.schema)
 
 def update_config_schema(baseSchema):
     specificSchema = Schema((
-        TextField(
-            name='itemDecisionReportText',
-            widget=TextAreaWidget(
-                description="ItemDecisionReportText",
-                description_msgid="item_decision_report_text_descr",
-                label='ItemDecisionReportText',
-                label_msgid='PloneMeeting_label_itemDecisionReportText',
-                i18n_domain='PloneMeeting',
-            ),
-            allowable_content_types=('text/plain', 'text/html', ),
-            default_output_type="text/plain",
-        )
+        BooleanField(
+            name='initItemDecisionIfEmptyOnDecide',
+            default=True,
+            widget=BooleanField._properties['widget'](
+                description="InitItemDecisionIfEmptyOnDecide",
+                description_msgid="init_item_decision_if_empty_on_decide",
+                label='Inititemdecisionifemptyondecide',
+                label_msgid='MeetingCommunes_label_initItemDecisionIfEmptyOnDecide',
+                i18n_domain='PloneMeeting'),
+            write_permission=WriteRiskyConfig,
+        ),
     ),)
     completeConfigSchema = baseSchema + specificSchema.copy()
-    completeConfigSchema.moveField('itemDecisionReportText', after='budgetDefault')
     return completeConfigSchema
 MeetingConfig.schema = update_config_schema(MeetingConfig.schema)
 

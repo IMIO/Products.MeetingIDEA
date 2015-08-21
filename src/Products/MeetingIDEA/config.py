@@ -2,14 +2,14 @@
 #
 # File: MeetingIDEA.py
 #
-# Copyright (c) 2015 by CommunesPlone
+# Copyright (c) 2015 by IMIO
 # Generator: ArchGenXML Version 2.7
 #            http://plone.org/products/archgenxml
 #
 # GNU General Public License (GPL)
 #
 
-__author__ = """Andre Nuyens <andre@imio.be>"""
+__author__ = """Andre Nuyens <andre.nuyens@imio.be>"""
 __docformat__ = 'plaintext'
 
 
@@ -24,6 +24,7 @@ __docformat__ = 'plaintext'
 
 from Products.CMFCore.permissions import setDefaultRoles
 ##code-section config-head #fill in your manual code here
+from collections import OrderedDict
 ##/code-section config-head
 
 
@@ -50,7 +51,7 @@ IDEAROLES['departmentheads'] = 'MeetingDepartmentHead'
 PMconfig.MEETINGROLES.update(IDEAROLES)
 PMconfig.MEETING_GROUP_SUFFIXES = PMconfig.MEETINGROLES.keys()
 
-from Products.PloneMeeting import config as PMconfig
+from Products.PloneMeeting.model import adaptations
 MIDEA_RETURN_TO_PROPOSING_GROUP_MAPPINGS = {'backTo_presented_from_returned_to_proposing_group':
                                             ['created', ],
                                             'backTo_validated_by_cd_from_returned_to_proposing_group':
@@ -58,7 +59,11 @@ MIDEA_RETURN_TO_PROPOSING_GROUP_MAPPINGS = {'backTo_presented_from_returned_to_p
                                             'backTo_itemfrozen_from_returned_to_proposing_group':
                                             ['frozen', 'decided', ],
                                             'NO_MORE_RETURNABLE_STATES': ['closed', 'archived', ], }
-PMconfig.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(MIDEA_RETURN_TO_PROPOSING_GROUP_MAPPINGS)
+adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(MIDEA_RETURN_TO_PROPOSING_GROUP_MAPPINGS)
+
+IDEAMEETINGREVIEWERS = OrderedDict([('reviewers', 'departmentheads'),
+                                    ('departmentheads', 'proposed_to_departmenthead'), ])
+PMconfig.MEETINGREVIEWERS = IDEAMEETINGREVIEWERS
 ##/code-section config-bottom
 
 

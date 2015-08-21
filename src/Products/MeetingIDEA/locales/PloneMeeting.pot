@@ -24,21 +24,8 @@ msgstr ""
 msgid "Meeting config IDEA AG"
 msgstr ""
 
-#. Default: "If you don't fill this field, meeting assembly will be used for this item."
-msgid "MeetingIDEA_descr_assembly"
-msgstr ""
-
-# MeetingGroup
-#. Default: "Leave empty to use the signatures defined on the meeting"
-msgid "MeetingIDEA_descr_signatures"
-msgstr ""
-
 #. Default: "Default value for the item decision field"
 msgid "MeetingIDEA_label_defaultMeetingItemDecision"
-msgstr ""
-
-#. Default: "Assembly which are specific to this meeting item"
-msgid "MeetingIDEA_label_itemAssembly"
 msgstr ""
 
 #. Default: "Premeeting observations"
@@ -47,7 +34,7 @@ msgstr ""
 
 # MeetingItem
 #. Default: "Signatures delegation"
-msgid "MeetingIDEA_label_signatures"
+msgid "MeetingCommunes_descr_echevinServices" 
 msgstr ""
 
 # import what was done in MeetingCommunes
@@ -90,18 +77,6 @@ msgstr ""
 msgid "check_intitiator_and_category"
 msgstr ""
 
-#. Default: "Item created from a CA item"
-msgid "create_to_meeting-config-AG_from_meeting-config-CA_comments"
-msgstr ""
-
-#. Default: "Decision"
-msgid "decision"
-msgstr ""
-
-#. Default: "Decisions"
-msgid "decisions"
-msgstr ""
-
 #. Default: "Default value for the item decision field"
 msgid "default_meetingitem_decision"
 msgstr ""
@@ -119,19 +94,6 @@ msgstr ""
 msgid "hs_welcome_title"
 msgstr ""
 
-#. Default: "Public meeting"
-msgid "ip_public"
-msgstr ""
-
-#. Default: "Closed session"
-msgid "ip_secret"
-msgstr ""
-
-# Other
-#. Default: "Late items"
-msgid "late_presented_items"
-msgstr ""
-
 #. Default: "Assembly"
 msgid "listingheader_premeeting_assembly"
 msgstr ""
@@ -146,14 +108,6 @@ msgstr ""
 
 #. Default: "Choose advisers that will have to issue an optional advice for this item"
 msgid "optional_advisers_item_descr"
-msgstr ""
-
-#. Default: "Decision"
-msgid "portletdecisions_title"
-msgstr ""
-
-#. Default: "Meeting"
-msgid "portletmeetings_title"
 msgstr ""
 
 #. Default: "PowerObservers"
@@ -188,10 +142,6 @@ msgstr ""
 
 #. Default: "Configure PloneMeeting"
 msgid "search_advanced"
-msgstr ""
-
-#. Default: "Every decisions"
-msgid "searchalldecisions"
 msgstr ""
 
 #. Default: "corrected items"
@@ -291,14 +241,6 @@ msgstr ""
 msgid "meetingCDGroupTitle"
 msgstr ""
 
-#. Default: "Decision used when the item is delayed"
-msgid "PloneMeeting_label_itemDecisionReportText"
-msgstr ""
-
-#. Default: "When an item is delay, the decision will be replace by the text defined here, as a TAL (Tag Attribute Language) expression whose context includes the name 'here' that represents the impacted item. If you don't know TAL, you may learn it <a href=\"http://zope.org/Documentation/Books/ZopeBook/2_6Edition/ZPT.stx\">here</a>."
-msgid "item_decision_report_text_descr"
-msgstr ""
-
 #. Default: "Observations"
 msgid "PloneMeeting_itemObservations"
 msgstr ""
@@ -313,4 +255,12 @@ msgstr ""
 
 #. Default: "StrategicAxis"
 msgid "PloneMeeting_label_strategicAxis"
+msgstr ""
+
+#. Default: "Initialize the item decision when deciding meeting" 
+msgid "MeetingCommunes_label_initItemDecisionIfEmptyOnDecide" 
+msgstr "" 
+ 
+#. Default: "If you check this box, when a meeting will be decided, if an item does not have a decision defined, this decision will be automatically filled with title and description of the item" 
+msgid "init_item_decision_if_empty_on_decide" 
 msgstr ""

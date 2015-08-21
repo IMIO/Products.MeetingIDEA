@@ -2,14 +2,14 @@
 #
 # File: setuphandlers.py
 #
-# Copyright (c) 2015 by CommunesPlone
+# Copyright (c) 2015 by IMIO
 # Generator: ArchGenXML Version 2.7
 #            http://plone.org/products/archgenxml
 #
 # GNU General Public License (GPL)
 #
 
-__author__ = """Andre Nuyens <andre@imio.be>"""
+__author__ = """Andre Nuyens <andre.nuyens@imio.be>"""
 __docformat__ = 'plaintext'
 
 
@@ -173,21 +173,14 @@ def showHomeTab(context, site):
 
 def reorderSkinsLayers(context, site):
     """
-       Reinstall Products.plonemeetingskin and re-apply MeetingIDEA skins.xml step
-       as the reinstallation of MeetingIDEA and PloneMeeting changes the portal_skins layers order
+       Re-apply MeetingIDEA skins.xml step as the reinstallation of
+       MeetingIDEA and PloneMeeting changes the portal_skins layers order
     """
     if isNotMeetingIDEAProfile(context) and not istMeetingIDEAConfigureProfile:
         return
 
     logStep("reorderSkinsLayers", context)
-    try:
-        site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingIDEA:default', 'skins')
-        site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:default')
-        site.portal_setup.runAllImportStepsFromProfile(u'profile-plonetheme.imioapps:plonemeetingskin')
-    except KeyError:
-        # if the Products.MeetingIDEA profile is not available
-        # (not using MeetingIDEA or in testing?) we pass...
-        pass
+    site.portal_setup.runImportStepFromProfile(u'profile-Products.MeetingIDEA:default', 'skins')
 
 
 def finalizeExampleInstance(context):

@@ -1,5 +1,16 @@
 # -*- coding: utf-8 -*-
-from Products.PloneMeeting.profiles import *
+from Products.PloneMeeting.config import MEETINGREVIEWERS
+from Products.PloneMeeting.profiles import CategoryDescriptor
+from Products.PloneMeeting.profiles import GroupDescriptor
+from Products.PloneMeeting.profiles import ItemTemplateDescriptor
+from Products.PloneMeeting.profiles import MeetingConfigDescriptor
+from Products.PloneMeeting.profiles import MeetingFileTypeDescriptor
+from Products.PloneMeeting.profiles import MeetingUserDescriptor
+from Products.PloneMeeting.profiles import PloneGroupDescriptor
+from Products.PloneMeeting.profiles import PloneMeetingConfiguration
+from Products.PloneMeeting.profiles import PodTemplateDescriptor
+from Products.PloneMeeting.profiles import RecurringItemDescriptor
+from Products.PloneMeeting.profiles import UserDescriptor
 
 # File types -------------------------------------------------------------------
 
@@ -37,6 +48,44 @@ itemTemplate = PodTemplateDescriptor('itemTemplate', 'Meeting item')
 itemTemplate.podTemplate = 'Item.odt'
 itemTemplate.podCondition = 'python:here.meta_type=="MeetingItem"'
 
+# item templates
+template1 = ItemTemplateDescriptor(id='template1',
+                                   title='Tutelle CPAS',
+                                   description='<p>Tutelle CPAS</p>',
+                                   category='',
+                                   proposingGroup='developers',
+                                   templateUsingGroups=['developers', 'vendors'],
+                                   decision="""<p>Vu la loi du 8 juillet 1976 organique des centres publics d'action sociale et plus particulièrement son article 111;</p>
+<p>Vu l'Arrêté du Gouvernement Wallon du 22 avril 2004 portant codification de la législation relative aux pouvoirs locaux tel que confirmé par le décret du 27 mai 2004 du Conseil régional wallon;</p>
+<p>Attendu que les décisions suivantes du Bureau permanent/du Conseil de l'Action sociale du XXX ont été reçues le XXX dans le cadre de la tutelle générale sur les centres publics d'action sociale :</p>
+<p>- ...;</p>
+<p>- ...;</p>
+<p>- ...</p>
+<p>Attendu que ces décisions sont conformes à la loi et à l'intérêt général;</p>
+<p>Déclare à l'unanimité que :</p>
+<p><strong>Article 1er :</strong></p>
+<p>Les décisions du Bureau permanent/Conseil de l'Action sociale visées ci-dessus sont conformes à la loi et à l'intérêt général et qu'il n'y a, dès lors, pas lieu de les annuler.</p>
+<p><strong>Article 2 :</strong></p>
+<p>Copie de la présente délibération sera transmise au Bureau permanent/Conseil de l'Action sociale.</p>""")
+template2 = ItemTemplateDescriptor(id='template2',
+                                   title='Contrôle médical systématique agent contractuel',
+                                   description='<p>Contrôle médical systématique agent contractuel</p>',
+                                   category='',
+                                   proposingGroup='vendors',
+                                   templateUsingGroups=['vendors', ],
+                                   decision="""<p>Vu la loi du 26 mai 2002 instituant le droit à l’intégration sociale;</p>
+<p>Vu la délibération du Conseil communal du 29 juin 2009 concernant le cahier spécial des charges relatif au marché de services portant sur le contrôle des agents communaux absents pour raisons médicales;</p>
+<p>Vu sa délibération du 17 décembre 2009 désignant le docteur XXX en qualité d’adjudicataire pour la mission de contrôle médical des agents de l’Administration communale;</p>
+<p>Vu également sa décision du 17 décembre 2009 d’opérer les contrôles médicaux de manière systématique et pour une période d’essai d’un trimestre;</p>
+<p>Attendu qu’un certificat médical a été  reçu le XXX concernant XXX la couvrant du XXX au XXX, avec la mention « XXX »;</p>
+<p>Attendu que le Docteur XXX a transmis au service du Personnel, par fax, le même jour à XXX le rapport de contrôle mentionnant l’absence de XXX ce XXX à XXX;</p>
+<p>Considérant que XXX avait été informée par le Service du Personnel de la mise en route du système de contrôle systématique que le médecin-contrôleur;</p>
+<p>Considérant qu’ayant été absent(e) pour maladie la semaine précédente elle avait reçu la visite du médecin-contrôleur;</p>
+<p>DECIDE :</p>
+<p><strong>Article 1</strong> : De convoquer XXX devant  Monsieur le Secrétaire communal f.f. afin de lui rappeler ses obligations en la matière.</p>
+<p><strong>Article 2</strong> :  De prévenir XXX, qu’en cas de récidive, il sera proposé par le Secrétaire communal au Collège de transformer les jours de congés de maladie en absence injustifiée (retenue sur traitement avec application de la loi du 26 mai 2002 citée ci-dessus).</p>
+<p><strong>Article 3</strong> : De charger le service du personnel du suivi de ce dossier.</p>""")
+
 # Categories -------------------------------------------------------------------
 categories = [
     CategoryDescriptor('deployment', 'Deployment topics'),
@@ -52,25 +101,51 @@ categories = [
 ]
 
 # Users and groups -------------------------------------------------------------
-pmManager = UserDescriptor('pmManager', ['MeetingManager'])
+pmManager = UserDescriptor('pmManager', [])
 pmCreator1 = UserDescriptor('pmCreator1', [])
 pmCreator1b = UserDescriptor('pmCreator1b', [])
 pmReviewer1 = UserDescriptor('pmReviewer1', [])
+pmReviewerLevel1 = UserDescriptor('pmReviewerLevel1', [],
+                                  email="pmreviewerlevel1@plonemeeting.org", fullname='M. PMReviewer Level One')
 pmCreator2 = UserDescriptor('pmCreator2', [])
 pmReviewer2 = UserDescriptor('pmReviewer2', [])
+pmReviewerLevel2 = UserDescriptor('pmReviewerLevel2', [],
+                                  email="pmreviewerlevel2@plonemeeting.org", fullname='M. PMReviewer Level Two')
 pmAdviser1 = UserDescriptor('pmAdviser1', [])
 pmDepartmentHead1 = UserDescriptor('pmDepartmentHead1', [])
 pmDirector1 = UserDescriptor('pmDirector1', [])
 pmDirector2 = UserDescriptor('pmDirector2', [])
 voter1 = UserDescriptor('voter1', [], fullname='M. Voter One')
 voter2 = UserDescriptor('voter2', [], fullname='M. Voter Two')
-powerobserver1 = UserDescriptor('powerobserver1', [], fullname='M. Power Observer1')
-# powerobserver1 is MeetingPowerObserverLocal because in the meetingPma '_powerobservers' group
-plonemeeting_assembly_powerobservers = PloneGroupDescriptor('meeting-config-council_powerobservers',
-                                                            'meeting-config-council_powerobservers',
-                                                            [])
-powerobserver1.ploneGroups = [plonemeeting_assembly_powerobservers, ]
-powerobserver2 = UserDescriptor('powerobserver2', [], fullname='M. Power Observer2')
+powerobserver1 = UserDescriptor('powerobserver1',
+                                [],
+                                email="powerobserver1@plonemeeting.org",
+                                fullname='M. Power Observer1')
+# powerobserver1 is 'power observer' because in the meeting-config-college '_powerobservers' group
+college_powerobservers = PloneGroupDescriptor('meeting-config-college_powerobservers',
+                                              'meeting-config-college_powerobservers',
+                                              [])
+powerobserver1.ploneGroups = [college_powerobservers, ]
+powerobserver2 = UserDescriptor('powerobserver2',
+                                [],
+                                email="powerobserver2@plonemeeting.org",
+                                fullname='M. Power Observer2')
+restrictedpowerobserver1 = UserDescriptor('restrictedpowerobserver1',
+                                          [],
+                                          email="restrictedpowerobserver1@plonemeeting.org",
+                                          fullname='M. Restricted Power Observer 1')
+college_restrictedpowerobservers = PloneGroupDescriptor('meeting-config-college_restrictedpowerobservers',
+                                                        'meeting-config-college_restrictedpowerobservers',
+                                                        [])
+restrictedpowerobserver1.ploneGroups = [college_restrictedpowerobservers, ]
+restrictedpowerobserver2 = UserDescriptor('restrictedpowerobserver2',
+                                          [],
+                                          email="restrictedpowerobserver2@plonemeeting.org",
+                                          fullname='M. Restricted Power Observer 2')
+council_restrictedpowerobservers = PloneGroupDescriptor('meeting-config-council_restrictedpowerobservers',
+                                                        'meeting-config-council_restrictedpowerobservers',
+                                                        [])
+restrictedpowerobserver2.ploneGroups = [council_restrictedpowerobservers, ]
 
 developers = GroupDescriptor('developers', 'Developers', 'Devel')
 developers.creators.append(pmCreator1)
@@ -93,6 +168,11 @@ developers.reviewers.append(pmManager)
 
 setattr(developers, 'signatures', 'developers signatures')
 setattr(developers, 'echevinServices', 'developers')
+# put pmReviewerLevel1 in first level of reviewers from what is in MEETINGREVIEWERS
+getattr(developers, MEETINGREVIEWERS.keys()[-1]).append(pmReviewerLevel1)
+# put pmReviewerLevel2 in second level of reviewers from what is in MEETINGREVIEWERS
+getattr(developers, MEETINGREVIEWERS.keys()[0]).append(pmReviewerLevel2)
+
 
 #give an advice on recurring items
 vendors = GroupDescriptor('vendors', 'Vendors', 'Devil')
@@ -129,24 +209,19 @@ muser_voter2 = MeetingUserDescriptor('voter2', duty='Voter2',
 caMeeting = MeetingConfigDescriptor(
     'meeting-config-college', 'College Communal',
     'College communal', isDefault=True)
+caMeeting.meetingManagers = ['pmManager', ]
 caMeeting.assembly = 'Pierre Dupont - Bourgmestre,\n' \
-                          'Charles Exemple - 1er Echevin,\n' \
-                          'Echevin Un, Echevin Deux, Echevin Trois - Echevins,\n' \
-                          'Jacqueline Exemple, Responsable du CPAS'
+                     'Charles Exemple - 1er Echevin,\n' \
+                     'Echevin Un, Echevin Deux, Echevin Trois - Echevins,\n' \
+                     'Jacqueline Exemple, Responsable du CPAS'
 caMeeting.signatures = 'Pierre Dupont, Bourgmestre - Charles Exemple, Secrétaire communal'
-caMeeting.certifiedSignatures = 'Mr Présent Actuellement, Bourgmestre ff - Charles Exemple, Secrétaire communal'
+caMeeting.certifiedSignatures = []
 caMeeting.categories = categories
 caMeeting.shortName = 'College'
 caMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, itemAnnex,
                                    annexeDecision, overheadAnalysis, marketingAnalysis,
                                    adviceAnnex, adviceLegalAnalysis]
 caMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned',)
-caMeeting.xhtmlTransformFields = ('MeetingItem.description',
-                                       'MeetingItem.detailedDescription',
-                                       'MeetingItem.decision',
-                                       'MeetingItem.observations',
-                                       'Meeting.observations', )
-caMeeting.xhtmlTransformTypes = ('removeBlanks',)
 caMeeting.itemWorkflow = 'meetingitemcaidea_workflow'
 caMeeting.meetingWorkflow = 'meetingcaidea_workflow'
 caMeeting.itemConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCAIDEAWorkflowConditions'
@@ -154,6 +229,26 @@ caMeeting.itemActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCA
 caMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowConditions'
 caMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
 caMeeting.transitionsToConfirm = []
+caMeeting.transitionsForPresentingAnItem = ['validate', 'present', ]
+caMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'freeze',
+                                                         'item_transition': 'itemfreeze'},
+
+                                                        {'meeting_transition': 'decide',
+                                                         'item_transition': 'itemfreeze'},
+
+                                                        {'meeting_transition': 'publish_decisions',
+                                                         'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'publish_decisions',
+                                                         'item_transition': 'accept'},
+
+                                                        {'meeting_transition': 'close',
+                                                         'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'close',
+                                                         'item_transition': 'accept'},
+
+                                                        {'meeting_transition': 'backToCreated',
+                                                         'item_transition': 'backToPresented'},)
+
 caMeeting.meetingTopicStates = ('created', 'frozen')
 caMeeting.decisionTopicStates = ('decided', 'closed')
 caMeeting.recordItemHistoryStates = []
@@ -162,98 +257,52 @@ caMeeting.maxDaysDecisions = 60
 caMeeting.meetingAppDefaultView = 'topic_searchmyitems'
 caMeeting.itemDocFormats = ('odt', 'pdf')
 caMeeting.meetingDocFormats = ('odt', 'pdf')
-caMeeting.useAdvices = False
+caMeeting.useAdvices = True
 caMeeting.itemAdviceStates = ['proposed_to_director', ]
 caMeeting.itemAdviceEditStates = ['proposed_to_director', 'validated']
 caMeeting.itemAdviceViewStates = ['presented', ]
+caMeeting.transitionReinitializingDelays = 'backToItemCreated'
 caMeeting.enforceAdviceMandatoriness = False
 caMeeting.itemPowerObserversStates = ('itemcreated', 'presented', 'accepted', 'delayed', 'refused')
 caMeeting.itemDecidedStates = ['accepted', 'refused', 'delayed', 'accepted_but_modified', 'pre_accepted']
-caMeeting.sortingMethodOnAddItem = 'on_proposing_groups'
+caMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_proposing_groups',
+                                        'reverse': '0'}, )
 caMeeting.useGroupsAsCategories = True
 caMeeting.meetingPowerObserversStates = ('frozen', 'published', 'decided', 'closed')
 caMeeting.useCopies = True
 caMeeting.selectableCopyGroups = [developers.getIdSuffixed('reviewers'), vendors.getIdSuffixed('reviewers'), ]
 caMeeting.podTemplates = [agendaTemplate, decisionsTemplate, itemTemplate]
-caMeeting.meetingConfigsToCloneTo = ['meeting-config-council', ]
-
+caMeeting.meetingConfigsToCloneTo = [{'meeting_config': 'meeting-config-council',
+                                     'trigger_workflow_transitions_until': '__nothing__'}, ]
 caMeeting.recurringItems = [
     RecurringItemDescriptor(
         id='recItem1',
         description='<p>This is the first recurring item.</p>',
         title='Recurring item #1',
-        proposingGroup='',
-        category='developers',
+        proposingGroup='developers',
         decision='First recurring item approved'),
 
     RecurringItemDescriptor(
         id='recItem2',
         title='Recurring item #2',
         description='<p>This is the second recurring item.</p>',
-        proposingGroup='',
-        category='developers',
-        decision='Second recurring item approved'),
-
-    RecurringItemDescriptor(
-        id='template1',
-        title='Tutelle CPAS',
-        description='Tutelle CPAS',
-        category='',
         proposingGroup='developers',
-        templateUsingGroups=['developers', 'vendors'],
-        usages=['as_template_item', ],
-        decision="""<p>Vu la loi du 8 juillet 1976 organique des centres publics d'action sociale et plus particulièrement son article 111;</p>
-<p>Vu l'Arrêté du Gouvernement Wallon du 22 avril 2004 portant codification de la législation relative aux pouvoirs locaux tel que confirmé par le décret du 27 mai 2004 du Conseil régional wallon;</p>
-<p>Attendu que les décisions suivantes du Bureau permanent/du Conseil de l'Action sociale du XXX ont été reçues le XXX dans le cadre de la tutelle générale sur les centres publics d'action sociale :</p>
-<p>- ...;</p>
-<p>- ...;</p>
-<p>- ...</p>
-<p>Attendu que ces décisions sont conformes à la loi et à l'intérêt général;</p>
-<p>Déclare à l'unanimité que :</p>
-<p><strong>Article 1er :</strong></p>
-<p>Les décisions du Bureau permanent/Conseil de l'Action sociale visées ci-dessus sont conformes à la loi et à l'intérêt général et qu'il n'y a, dès lors, pas lieu de les annuler.</p>
-<p><strong>Article 2 :</strong></p>
-<p>Copie de la présente délibération sera transmise au Bureau permanent/Conseil de l'Action sociale.</p>"""),
-    RecurringItemDescriptor(
-        id='template2',
-        title='Contrôle médical systématique agent contractuel',
-        description='Contrôle médical systématique agent contractuel',
-        category='',
-        proposingGroup='vendors',
-        templateUsingGroups=['vendors', ],
-        usages=['as_template_item', ],
-        decision="""
-            <p>Vu la loi du 26 mai 2002 instituant le droit à l’intégration sociale;</p>
-<p>Vu la délibération du Conseil communal du 29 juin 2009 concernant le cahier spécial des charges relatif au marché de services portant sur le contrôle des agents communaux absents pour raisons médicales;</p>
-<p>Vu sa délibération du 17 décembre 2009 désignant le docteur XXX en qualité d’adjudicataire pour la mission de contrôle médical des agents de l’Administration communale;</p>
-<p>Vu également sa décision du 17 décembre 2009 d’opérer les contrôles médicaux de manière systématique et pour une période d’essai d’un trimestre;</p>
-<p>Attendu qu’un certificat médical a été  reçu le XXX concernant XXX la couvrant du XXX au XXX, avec la mention « XXX »;</p>
-<p>Attendu que le Docteur XXX a transmis au service du Personnel, par fax, le même jour à XXX le rapport de contrôle mentionnant l’absence de XXX ce XXX à XXX;</p>
-<p>Considérant que XXX avait été informée par le Service du Personnel de la mise en route du système de contrôle systématique que le médecin-contrôleur;</p>
-<p>Considérant qu’ayant été absent(e) pour maladie la semaine précédente elle avait reçu la visite du médecin-contrôleur;</p>
-<p>DECIDE :</p>
-<p><strong>Article 1</strong> : De convoquer XXX devant  Monsieur le Secrétaire communal f.f. afin de lui rappeler ses obligations en la matière.</p>
-<p><strong>Article 2</strong> :  De prévenir XXX, qu’en cas de récidive, il sera proposé par le Secrétaire communal au Collège de transformer les jours de congés de maladie en absence injustifiée (retenue sur traitement avec application de la loi du 26 mai 2002 citée ci-dessus).</p>
-<p><strong>Article 3</strong> : De charger le service du personnel du suivi de ce dossier.</p>"""),
+        decision='Second recurring item approved'),
 ]
+caMeeting.itemTemplates = (template1, template2)
 
 # Conseil communal
 agMeeting = MeetingConfigDescriptor(
     'meeting-config-council', 'Conseil Communal',
     'Conseil Communal')
+agMeeting.meetingManagers = ['pmManager', ]
 agMeeting.assembly = 'Default assembly'
 agMeeting.signatures = 'Default signatures'
-agMeeting.certifiedSignatures = 'Mr Présent Actuellement, Bourgmestre ff - Charles Exemple, Secrétaire communal'
+agMeeting.certifiedSignatures = []
 agMeeting.categories = categories
 agMeeting.shortName = 'Council'
 agMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier,
-                                   itemAnnex, annexeDecision, adviceAnnex, adviceLegalAnalysis]
-agMeeting.xhtmlTransformFields = ('MeetingItem.description',
-                                       'MeetingItem.detailedDescription',
-                                       'MeetingItem.decision',
-                                       'MeetingItem.observations',
-                                       'Meeting.observations', )
-agMeeting.xhtmlTransformTypes = ('removeBlanks',)
+                              itemAnnex, annexeDecision, adviceAnnex, adviceLegalAnalysis]
 agMeeting.itemWorkflow = 'meetingitemcaidea_workflow'
 agMeeting.meetingWorkflow = 'meetingcaidea_workflow'
 agMeeting.itemConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCAIDEAWorkflowConditions'
@@ -261,18 +310,49 @@ agMeeting.itemActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCA
 agMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowConditions'
 agMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
 agMeeting.transitionsToConfirm = []
+agMeeting.transitionsForPresentingAnItem = ['validate', 'present', ]
+agMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'freeze',
+                                                         'item_transition': 'itemfreeze'},
+
+                                                        {'meeting_transition': 'publish',
+                                                         'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'publish',
+                                                         'item_transition': 'itempublish'},
+
+                                                        {'meeting_transition': 'decide',
+                                                         'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'decide',
+                                                         'item_transition': 'itempublish'},
+
+                                                        {'meeting_transition': 'publish_decisions',
+                                                         'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'publish_decisions',
+                                                         'item_transition': 'itempublish'},
+                                                        {'meeting_transition': 'publish_decisions',
+                                                         'item_transition': 'accept'},
+
+                                                        {'meeting_transition': 'close',
+                                                         'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'close',
+                                                         'item_transition': 'itempublish'},
+                                                        {'meeting_transition': 'close',
+                                                         'item_transition': 'accept'},
+
+                                                        {'meeting_transition': 'backToCreated',
+                                                         'item_transition': 'backToPresented'},)
+
 agMeeting.meetingTopicStates = ('created', 'frozen', 'published')
 agMeeting.decisionTopicStates = ('decided', 'closed')
+agMeeting.itemAdviceStates = ('validated',)
 agMeeting.recordItemHistoryStates = []
 agMeeting.maxShownMeetings = 5
 agMeeting.maxDaysDecisions = 60
 agMeeting.meetingAppDefaultView = 'topic_searchmyitems'
-agMeeting.itemDocFormats = ('odt', 'pdf')
-agMeeting.meetingDocFormats = ('odt', 'pdf')
 agMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned',)
-agMeeting.sortingMethodOnAddItem = 'on_categories'
+agMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_categories',
+                                        'reverse': '0'}, )
 agMeeting.useGroupsAsCategories = False
-agMeeting.useAdvices = True
+agMeeting.useAdvices = False
 agMeeting.itemAdviceStates = ['proposed_to_director', ]
 agMeeting.itemAdviceEditStates = ['proposed_to_director', 'validated']
 agMeeting.itemAdviceViewStates = ['presented', ]
@@ -286,6 +366,7 @@ agMeeting.selectableCopyGroups = [developers.getIdSuffixed('reviewers'), vendors
 agMeeting.useVotes = True
 agMeeting.meetingUsers = [muser_voter1, muser_voter2, ]
 agMeeting.recurringItems = []
+agMeeting.itemTemplates = (template1, template2)
 
 #no recurring items for this meetingConfig, only for tests !!!
 #so we can test a meetingConfig with recurring items (college) and without (council)
@@ -295,5 +376,6 @@ data = PloneMeetingConfiguration(
     meetingConfigs=(caMeeting, agMeeting),
     groups=(developers, vendors, endUsers))
 data.unoEnabledPython = '/usr/bin/python'
-data.usersOutsideGroups = [voter1, voter2, powerobserver1, powerobserver2]
+data.usersOutsideGroups = [voter1, voter2, powerobserver1, powerobserver2,
+                           restrictedpowerobserver1, restrictedpowerobserver2]
 # ------------------------------------------------------------------------------
