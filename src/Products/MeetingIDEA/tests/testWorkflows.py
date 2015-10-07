@@ -46,25 +46,25 @@ class testWorkflows(MeetingIDEATestCase, mctw):
             creation of some items, and ends by closing a meeting.
             test only CA
         """
-        self._testWholeDecisionProcessCollege()
+        self._testWholeDecisionProcessCA()
 
-    def _testWholeDecisionProcessCollege(self):
+    def _testWholeDecisionProcessCA(self):
         '''This test covers the whole decision workflow. It begins with the
            creation of some items, and ends by closing a meeting.'''
         # pmCreator1 creates an item with 1 annex and proposes it
         self.changeUser('pmCreator1')
         item1 = self.create('MeetingItem', title='The first item')
         annex1 = self.addAnnex(item1)
-        self.addAnnex(item1, decisionRelated=True)
+        self.addAnnex(item1, relatedTo='item_decision')
         self.do(item1, 'proposeToDepartmentHead')
-        self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
         # the DepartmentHead validation level
         self.changeUser('pmDepartmentHead1')
         self.failUnless(self.hasPermission('Modify portal content', (item1, annex1)))
         self.do(item1, 'proposeToDirector')
-        self.assertRaises(Unauthorized, self.addAnnex, item1, decisionRelated=True)
+        self.assertRaises(Unauthorized, self.addAnnex, item1, relatedTo='item_decision')
         self.failIf(self.transitions(item1))  # He may trigger no more action
         self.failIf(self.hasPermission('PloneMeeting: Add annex', item1))
         # the reviwer (Director) can validate item
@@ -75,7 +75,7 @@ class testWorkflows(MeetingIDEATestCase, mctw):
         # pmManager creates a meeting
         self.changeUser('pmManager')
         meeting = self.create('Meeting', date='2007/12/11 09:00:00')
-        self.addAnnex(item1, decisionRelated=True)
+        self.addAnnex(item1, relatedTo='item_decision')
         # pmCreator2 creates and proposes an item
         self.changeUser('pmCreator2')
         item2 = self.create('MeetingItem', title='The second item',
@@ -168,10 +168,10 @@ class testWorkflows(MeetingIDEATestCase, mctw):
         self.assertEquals('validated_by_cd', wftool.getInfoFor(item1, 'review_state'))
         self.assertEquals('validated_by_cd', wftool.getInfoFor(item2, 'review_state'))
         self.do(meeting, 'backToCreated')
-        #when a point is in 'validated_by_cd' it's must rest in this state
-        #because normally we backToCreated for add new point
-        self.assertEquals('validated_by_cd', wftool.getInfoFor(item1, 'review_state'))
-        self.assertEquals('validated_by_cd', wftool.getInfoFor(item2, 'review_state'))
+        #when correcting the meeting back to created, the items must be corrected
+        #back to "presented"
+        self.assertEquals('presented', wftool.getInfoFor(item1, 'review_state'))
+        self.assertEquals('presented', wftool.getInfoFor(item2, 'review_state'))
         self.do(meeting, 'validateByCD')
         #every items must be in the 'itemfrozen' state if we freeze the meeting
         self.do(meeting, 'freeze')
@@ -180,15 +180,15 @@ class testWorkflows(MeetingIDEATestCase, mctw):
         #when correcting the meeting back to created, the items must be corrected
         #when correcting the meeting back to created, the items must be corrected back to "presented"
         self.do(meeting, 'backToValidatedByCD')
-        #when a point is in 'itemfrozen' it's must rest in this state
-        #because normally we backToCreated for add new point
-        self.assertEquals('itemfrozen', wftool.getInfoFor(item1, 'review_state'))
-        self.assertEquals('itemfrozen', wftool.getInfoFor(item2, 'review_state'))
+        #when correcting the meeting back to created, the items must be corrected
+        #when correcting the meeting back to created, the items must be corrected back to "validated_by_cd"
+        self.assertEquals('validated_by_cd', wftool.getInfoFor(item1, 'review_state'))
+        self.assertEquals('validated_by_cd', wftool.getInfoFor(item2, 'review_state'))
         self.do(meeting, 'backToCreated')
-        #when a point is in 'itemfrozen' it's must rest in this state
-        #because normally we backToCreated for add new point
-        self.assertEquals('itemfrozen', wftool.getInfoFor(item1, 'review_state'))
-        self.assertEquals('itemfrozen', wftool.getInfoFor(item2, 'review_state'))
+        #when correcting the meeting back to created, the items must be corrected
+        #back to "presented"
+        self.assertEquals('presented', wftool.getInfoFor(item1, 'review_state'))
+        self.assertEquals('presented', wftool.getInfoFor(item2, 'review_state'))
 
     def test_subproduct_CloseMeeting(self):
         """

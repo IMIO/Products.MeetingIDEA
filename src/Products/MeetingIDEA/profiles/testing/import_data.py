@@ -230,24 +230,38 @@ caMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeeting
 caMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
 caMeeting.transitionsToConfirm = []
 caMeeting.transitionsForPresentingAnItem = ['validate', 'present', ]
-caMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'freeze',
+caMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'validateByCD',
+                                                         'item_transition': 'itemValidateByCD'},
+
+                                                        {'meeting_transition': 'freeze',
+                                                         'item_transition': 'itemValidateByCD'},
+                                                        {'meeting_transition': 'freeze',
                                                          'item_transition': 'itemfreeze'},
 
                                                         {'meeting_transition': 'decide',
+                                                         'item_transition': 'itemValidateByCD'},
+                                                        {'meeting_transition': 'decide',
                                                          'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'decide',
+                                                         'item_transition': 'itempublish'},
 
-                                                        {'meeting_transition': 'publish_decisions',
-                                                         'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'publish_decisions',
-                                                         'item_transition': 'accept'},
 
                                                         {'meeting_transition': 'close',
+                                                         'item_transition': 'itemValidateByCD'},
+                                                        {'meeting_transition': 'close',
                                                          'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'close',
+                                                         'item_transition': 'itempublish'},
                                                         {'meeting_transition': 'close',
                                                          'item_transition': 'accept'},
 
                                                         {'meeting_transition': 'backToCreated',
-                                                         'item_transition': 'backToPresented'},)
+                                                         'item_transition': 'backToValidateByCD'},
+                                                        {'meeting_transition': 'backToCreated',
+                                                         'item_transition': 'backToPresented'},
+
+                                                        {'meeting_transition': 'backToValidatedByCD',
+                                                         'item_transition': 'backToValidateByCD'},)
 
 caMeeting.meetingTopicStates = ('created', 'frozen')
 caMeeting.decisionTopicStates = ('decided', 'closed')
@@ -311,26 +325,24 @@ agMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeeting
 agMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
 agMeeting.transitionsToConfirm = []
 agMeeting.transitionsForPresentingAnItem = ['validate', 'present', ]
-agMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'freeze',
+agMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'validateByCD',
+                                                         'item_transition': 'itemValidateByCD'},
+
+                                                        {'meeting_transition': 'freeze',
+                                                         'item_transition': 'itemValidateByCD'},
+                                                        {'meeting_transition': 'freeze',
                                                          'item_transition': 'itemfreeze'},
 
-                                                        {'meeting_transition': 'publish',
-                                                         'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'publish',
-                                                         'item_transition': 'itempublish'},
-
+                                                        {'meeting_transition': 'decide',
+                                                         'item_transition': 'itemValidateByCD'},
                                                         {'meeting_transition': 'decide',
                                                          'item_transition': 'itemfreeze'},
                                                         {'meeting_transition': 'decide',
                                                          'item_transition': 'itempublish'},
 
-                                                        {'meeting_transition': 'publish_decisions',
-                                                         'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'publish_decisions',
-                                                         'item_transition': 'itempublish'},
-                                                        {'meeting_transition': 'publish_decisions',
-                                                         'item_transition': 'accept'},
 
+                                                        {'meeting_transition': 'close',
+                                                         'item_transition': 'itemValidateByCD'},
                                                         {'meeting_transition': 'close',
                                                          'item_transition': 'itemfreeze'},
                                                         {'meeting_transition': 'close',
@@ -339,7 +351,12 @@ agMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': '
                                                          'item_transition': 'accept'},
 
                                                         {'meeting_transition': 'backToCreated',
-                                                         'item_transition': 'backToPresented'},)
+                                                         'item_transition': 'backToValidatedByCD'},
+                                                        {'meeting_transition': 'backToCreated',
+                                                         'item_transition': 'backToPresented'},
+
+                                                        {'meeting_transition': 'backToValidatedByCD',
+                                                         'item_transition': 'backToValidatedByCD'},)
 
 agMeeting.meetingTopicStates = ('created', 'frozen', 'published')
 agMeeting.decisionTopicStates = ('decided', 'closed')

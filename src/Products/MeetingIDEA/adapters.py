@@ -32,7 +32,8 @@ from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.utils import getToolByName
 from imio.helpers.xhtml import xhtmlContentIsEmpty
 from Products.PloneMeeting.MeetingItem import MeetingItem, MeetingItemWorkflowConditions, MeetingItemWorkflowActions
-from Products.PloneMeeting.utils import checkPermission
+from Products.PloneMeeting.utils import checkPermission, getCurrentMeetingObject
+
 from Products.PloneMeeting.Meeting import MeetingWorkflowActions, MeetingWorkflowConditions, Meeting
 from Products.PloneMeeting.interfaces import IMeetingCustom, IMeetingItemCustom, \
     IMeetingConfigCustom, IToolPloneMeetingCustom
@@ -832,18 +833,6 @@ class MeetingCAIDEAWorkflowActions(MeetingWorkflowActions):
                 # initialize it the decision field
                 item._initDecisionFieldIfEmpty()
 
-    def _adaptEveryItemsOnMeetingClosure(self):
-        """Helper method for accepting every items."""
-        # Every item that is not decided will be automatically set to "accepted"
-        wfTool = getToolByName(self.context, 'portal_workflow')
-        for item in self.context.getAllItems():
-            if item.queryState() == 'presented':
-                wfTool.doActionFor(item, 'itemValidateByCD')
-            if item.queryState() == 'validated_by_cd':
-                wfTool.doActionFor(item, 'itemfreeze')
-            if item.queryState() in ['itemfrozen', 'pre_accepted', ]:
-                wfTool.doActionFor(item, 'accept')
-
     security.declarePrivate('doValidateByCD')
 
     def doValidateByCD(self, stateChange):
@@ -948,13 +937,28 @@ class MeetingItemCAIDEAWorkflowActions(MeetingItemWorkflowActions):
 
     security.declarePrivate('doPresent')
 
-    def doPresent(self, stateChange, forceNormal=False):
+    def doPresent(self, stateChange):
         '''Presents an item into a meeting. If p_forceNormal is True, and the
            item should be inserted as a late item, it is nevertheless inserted
            as a normal item.'''
-        wTool = getToolByName(self.context, 'portal_workflow')
-        wTool.doActionFor(self.context, 'itemValidateByCD')
-        super(MeetingItemCAIDEAWorkflowActions, self).doPresent(stateChange, forceNormal)
+        meeting = getCurrentMeetingObject(self.context)
+        # if we were not on a meeting view, we will present
+        # the item in the next available meeting
+        if not meeting:
+            # find meetings accepting items in the future
+            meeting = self.context.getMeetingToInsertIntoWhenNoCurrentMeetingObject()
+        tool = getToolByName(self.context, 'portal_plonemeeting')
+        forceNormal = bool(tool.readCookie('forceInsertNormal') == 'true')
+        meeting.insertItem(self.context, forceNormal=forceNormal)
+        # If the meeting is already frozen and this item is a "late" item,
+        # I must set automatically the item to "validate_by_cd befor frozen".
+        meetingState = meeting.queryState()
+        if meetingState in self.meetingAlreadyFrozenStates:
+            wTool = getToolByName(self.context, 'portal_workflow')
+            wTool.doActionFor(self.context, 'itemValidateByCD')
+            wTool.doActionFor(self.context, 'itemfreeze')
+        # We may have to send a mail.
+        self.context.sendMailIfRelevant('itemPresented', 'Owner', isRole=True)
 
 
 # ------------------------------------------------------------------------------

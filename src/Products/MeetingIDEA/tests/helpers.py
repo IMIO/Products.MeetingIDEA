@@ -39,6 +39,8 @@ class MeetingIDEATestingHelpers(MeetingCommunesTestingHelpers):
                                          'validate',
                                          'present', )
     TRANSITIONS_FOR_PRESENTING_ITEM_2 = ('validate', 'present', )
+    TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_1 = ('validateByCD', 'freeze', 'decide', )
+    TRANSITIONS_FOR_ACCEPTING_ITEMS_MEETING_2 = ('validateByCD', 'freeze', 'decide', )
     TRANSITIONS_FOR_ACCEPTING_ITEMS_1 = ('validateByCD', 'freeze', 'decide', )
     TRANSITIONS_FOR_ACCEPTING_ITEMS_2 = ('validateByCD', 'freeze', 'decide', )
 
