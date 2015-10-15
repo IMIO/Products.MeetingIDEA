@@ -29,13 +29,9 @@ class testAdvices(MeetingIDEATestCase, mcta):
     '''Tests various aspects of advices management.
        Advices are enabled for PloneGov Assembly, not for PloneMeeting Assembly.'''
 
-    def setUp(self):
-        """Redefine advices related states."""
-        super(mcta, self).setUp()
-        self.setMeetingConfig(self.meetingConfig2.getId())
-        self.meetingConfig.setItemAdviceStates(('proposed_to_director', ))
-        self.meetingConfig.setItemAdviceEditStates(('proposed_to_director', 'validated', ))
-        self.meetingConfig.setItemAdviceViewStates(('presented', ))
+    def test_subproduct_call_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState(self):
+        '''Run the test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState from PloneMeeting.'''
+        self.test_pm_MayTriggerGiveAdviceWhenItemIsBackToANotViewableState()
 
 
 def test_suite():

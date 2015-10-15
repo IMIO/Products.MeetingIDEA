@@ -61,7 +61,7 @@ MIDEA_RETURN_TO_PROPOSING_GROUP_MAPPINGS = {'backTo_presented_from_returned_to_p
                                             'NO_MORE_RETURNABLE_STATES': ['closed', 'archived', ], }
 adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(MIDEA_RETURN_TO_PROPOSING_GROUP_MAPPINGS)
 
-IDEAMEETINGREVIEWERS = OrderedDict([('reviewers', 'departmentheads'),
+IDEAMEETINGREVIEWERS = OrderedDict([('reviewers',  'proposed_to_director'),
                                     ('departmentheads', 'proposed_to_departmenthead'), ])
 PMconfig.MEETINGREVIEWERS = IDEAMEETINGREVIEWERS
 ##/code-section config-bottom

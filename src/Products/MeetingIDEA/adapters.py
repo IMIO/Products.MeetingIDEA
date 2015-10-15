@@ -685,7 +685,7 @@ class CustomMeetingItem(MeetingItem):
         # If the current user is a meetingManager (or a Manager),
         # he is able to add a meetingitem to a 'decided' meeting.
         review_state = ['created', 'validated_by_cd', 'frozen', ]
-        if tool.isManager():
+        if tool.isManager(self.getSelf()):
             review_state += ['decided', ]
         res = catalog.unrestrictedSearchResults(
             portal_type=meetingPortalType,
@@ -767,7 +767,7 @@ class CustomMeetingItem(MeetingItem):
         item = self.getSelf()
         res = item.getField('observations').get(item, **kwargs)
         tool = getToolByName(item, 'portal_plonemeeting')
-        if item.hasMeeting() and item.getMeeting().queryState() == 'decided' and not tool.isManager():
+        if item.hasMeeting() and item.getMeeting().queryState() == 'decided' and not tool.isManager(item):
             return translate('intervention_under_edit',
                              domain='PloneMeeting',
                              context=item.REQUEST,
@@ -795,6 +795,15 @@ class CustomMeetingItem(MeetingItem):
         item = self.getSelf()
         if item.hasMeeting():
             return True
+
+    def getExtraFieldsToCopyWhenCloning(self, cloned_to_same_mc):
+        '''
+          Keep some new fields when item is cloned (to another mc or from itemtemplate).
+        '''
+        res = ['internalCommunication', 'strategicAxis']
+        if cloned_to_same_mc:
+            res = res + []
+        return res
 
 
 class CustomMeetingConfig(MeetingConfig):
@@ -987,19 +996,6 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
             res = True
         return res
 
-    security.declarePublic('isLateFor')
-
-    def isLateFor(self, meeting):
-        res = False
-        if meeting and (meeting.queryState() in MeetingItem.meetingAlreadyFrozenStates) and \
-           (meeting.UID() == self.context.getPreferredMeeting()):
-            itemValidationDate = self._getDateOfAction(self.context, 'validate')
-            meetingFreezingDate = self._getDateOfAction(meeting, 'validateByCD')
-            if itemValidationDate and meetingFreezingDate:
-                if itemValidationDate > meetingFreezingDate:
-                    res = True
-        return res
-
     security.declarePublic('mayValidate')
 
     def mayValidate(self):
@@ -1028,6 +1024,10 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
           Check that the user has the 'Review portal content'
         """
         res = False
+        if not self.context.getCategory():
+            return No(translate('required_category_ko',
+                                domain="PloneMeeting",
+                                context=self.context.REQUEST))
         if checkPermission(ReviewPortalContent, self.context):
                 res = True
         return res
