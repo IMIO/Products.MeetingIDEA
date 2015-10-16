@@ -16,7 +16,7 @@ def update_item_schema(baseSchema):
         TextField(
             name='internalCommunication',
             widget=RichWidget(
-                condition="python: here.portal_plonemeeting.isManager()",
+                condition="python: here.portal_plonemeeting.isManager(here)",
                 description="InternalCommunication",
                 description_msgid="item_internalCommunication_descr",
                 label='InternalCommunication',
