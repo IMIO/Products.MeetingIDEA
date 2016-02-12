@@ -64,6 +64,11 @@ adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(MIDEA_RETURN_TO_PROPOSING_
 IDEAMEETINGREVIEWERS = OrderedDict([('reviewers',  'proposed_to_director'),
                                     ('departmentheads', 'proposed_to_departmenthead'), ])
 PMconfig.MEETINGREVIEWERS = IDEAMEETINGREVIEWERS
+
+# override fields available in the MeetingConfig.itemsListVisibleFields vocabulary
+MIDEA_ITEMS_LIST_VISIBLE_FIELDS = list(PMconfig.ITEMS_LIST_VISIBLE_FIELDS)
+MIDEA_ITEMS_LIST_VISIBLE_FIELDS.append('strategicAxis')
+PMconfig.ITEMS_LIST_VISIBLE_FIELDS = tuple(MIDEA_ITEMS_LIST_VISIBLE_FIELDS)
 ##/code-section config-bottom
 
 

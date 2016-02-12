@@ -57,6 +57,7 @@ def update_item_schema(baseSchema):
     baseSchema['detailedDescription'].widget.description = "DetailedDescriptionMethode"
     baseSchema['detailedDescription'].widget.description_msgid = "detailedDescription_item_descr"
     completeItemSchema = baseSchema + specificSchema.copy()
+    completeItemSchema.moveField('strategicAxis', after='detailedDescription')
     return completeItemSchema
 MeetingItem.schema = update_item_schema(MeetingItem.schema)
 
