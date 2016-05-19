@@ -20,33 +20,40 @@
 # 02110-1301, USA.
 #
 # ------------------------------------------------------------------------------
-import re
-from DateTime import DateTime
+from AccessControl import getSecurityManager
+from AccessControl import ClassSecurityInfo
 from appy.gen import No
-from zope.interface import implements
-from zope.i18n import translate
-from AccessControl import getSecurityManager, ClassSecurityInfo
+from DateTime import DateTime
 from Globals import InitializeClass
-
+from imio.helpers.xhtml import xhtmlContentIsEmpty
 from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.utils import getToolByName
-from imio.helpers.xhtml import xhtmlContentIsEmpty
-from Products.PloneMeeting.MeetingItem import MeetingItem, MeetingItemWorkflowConditions, MeetingItemWorkflowActions
-from Products.PloneMeeting.utils import checkPermission, getCurrentMeetingObject
-
-from Products.PloneMeeting.Meeting import MeetingWorkflowActions, MeetingWorkflowConditions, Meeting
-from Products.PloneMeeting.interfaces import IMeetingCustom, IMeetingItemCustom, \
-    IMeetingConfigCustom, IToolPloneMeetingCustom
-from Products.MeetingIDEA.interfaces import \
-    IMeetingItemCAIDEAWorkflowConditions, IMeetingItemCAIDEAWorkflowActions,\
-    IMeetingCAIDEAWorkflowConditions, IMeetingCAIDEAWorkflowActions
-from zope.annotation.interfaces import IAnnotations
-from Products.PloneMeeting.model import adaptations
-from Products.PloneMeeting.MeetingConfig import MeetingConfig
-from Products.PloneMeeting.ToolPloneMeeting import ToolPloneMeeting
+from Products.MeetingIDEA.interfaces import IMeetingItemCAIDEAWorkflowConditions
+from Products.MeetingIDEA.interfaces import IMeetingItemCAIDEAWorkflowActions
+from Products.MeetingIDEA.interfaces import IMeetingCAIDEAWorkflowConditions
+from Products.MeetingIDEA.interfaces import IMeetingCAIDEAWorkflowActions
 from Products.PloneMeeting.config import ITEM_NO_PREFERRED_MEETING_VALUE
 from Products.PloneMeeting.interfaces import IAnnexable
+from Products.PloneMeeting.interfaces import IMeetingConfigCustom
+from Products.PloneMeeting.interfaces import IMeetingCustom
+from Products.PloneMeeting.interfaces import IMeetingItemCustom
+from Products.PloneMeeting.interfaces import IToolPloneMeetingCustom
+from Products.PloneMeeting.Meeting import MeetingWorkflowActions
+from Products.PloneMeeting.Meeting import MeetingWorkflowConditions
+from Products.PloneMeeting.Meeting import Meeting
+from Products.PloneMeeting.MeetingConfig import MeetingConfig
+from Products.PloneMeeting.MeetingItem import MeetingItem
+from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowActions
+from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowConditions
+from Products.PloneMeeting.model import adaptations
+from Products.PloneMeeting.ToolPloneMeeting import ToolPloneMeeting
+from Products.PloneMeeting.utils import checkPermission
+from Products.PloneMeeting.utils import getCurrentMeetingObject
+from zope.annotation.interfaces import IAnnotations
+from zope.i18n import translate
+from zope.interface import implements
 
+import re
 # Names of available workflow adaptations.
 customWfAdaptations = ('return_to_proposing_group', )
 MeetingConfig.wfAdaptations = customWfAdaptations

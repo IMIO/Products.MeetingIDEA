@@ -16,6 +16,21 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
+  <genericsetup:registerProfile
+   name="idea"
+   title="MeetingIDEA / CA with french examples"
+   directory="profiles/idea"
+   description="Extension profile for MeetingIDEA (Mons)"
+   provides="Products.GenericSetup.interfaces.EXTENSION"
+   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+  <genericsetup:registerProfile
+   name="zag"
+   title="MeetingIDEA / AG"
+   description="Extension profil for MeetingIDEA for AG (Belgium)"
+   provides="Products.GenericSetup.interfaces.EXTENSION"
+   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
   <genericsetup:upgradeStep
       title="Go to MeetingIDEA 3.3"
       description=""

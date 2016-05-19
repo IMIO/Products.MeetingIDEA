@@ -25,17 +25,19 @@ from Products.PloneMeeting.exportimport.content import ToolInitializer
 from Products.PloneMeeting.config import TOPIC_TYPE, TOPIC_SEARCH_SCRIPT, TOPIC_TAL_EXPRESSION
 ##/code-section HEAD
 
+
 def isNotMeetingIDEAProfile(context):
     return context.readDataFile("MeetingIDEA_marker.txt") is None
-
 
 
 def updateRoleMappings(context):
     """after workflow changed update the roles mapping. this is like pressing
     the button 'Update Security Setting' and portal_workflow"""
-    if isNotMeetingIDEAProfile(context): return
+    if isNotMeetingIDEAProfile(context):
+        return
     wft = getToolByName(context.getSite(), 'portal_workflow')
     wft.updateRoleMappings()
+
 
 def postInstall(context):
     """Called as at the end of the setup process. """
@@ -49,7 +51,6 @@ def postInstall(context):
     reinstallPloneMeeting(context, site)
     showHomeTab(context, site)
     reorderSkinsLayers(context, site)
-
 
 
 ##code-section FOOT
@@ -114,6 +115,7 @@ def logStep(method, context):
 
 def istMeetingIDEAConfigureProfile(context):
     return context.readDataFile("MeetingIDEA_idea_marker.txt") or \
+        context.readDataFile("MeetingIDEA_ag_marker.txt") or \
         context.readDataFile("MeetingIDEA_test_marker.txt")
 
 
@@ -193,7 +195,6 @@ def finalizeExampleInstance(context):
 
     specialUserId = 'president'
     meetingConfig1Id = 'meeting-config-ca'
-    meetingConfig2Id = 'meeting-config-ag'
 
     site = context.getSite()
 
@@ -202,16 +203,12 @@ def finalizeExampleInstance(context):
     member = site.portal_membership.getMemberById(specialUserId)
     if member:
         site.portal_groups.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig1Id)
-        site.portal_groups.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig2Id)
     # add the test user 'conseiller' to only the every 'meeting-config-council_powerobservers' groups
     member = site.portal_membership.getMemberById('conseiller')
-    if member:
-        site.portal_groups.addPrincipalToGroup(member.getId(), '%s_powerobservers' % meetingConfig2Id)
 
     # define some parameters for 'meeting-config-ca'
     # items are sendable to the 'meeting-config-ag'
     mc_ca_or_ag = getattr(site.portal_plonemeeting, meetingConfig1Id)
-    mc_ca_or_ag.setMeetingConfigsToCloneTo([meetingConfig2Id, ])
     # add some topcis to the portlet_todo
     mc_ca_or_ag.setToDoListTopics(
         [getattr(mc_ca_or_ag.topics, 'searchdecideditems'),
@@ -223,7 +220,6 @@ def finalizeExampleInstance(context):
     mc_ca_or_ag.at_post_edit_script()
 
     # define some parameters for 'meeting-config-council'
-    mc_ca_or_ag = getattr(site.portal_plonemeeting, meetingConfig2Id)
     # add some topcis to the portlet_todo
     mc_ca_or_ag.setToDoListTopics(
         [getattr(mc_ca_or_ag.topics, 'searchdecideditems'),
