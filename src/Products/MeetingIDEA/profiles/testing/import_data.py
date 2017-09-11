@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from Products.PloneMeeting.config import MEETINGREVIEWERS
+from Products.PloneMeeting.profiles import AnnexTypeDescriptor
 from Products.PloneMeeting.profiles import CategoryDescriptor
 from Products.PloneMeeting.profiles import GroupDescriptor
+from Products.PloneMeeting.profiles import ItemAnnexSubTypeDescriptor
+from Products.PloneMeeting.profiles import ItemAnnexTypeDescriptor
 from Products.PloneMeeting.profiles import ItemTemplateDescriptor
 from Products.PloneMeeting.profiles import MeetingConfigDescriptor
-from Products.PloneMeeting.profiles import MeetingFileTypeDescriptor
 from Products.PloneMeeting.profiles import MeetingUserDescriptor
 from Products.PloneMeeting.profiles import PloneGroupDescriptor
 from Products.PloneMeeting.profiles import PloneMeetingConfiguration
@@ -12,41 +14,89 @@ from Products.PloneMeeting.profiles import PodTemplateDescriptor
 from Products.PloneMeeting.profiles import RecurringItemDescriptor
 from Products.PloneMeeting.profiles import UserDescriptor
 
-# File types -------------------------------------------------------------------
 
-annexe = MeetingFileTypeDescriptor('annexe', 'Annexe', 'attach.png', '')
-annexeBudget = MeetingFileTypeDescriptor('annexeBudget', 'Article Budgetaire', 'budget.png', '')
-annexeCahier = MeetingFileTypeDescriptor('annexeCahier', 'Cahier des Charges', 'cahier.gif', '')
-itemAnnex = MeetingFileTypeDescriptor('item-annex', 'Other annex(es)', 'attach.png', '')
-annexeDecision = MeetingFileTypeDescriptor('annexeDecision', 'Annexe a la decision', 'attach.png', '', 'item_decision')
-# Some type of annexes taken from the default PloneMeeting test profile
-marketingAnalysis = MeetingFileTypeDescriptor(
-    'marketing-annex', 'Marketing annex(es)', 'attach.png', '', 'item_decision',
-    active=False)
-overheadAnalysis = MeetingFileTypeDescriptor(
+# Annex types
+overheadAnalysisSubtype = ItemAnnexSubTypeDescriptor(
+    'overhead-analysis-sub-annex',
+    'Overhead analysis sub annex',
+    other_mc_correspondences=(
+        'meeting-config-council_-_annexes_types_-_item_annexes_-_budget-analysis', ))
+
+overheadAnalysis = ItemAnnexTypeDescriptor(
     'overhead-analysis', 'Administrative overhead analysis',
-    'attach.png', '')
-# Advice annexes types
-adviceAnnex = MeetingFileTypeDescriptor(
-    'advice-annex', 'Advice annex(es)', 'attach.png', '', 'advice')
-adviceLegalAnalysis = MeetingFileTypeDescriptor(
-    'advice-legal-analysis', 'Advice legal analysis', 'attach.png', '', 'advice')
+    u'overheadAnalysis.png',
+    subTypes=[overheadAnalysisSubtype],
+    other_mc_correspondences=(
+        'meeting-config-council_-_annexes_types_-_item_annexes_-_budget-analysis_-_budget-analysis-sub-annex', ))
 
+financialAnalysisSubAnnex = ItemAnnexSubTypeDescriptor(
+    'financial-analysis-sub-annex',
+    'Financial analysis sub annex')
+
+financialAnalysis = ItemAnnexTypeDescriptor(
+    'financial-analysis', 'Financial analysis', u'financialAnalysis.png',
+    u'Predefined title for financial analysis', subTypes=[financialAnalysisSubAnnex])
+
+legalAnalysis = ItemAnnexTypeDescriptor(
+    'legal-analysis', 'Legal analysis', u'legalAnalysis.png')
+
+budgetAnalysisCfg2Subtype = ItemAnnexSubTypeDescriptor(
+    'budget-analysis-sub-annex',
+    'Budget analysis sub annex')
+
+budgetAnalysisCfg2 = ItemAnnexTypeDescriptor(
+    'budget-analysis', 'Budget analysis', u'budgetAnalysis.png',
+    subTypes=[budgetAnalysisCfg2Subtype])
+
+budgetAnalysisCfg1Subtype = ItemAnnexSubTypeDescriptor(
+    'budget-analysis-sub-annex',
+    'Budget analysis sub annex',
+    other_mc_correspondences=(
+        'meeting-config-council_-_annexes_types_-_item_annexes_-_budget-analysis_-_budget-analysis-sub-annex', ))
+
+budgetAnalysisCfg1 = ItemAnnexTypeDescriptor(
+    'budget-analysis', 'Budget analysis', u'budgetAnalysis.png',
+    subTypes=[budgetAnalysisCfg1Subtype],
+    other_mc_correspondences=('meeting-config-council_-_annexes_types_-_item_annexes_-_budget-analysis', ))
+
+itemAnnex = ItemAnnexTypeDescriptor(
+    'item-annex', 'Other annex(es)', u'itemAnnex.png')
+# Could be used once we
+# will digitally sign decisions ? Indeed, once signed, we will need to
+# store them (together with the signature) as separate files.
+decision = ItemAnnexTypeDescriptor(
+    'decision', 'Decision', u'decision.png', relatedTo='item_decision')
+decisionAnnex = ItemAnnexTypeDescriptor(
+    'decision-annex', 'Decision annex(es)', u'decisionAnnex.png', relatedTo='item_decision')
+# A vintage annex type
+marketingAnalysis = ItemAnnexTypeDescriptor(
+    'marketing-annex', 'Marketing annex(es)', u'legalAnalysis.png', relatedTo='item_decision',
+    enabled=False)
+# Advice annex types
+adviceAnnex = AnnexTypeDescriptor(
+    'advice-annex', 'Advice annex(es)', u'itemAnnex.png', relatedTo='advice')
+adviceLegalAnalysis = AnnexTypeDescriptor(
+    'advice-legal-analysis', 'Advice legal analysis', u'legalAnalysis.png', relatedTo='advice')
+# Meeting annex types
+meetingAnnex = AnnexTypeDescriptor(
+    'meeting-annex', 'Meeting annex(es)', u'itemAnnex.png', relatedTo='meeting')
 
 # Pod templates ----------------------------------------------------------------
 agendaTemplate = PodTemplateDescriptor('agendaTemplate', 'Meeting agenda')
-agendaTemplate.podTemplate = 'Agenda.odt'
-agendaTemplate.podCondition = 'python:here.meta_type=="Meeting"'
+agendaTemplate.odt_file = 'Agenda.odt'
+agendaTemplate.pod_portal_types = ['MeetingCollege']
+agendaTemplate.tal_condition = ''
 
 decisionsTemplate = PodTemplateDescriptor('decisionsTemplate',
                                           'Meeting decisions')
-decisionsTemplate.podTemplate = 'Decisions.odt'
-decisionsTemplate.podCondition = 'python:here.meta_type=="Meeting" and ' \
-                                 'here.adapted().isDecided()'
+decisionsTemplate.odt_file = 'Decisions.odt'
+decisionsTemplate.pod_portal_types = ['MeetingCollege']
+decisionsTemplate.tal_condition = 'python:here.adapted().isDecided()'
 
 itemTemplate = PodTemplateDescriptor('itemTemplate', 'Meeting item')
-itemTemplate.podTemplate = 'Item.odt'
-itemTemplate.podCondition = 'python:here.meta_type=="MeetingItem"'
+itemTemplate.odt_file = 'Item.odt'
+itemTemplate.pod_portal_types = ['MeetingItemCollege']
+itemTemplate.tal_condition = ''
 
 # item templates
 template1 = ItemTemplateDescriptor(id='template1',
@@ -86,24 +136,29 @@ template2 = ItemTemplateDescriptor(id='template2',
 <p><strong>Article 2</strong> :  De prévenir XXX, qu’en cas de récidive, il sera proposé par le Secrétaire communal au Collège de transformer les jours de congés de maladie en absence injustifiée (retenue sur traitement avec application de la loi du 26 mai 2002 citée ci-dessus).</p>
 <p><strong>Article 3</strong> : De charger le service du personnel du suivi de ce dossier.</p>""")
 
+
 # Categories -------------------------------------------------------------------
-categories = [
-    CategoryDescriptor('deployment', 'Deployment topics'),
-    CategoryDescriptor('maintenance', 'Maintenance topics'),
-    CategoryDescriptor('development', 'Development topics'),
-    CategoryDescriptor('events', 'Events'),
-    CategoryDescriptor('research', 'Research topics'),
-    CategoryDescriptor('projects', 'Projects'),
-    # A vintage category
-    CategoryDescriptor('marketing', 'Marketing', active=False),
-    # usingGroups category
-    CategoryDescriptor('subproducts', 'Subproducts wishes', usingGroups=('vendors',)),
-]
+deployment = CategoryDescriptor('deployment', 'Deployment topics')
+maintenance = CategoryDescriptor('maintenance', 'Maintenance topics')
+development = CategoryDescriptor('development', 'Development topics')
+events = CategoryDescriptor('events', 'Events')
+research = CategoryDescriptor('research', 'Research topics')
+projects = CategoryDescriptor('projects', 'Projects')
+# A vintage category
+marketing = CategoryDescriptor('marketing', 'Marketing', active=False)
+# usingGroups category
+subproducts = CategoryDescriptor('subproducts', 'Subproducts wishes', usingGroups=('vendors',))
+
+# Classifiers
+classifier1 = CategoryDescriptor('classifier1', 'Classifier 1')
+classifier2 = CategoryDescriptor('classifier2', 'Classifier 2')
+classifier3 = CategoryDescriptor('classifier3', 'Classifier 3')
 
 # Users and groups -------------------------------------------------------------
-pmManager = UserDescriptor('pmManager', [])
-pmCreator1 = UserDescriptor('pmCreator1', [])
-pmCreator1b = UserDescriptor('pmCreator1b', [])
+pmManager = UserDescriptor('pmManager', [], email="pmmanager@plonemeeting.org", fullname='M. PMManager')
+pmCreator1 = UserDescriptor('pmCreator1', [], email="pmcreator1@plonemeeting.org", fullname='M. PMCreator One')
+pmCreator1b = UserDescriptor('pmCreator1b', [], email="pmcreator1b@plonemeeting.org", fullname='M. PMCreator One bee')
+pmObserver1 = UserDescriptor('pmObserver1', [], email="pmobserver1@plonemeeting.org", fullname='M. PMObserver One')
 pmReviewer1 = UserDescriptor('pmReviewer1', [])
 pmReviewerLevel1 = UserDescriptor('pmReviewerLevel1', [],
                                   email="pmreviewerlevel1@plonemeeting.org", fullname='M. PMReviewer Level One')
@@ -112,9 +167,6 @@ pmReviewer2 = UserDescriptor('pmReviewer2', [])
 pmReviewerLevel2 = UserDescriptor('pmReviewerLevel2', [],
                                   email="pmreviewerlevel2@plonemeeting.org", fullname='M. PMReviewer Level Two')
 pmAdviser1 = UserDescriptor('pmAdviser1', [])
-pmDepartmentHead1 = UserDescriptor('pmDepartmentHead1', [])
-pmDirector1 = UserDescriptor('pmDirector1', [])
-pmDirector2 = UserDescriptor('pmDirector2', [])
 voter1 = UserDescriptor('voter1', [], fullname='M. Voter One')
 voter2 = UserDescriptor('voter2', [], fullname='M. Voter Two')
 powerobserver1 = UserDescriptor('powerobserver1',
@@ -150,22 +202,14 @@ restrictedpowerobserver2.ploneGroups = [council_restrictedpowerobservers, ]
 developers = GroupDescriptor('developers', 'Developers', 'Devel')
 developers.creators.append(pmCreator1)
 developers.creators.append(pmCreator1b)
-developers.creators.append(pmDepartmentHead1)
 developers.creators.append(pmManager)
 developers.reviewers.append(pmReviewer1)
 developers.reviewers.append(pmManager)
+developers.observers.append(pmObserver1)
 developers.observers.append(pmReviewer1)
 developers.observers.append(pmManager)
 developers.advisers.append(pmAdviser1)
 developers.advisers.append(pmManager)
-developers.departmentheads.append(pmDepartmentHead1)
-developers.departmentheads.append(pmReviewer1)
-developers.departmentheads.append(pmManager)
-developers.reviewers.append(pmReviewer1)
-developers.reviewers.append(pmDirector1)
-developers.reviewers.append(pmManager)
-# reviewers
-
 setattr(developers, 'signatures', 'developers signatures')
 setattr(developers, 'echevinServices', 'developers')
 # put pmReviewerLevel1 in first level of reviewers from what is in MEETINGREVIEWERS
@@ -173,8 +217,7 @@ getattr(developers, MEETINGREVIEWERS.keys()[-1]).append(pmReviewerLevel1)
 # put pmReviewerLevel2 in second level of reviewers from what is in MEETINGREVIEWERS
 getattr(developers, MEETINGREVIEWERS.keys()[0]).append(pmReviewerLevel2)
 
-
-#give an advice on recurring items
+# give an advice on recurring items
 vendors = GroupDescriptor('vendors', 'Vendors', 'Devil')
 vendors.creators.append(pmCreator2)
 vendors.reviewers.append(pmReviewer2)
@@ -204,91 +247,93 @@ muser_voter1 = MeetingUserDescriptor('voter1', duty='Voter1',
 muser_voter2 = MeetingUserDescriptor('voter2', duty='Voter2',
                                      usages=['assemblyMember', 'voter', ])
 
+# budget impact editors
+budgetimpacteditor = UserDescriptor('budgetimpacteditor',
+                                    [],
+                                    email="budgetimpacteditor@plonemeeting.org",
+                                    fullname='M. Budget Impact Editor')
+college_budgetimpacteditors = PloneGroupDescriptor('meeting-config-college_budgetimpacteditors',
+                                                   'meeting-config-college_budgetimpacteditors',
+                                                   [])
+budgetimpacteditor.ploneGroups = [college_budgetimpacteditors,
+                                  college_powerobservers]
+
 # Meeting configurations -------------------------------------------------------
 # college
-caMeeting = MeetingConfigDescriptor(
+collegeMeeting = MeetingConfigDescriptor(
     'meeting-config-college', 'College Communal',
     'College communal', isDefault=True)
-caMeeting.meetingManagers = ['pmManager', ]
-caMeeting.assembly = 'Pierre Dupont - Bourgmestre,\n' \
-                     'Charles Exemple - 1er Echevin,\n' \
-                     'Echevin Un, Echevin Deux, Echevin Trois - Echevins,\n' \
-                     'Jacqueline Exemple, Responsable du CPAS'
-caMeeting.signatures = 'Pierre Dupont, Bourgmestre - Charles Exemple, Secrétaire communal'
-caMeeting.certifiedSignatures = []
-caMeeting.categories = categories
-caMeeting.shortName = 'College'
-caMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier, itemAnnex,
-                                   annexeDecision, overheadAnalysis, marketingAnalysis,
-                                   adviceAnnex, adviceLegalAnalysis]
-caMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned',)
-caMeeting.itemWorkflow = 'meetingitemcaidea_workflow'
-caMeeting.meetingWorkflow = 'meetingcaidea_workflow'
-caMeeting.itemConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCAIDEAWorkflowConditions'
-caMeeting.itemActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCAIDEAWorkflowActions'
-caMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowConditions'
-caMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
-caMeeting.transitionsToConfirm = []
-caMeeting.transitionsForPresentingAnItem = ['validate', 'present', ]
-caMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'validateByCD',
-                                                         'item_transition': 'itemValidateByCD'},
+collegeMeeting.meetingManagers = ['pmManager', ]
+collegeMeeting.assembly = 'Pierre Dupont - Bourgmestre,\n' \
+                          'Charles Exemple - 1er Echevin,\n' \
+                          'Echevin Un, Echevin Deux, Echevin Trois - Echevins,\n' \
+                          'Jacqueline Exemple, Responsable du CPAS'
+collegeMeeting.signatures = 'Pierre Dupont, Bourgmestre - Charles Exemple, Secrétaire communal'
+collegeMeeting.certifiedSignatures = []
+collegeMeeting.categories = [development, research]
+collegeMeeting.classifiers = [classifier1, classifier2, classifier3]
+collegeMeeting.shortName = 'College'
+collegeMeeting.annexTypes = [financialAnalysis, budgetAnalysisCfg1, overheadAnalysis,
+                             itemAnnex, decisionAnnex, marketingAnalysis,
+                             adviceAnnex, adviceLegalAnalysis, meetingAnnex]
+collegeMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned',)
+collegeMeeting.maxShownListings = '100' 
+collegeMeeting.itemWorkflow = 'meetingitemcommunes_workflow'
+collegeMeeting.meetingWorkflow = 'meetingcommunes_workflow'
+collegeMeeting.itemConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCollegeWorkflowConditions'
+collegeMeeting.itemActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCollegeWorkflowActions'
+collegeMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCollegeWorkflowConditions'
+collegeMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCollegeWorkflowActions'
+collegeMeeting.transitionsToConfirm = []
+collegeMeeting.transitionsForPresentingAnItem = ['propose', 'validate', 'present', ]
+collegeMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'freeze',
+                                                              'item_transition': 'itemfreeze'},
 
-                                                        {'meeting_transition': 'freeze',
-                                                         'item_transition': 'itemValidateByCD'},
-                                                        {'meeting_transition': 'freeze',
-                                                         'item_transition': 'itemfreeze'},
+                                                             {'meeting_transition': 'decide',
+                                                              'item_transition': 'itemfreeze'},
 
-                                                        {'meeting_transition': 'decide',
-                                                         'item_transition': 'itemValidateByCD'},
-                                                        {'meeting_transition': 'decide',
-                                                         'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'decide',
-                                                         'item_transition': 'itempublish'},
+                                                             {'meeting_transition': 'publish_decisions',
+                                                              'item_transition': 'itemfreeze'},
+                                                             {'meeting_transition': 'publish_decisions',
+                                                              'item_transition': 'accept'},
 
+                                                             {'meeting_transition': 'close',
+                                                              'item_transition': 'itemfreeze'},
+                                                             {'meeting_transition': 'close',
+                                                              'item_transition': 'accept'},
 
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'itemValidateByCD'},
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'itempublish'},
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'accept'},
+                                                             {'meeting_transition': 'backToCreated',
+                                                              'item_transition': 'backToPresented'},)
 
-                                                        {'meeting_transition': 'backToCreated',
-                                                         'item_transition': 'backToValidateByCD'},
-                                                        {'meeting_transition': 'backToCreated',
-                                                         'item_transition': 'backToPresented'},
-
-                                                        {'meeting_transition': 'backToValidatedByCD',
-                                                         'item_transition': 'backToValidateByCD'},)
-
-caMeeting.meetingTopicStates = ('created', 'frozen')
-caMeeting.decisionTopicStates = ('decided', 'closed')
-caMeeting.recordItemHistoryStates = []
-caMeeting.maxShownMeetings = 5
-caMeeting.maxDaysDecisions = 60
-caMeeting.meetingAppDefaultView = 'topic_searchmyitems'
-caMeeting.itemDocFormats = ('odt', 'pdf')
-caMeeting.meetingDocFormats = ('odt', 'pdf')
-caMeeting.useAdvices = True
-caMeeting.itemAdviceStates = ['proposed_to_director', ]
-caMeeting.itemAdviceEditStates = ['proposed_to_director', 'validated']
-caMeeting.itemAdviceViewStates = ['presented', ]
-caMeeting.transitionReinitializingDelays = 'backToItemCreated'
-caMeeting.enforceAdviceMandatoriness = False
-caMeeting.itemPowerObserversStates = ('itemcreated', 'presented', 'accepted', 'delayed', 'refused')
-caMeeting.itemDecidedStates = ['accepted', 'refused', 'delayed', 'accepted_but_modified', 'pre_accepted']
-caMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_proposing_groups',
-                                        'reverse': '0'}, )
-caMeeting.useGroupsAsCategories = True
-caMeeting.meetingPowerObserversStates = ('frozen', 'published', 'decided', 'closed')
-caMeeting.useCopies = True
-caMeeting.selectableCopyGroups = [developers.getIdSuffixed('reviewers'), vendors.getIdSuffixed('reviewers'), ]
-caMeeting.podTemplates = [agendaTemplate, decisionsTemplate, itemTemplate]
-caMeeting.meetingConfigsToCloneTo = [{'meeting_config': 'meeting-config-council',
-                                     'trigger_workflow_transitions_until': '__nothing__'}, ]
-caMeeting.recurringItems = [
+collegeMeeting.meetingTopicStates = ('created', 'frozen')
+collegeMeeting.decisionTopicStates = ('decided', 'closed')
+collegeMeeting.recordItemHistoryStates = []
+collegeMeeting.maxShownMeetings = 5
+collegeMeeting.maxDaysDecisions = 60
+collegeMeeting.meetingAppDefaultView = 'searchallitems'
+collegeMeeting.itemDocFormats = ('odt', 'pdf')
+collegeMeeting.meetingDocFormats = ('odt', 'pdf')
+collegeMeeting.useAdvices = True
+collegeMeeting.selectableAdvisers = ['developers', 'vendors']
+collegeMeeting.itemAdviceStates = ['proposed', ]
+collegeMeeting.itemAdviceEditStates = ['proposed', 'validated']
+collegeMeeting.itemAdviceViewStates = ['presented', ]
+collegeMeeting.transitionsReinitializingDelays = ('backToItemCreated', )
+collegeMeeting.enforceAdviceMandatoriness = False
+collegeMeeting.itemPowerObserversStates = ('itemcreated', 'presented', 'accepted', 'delayed', 'refused')
+collegeMeeting.itemDecidedStates = ['accepted', 'refused', 'delayed', 'accepted_but_modified', 'pre_accepted']
+collegeMeeting.workflowAdaptations = ['no_publication', 'no_global_observation']
+collegeMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_proposing_groups',
+                                             'reverse': '0'}, )
+collegeMeeting.useGroupsAsCategories = True
+collegeMeeting.meetingPowerObserversStates = ('frozen', 'decided', 'closed')
+collegeMeeting.useCopies = True
+collegeMeeting.selectableCopyGroups = [developers.getIdSuffixed('reviewers'), vendors.getIdSuffixed('reviewers'), ]
+collegeMeeting.podTemplates = [agendaTemplate, decisionsTemplate, itemTemplate]
+collegeMeeting.meetingConfigsToCloneTo = [{'meeting_config': 'meeting-config-council',
+                                           'trigger_workflow_transitions_until': '__nothing__'}, ]
+collegeMeeting.itemAutoSentToOtherMCStates = ('accepted', 'accepted_but_modified', )
+collegeMeeting.recurringItems = [
     RecurringItemDescriptor(
         id='recItem1',
         description='<p>This is the first recurring item.</p>',
@@ -303,96 +348,99 @@ caMeeting.recurringItems = [
         proposingGroup='developers',
         decision='Second recurring item approved'),
 ]
-caMeeting.itemTemplates = (template1, template2)
+collegeMeeting.itemTemplates = (template1, template2)
 
 # Conseil communal
-agMeeting = MeetingConfigDescriptor(
+councilMeeting = MeetingConfigDescriptor(
     'meeting-config-council', 'Conseil Communal',
     'Conseil Communal')
-agMeeting.meetingManagers = ['pmManager', ]
-agMeeting.assembly = 'Default assembly'
-agMeeting.signatures = 'Default signatures'
-agMeeting.certifiedSignatures = []
-agMeeting.categories = categories
-agMeeting.shortName = 'Council'
-agMeeting.meetingFileTypes = [annexe, annexeBudget, annexeCahier,
-                              itemAnnex, annexeDecision, adviceAnnex, adviceLegalAnalysis]
-agMeeting.itemWorkflow = 'meetingitemcaidea_workflow'
-agMeeting.meetingWorkflow = 'meetingcaidea_workflow'
-agMeeting.itemConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCAIDEAWorkflowConditions'
-agMeeting.itemActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCAIDEAWorkflowActions'
-agMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowConditions'
-agMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
-agMeeting.transitionsToConfirm = []
-agMeeting.transitionsForPresentingAnItem = ['validate', 'present', ]
-agMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'validateByCD',
-                                                         'item_transition': 'itemValidateByCD'},
+councilMeeting.meetingManagers = ['pmManager', ]
+councilMeeting.assembly = 'Default assembly'
+councilMeeting.signatures = 'Default signatures'
+councilMeeting.certifiedSignatures = []
+councilMeeting.categories = [deployment, maintenance, development, events,
+                             research, projects, marketing, subproducts]
+councilMeeting.classifiers = [classifier1, classifier2, classifier3]
+councilMeeting.shortName = 'Council'
+councilMeeting.annexTypes = [financialAnalysis, legalAnalysis,
+                             budgetAnalysisCfg2, itemAnnex, decisionAnnex,
+                             adviceAnnex, adviceLegalAnalysis, meetingAnnex]
+councilMeeting.itemWorkflow = 'meetingitemcommunes_workflow'
+councilMeeting.meetingWorkflow = 'meetingcommunes_workflow'
+councilMeeting.itemConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCouncilWorkflowConditions'
+councilMeeting.itemActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCouncilWorkflowActions'
+councilMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCouncilWorkflowConditions'
+councilMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCouncilWorkflowActions'
+councilMeeting.transitionsToConfirm = []
+councilMeeting.transitionsForPresentingAnItem = ['propose', 'validate', 'present', ]
+councilMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'freeze',
+                                                              'item_transition': 'itemfreeze'},
 
-                                                        {'meeting_transition': 'freeze',
-                                                         'item_transition': 'itemValidateByCD'},
-                                                        {'meeting_transition': 'freeze',
-                                                         'item_transition': 'itemfreeze'},
+                                                             {'meeting_transition': 'publish',
+                                                              'item_transition': 'itemfreeze'},
+                                                             {'meeting_transition': 'publish',
+                                                              'item_transition': 'itempublish'},
 
-                                                        {'meeting_transition': 'decide',
-                                                         'item_transition': 'itemValidateByCD'},
-                                                        {'meeting_transition': 'decide',
-                                                         'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'decide',
-                                                         'item_transition': 'itempublish'},
+                                                             {'meeting_transition': 'decide',
+                                                              'item_transition': 'itemfreeze'},
+                                                             {'meeting_transition': 'decide',
+                                                              'item_transition': 'itempublish'},
 
+                                                             {'meeting_transition': 'publish_decisions',
+                                                              'item_transition': 'itemfreeze'},
+                                                             {'meeting_transition': 'publish_decisions',
+                                                              'item_transition': 'itempublish'},
+                                                             {'meeting_transition': 'publish_decisions',
+                                                              'item_transition': 'accept'},
 
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'itemValidateByCD'},
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'itempublish'},
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'accept'},
+                                                             {'meeting_transition': 'close',
+                                                              'item_transition': 'itemfreeze'},
+                                                             {'meeting_transition': 'close',
+                                                              'item_transition': 'itempublish'},
+                                                             {'meeting_transition': 'close',
+                                                              'item_transition': 'accept'},
 
-                                                        {'meeting_transition': 'backToCreated',
-                                                         'item_transition': 'backToValidatedByCD'},
-                                                        {'meeting_transition': 'backToCreated',
-                                                         'item_transition': 'backToPresented'},
+                                                             {'meeting_transition': 'backToCreated',
+                                                              'item_transition': 'backToPresented'},)
 
-                                                        {'meeting_transition': 'backToValidatedByCD',
-                                                         'item_transition': 'backToValidatedByCD'},)
+councilMeeting.meetingTopicStates = ('created', 'frozen', 'published')
+councilMeeting.decisionTopicStates = ('decided', 'closed')
+councilMeeting.itemAdviceStates = ('validated',)
+councilMeeting.recordItemHistoryStates = []
+councilMeeting.maxShownMeetings = 5
+councilMeeting.maxDaysDecisions = 60
+councilMeeting.meetingAppDefaultView = 'searchallitems'
+councilMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned',)
+councilMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_categories',
+                                             'reverse': '0'}, )
+councilMeeting.useGroupsAsCategories = False
+councilMeeting.useAdvices = False
+councilMeeting.selectableAdvisers = []
+councilMeeting.itemAdviceStates = ['proposed', ]
+councilMeeting.itemAdviceEditStates = ['proposed', 'validated']
+councilMeeting.itemAdviceViewStates = ['presented', ]
+councilMeeting.transitionsReinitializingDelays = ('backToItemCreated')
+councilMeeting.enforceAdviceMandatoriness = False
+councilMeeting.itemDecidedStates = ['accepted', 'refused', 'delayed', 'accepted_but_modified', 'pre_accepted']
+councilMeeting.itemPowerObserversStates = collegeMeeting.itemPowerObserversStates
+councilMeeting.meetingPowerObserversStates = collegeMeeting.meetingPowerObserversStates
+councilMeeting.useCopies = True
+councilMeeting.selectableCopyGroups = [developers.getIdSuffixed('reviewers'), vendors.getIdSuffixed('reviewers'), ]
+councilMeeting.useVotes = True
+councilMeeting.meetingUsers = [muser_voter1, muser_voter2, ]
+councilMeeting.recurringItems = []
+councilMeeting.itemTemplates = (template1, template2)
 
-agMeeting.meetingTopicStates = ('created', 'frozen', 'published')
-agMeeting.decisionTopicStates = ('decided', 'closed')
-agMeeting.itemAdviceStates = ('validated',)
-agMeeting.recordItemHistoryStates = []
-agMeeting.maxShownMeetings = 5
-agMeeting.maxDaysDecisions = 60
-agMeeting.meetingAppDefaultView = 'topic_searchmyitems'
-agMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned',)
-agMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_categories',
-                                        'reverse': '0'}, )
-agMeeting.useGroupsAsCategories = False
-agMeeting.useAdvices = False
-agMeeting.itemAdviceStates = ['proposed_to_director', ]
-agMeeting.itemAdviceEditStates = ['proposed_to_director', 'validated']
-agMeeting.itemAdviceViewStates = ['presented', ]
-agMeeting.transitionReinitializingDelays = 'backToItemCreated'
-agMeeting.enforceAdviceMandatoriness = False
-agMeeting.itemDecidedStates = ['accepted', 'refused', 'delayed', 'accepted_but_modified', 'pre_accepted']
-agMeeting.itemPowerObserversStates = caMeeting.itemPowerObserversStates
-agMeeting.meetingPowerObserversStates = caMeeting.meetingPowerObserversStates
-agMeeting.useCopies = True
-agMeeting.selectableCopyGroups = [developers.getIdSuffixed('reviewers'), vendors.getIdSuffixed('reviewers'), ]
-agMeeting.useVotes = True
-agMeeting.meetingUsers = [muser_voter1, muser_voter2, ]
-agMeeting.recurringItems = []
-agMeeting.itemTemplates = (template1, template2)
-
-#no recurring items for this meetingConfig, only for tests !!!
-#so we can test a meetingConfig with recurring items (college) and without (council)
+# no recurring items for this meetingConfig, only for tests !!!
+# so we can test a meetingConfig with recurring items (college) and without (council)
 
 data = PloneMeetingConfiguration(
     meetingFolderTitle='Mes seances',
-    meetingConfigs=(caMeeting, agMeeting),
+    meetingConfigs=(collegeMeeting, councilMeeting),
     groups=(developers, vendors, endUsers))
-data.unoEnabledPython = '/usr/bin/python'
+# necessary for testSetup.test_pm_ToolAttributesAreOnlySetOnFirstImportData
+data.restrictUsers = False
 data.usersOutsideGroups = [voter1, voter2, powerobserver1, powerobserver2,
-                           restrictedpowerobserver1, restrictedpowerobserver2]
+                           restrictedpowerobserver1, restrictedpowerobserver2,
+                           budgetimpacteditor]
 # ------------------------------------------------------------------------------

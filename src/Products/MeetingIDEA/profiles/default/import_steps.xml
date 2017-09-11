@@ -1,42 +1,23 @@
 <?xml version="1.0"?>
 <import-steps>
+
  <import-step 
-    id="MeetingIDEA-Update-RoleMappings" 
+    id="MeetingIDEA-Update-RoleMappings"
     handler="Products.MeetingIDEA.setuphandlers.updateRoleMappings"
     title="Update Workflow role mappings for MeetingIDEA"
-    version="2015-08-21T10:30:07.927502">
+    version="2016-02-01T09:23:16.516092">
    <dependency step="MeetingIDEA-QI-dependencies"/>
    updates the workflow role mappings for MeetingIDEA
  </import-step>
 
  <import-step 
-    id="MeetingIDEA-postInstall" 
+    id="MeetingIDEA-postInstall"
     handler="Products.MeetingIDEA.setuphandlers.postInstall"
     title="manual coded post-install for MeetingIDEA"
-    version="2015-08-21T10:30:07.927502">
+    version="2016-02-01T09:23:16.516092">
    <dependency step="MeetingIDEA-QI-dependencies"/>
    manual coded post-install for MeetingIDEA
  </import-step>
 
-<!-- ##code-section ADDITIONALSTEPS -->
- <import-step
-    id="MeetingIDEA-reorderCss"
-    handler="Products.MeetingIDEA.setuphandlers.reorderCss"
-    title="Make sure CSS order is correct."
-    version="2013-04-22T13:00:00.000000">
-   <dependency step="MeetingIDEA-postInstall"/>
-   Make sure CSS order is correct.
- </import-step>
-
- <import-step 
-    id="MeetingIDEA-addMeetingCDGroup" 
-    handler="Products.MeetingIDEA.setuphandlers.addMeetingCDGroup"
-    title="Add a Meeting CD group for Direction's Council"
-    version="2011-02-01T15:00:00">
-   <dependency step="MeetingIDEA-QI-dependencies"/>
-   Add a MeetingCD group
- </import-step>
-
-<!-- ##/code-section ADDITIONALSTEPS -->
 </import-steps>
  

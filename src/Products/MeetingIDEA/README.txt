@@ -7,7 +7,7 @@ It configures PloneMeeting to be useable for college and council of belgian citi
 2. Project resources
 ====================
 Homepage:       http://www.plonegov.org/
-                http://www.imio.be/
+                http://www.communesplone.org/
 Project page:   http://plonegov.org/software/products/plonemeeting
 Mailing list:   https://lists.plonegov.org/cgi-bin/mailman/listinfo/
                 https://lists.communesplone.org/cgi-bin/mailman/listinfo

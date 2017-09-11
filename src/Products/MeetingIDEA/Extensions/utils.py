@@ -56,6 +56,8 @@ def import_meetingsGroups_from_csv(self, fname=None):
       Import the MeetingGroups from the 'csv file' (fname received as parameter)
     """
     member = self.portal_membership.getAuthenticatedMember()
+    from Products.CMFPlone.utils import safe_unicode
+
     if not member.has_role('Manager'):
         raise Unauthorized('You must be a Manager to access this script !')
 
@@ -78,7 +80,8 @@ def import_meetingsGroups_from_csv(self, fname=None):
     from Products.CMFPlone.utils import normalizeString
 
     for row in reader:
-        row_id = normalizeString(row['title'], self)
+        group_title = safe_unicode(row['title'])
+        row_id = normalizeString(group_title, self)
         if not hasattr(pm, row_id):
             groupId = pm.invokeFactory(type_name="MeetingGroup", id=row_id, title=row['title'],
                                        description=row['description'], acronym=row['acronym'],
@@ -118,23 +121,32 @@ def import_meetingsUsersAndRoles_from_csv(self, fname=None):
 
     out = []
 
+    from Products.CMFCore.exceptions import BadRequest
+    from Products.CMFCore.utils import getToolByName
     from Products.CMFPlone.utils import normalizeString
+    from Products.CMFPlone.utils import safe_unicode
 
     acl = self.acl_users
     pms = self.portal_membership
     pgr = self.portal_groups
+    registration = getToolByName(self, 'portal_registration', None)
     for row in reader:
         row_id = normalizeString(row['username'], self)
-        #add users if not exist
+        # add users if not exist
         if row_id not in [ud['userid'] for ud in acl.searchUsers()]:
             pms.addMember(row_id, row['password'], ('Member',), [])
             member = pms.getMemberById(row_id)
-            member.setMemberProperties({'fullname': row['fullname'], 'email': row['email']})
+            properties = {'fullname': row['fullname'], 'email': row['email']}
+            failMessage = registration.testPropertiesValidity(properties, member)
+            if failMessage is not None:
+                raise BadRequest(failMessage)
+            member.setMemberProperties(properties)
             out.append("User '%s' is added" % row_id)
         else:
             out.append("User %s already exists" % row_id)
-        #attribute roles
-        grouptitle = normalizeString(row['grouptitle'], self)
+        # attribute roles
+        group_title = safe_unicode(row['grouptitle'])
+        grouptitle = normalizeString(group_title, self)
         groups = []
         if row['observers']:
             groups.append(grouptitle + '_observers')
@@ -144,13 +156,12 @@ def import_meetingsUsersAndRoles_from_csv(self, fname=None):
             groups.append(grouptitle + '_reviewers')
         if row['advisers']:
             groups.append(grouptitle + '_advisers')
-        if row['departmentheads']:
-            groups.append(grouptitle + '_departmentheads')
         for groupid in groups:
             pgr.addPrincipalToGroup(row_id, groupid)
             out.append("    -> Added in group '%s'" % groupid)
 
     file.close()
+
     return '\n'.join(out)
 
 
@@ -178,6 +189,7 @@ def import_meetingsCategories_from_csv(self, meeting_config='', isClassifier=Fal
     out = []
 
     pm = self.portal_plonemeeting
+    from Products.CMFPlone.utils import safe_unicode
     from Products.CMFPlone.utils import normalizeString
     from Products.PloneMeeting.profiles import CategoryDescriptor
 
@@ -188,7 +200,8 @@ def import_meetingsCategories_from_csv(self, meeting_config='', isClassifier=Fal
         catFolder = meetingConfig.categories
 
     for row in reader:
-        row_id = normalizeString(row['title'], self)
+        rowid = safe_unicode(row['title'])
+        row_id = normalizeString(rowid, self)
         if row_id == '':
             continue
         if not hasattr(catFolder, row_id):

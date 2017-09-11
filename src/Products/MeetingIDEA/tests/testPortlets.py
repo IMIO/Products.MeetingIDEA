@@ -23,15 +23,15 @@
 #
 
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.MeetingCommunes.tests.testPortlets import testPortlets as mctp
+from Products.PloneMeeting.tests.testPortlets import testPortlets as pmtp
 
 
-class testPortlets(MeetingIDEATestCase, mctp):
+class testPortlets(MeetingIDEATestCase, pmtp):
     '''Tests the portlets methods.'''
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(testPortlets, prefix='test_subproduct_'))
+    suite.addTest(makeSuite(testPortlets, prefix='test_pm_'))
     return suite

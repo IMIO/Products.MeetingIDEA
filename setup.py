@@ -1,11 +1,12 @@
 from setuptools import setup, find_packages
 import os
 
-version = '3.3.0-dev'
+version = '4.0'
 
 setup(name='Products.MeetingIDEA',
       version=version,
-      description="PloneMeeting profile for IDEA, IC",
+      description="Official meetings management for college and council of belgian"
+      "communes (PloneMeeting extension profile)",
       long_description=open("README.txt").read() + "\n" + open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=["Programming Language :: Python", ],
       keywords='',
@@ -26,14 +27,12 @@ setup(name='Products.MeetingIDEA',
                 'plone.app.robotframework',
                 'Products.CMFPlacefulWorkflow',
                 'zope.testing',
-                'Products.MeetingCommunes',
                 'Products.PloneTestCase'],
-              templates=['Genshi',
-                         ]),
+          templates=['Genshi', ]),
       install_requires=[
           'setuptools',
           'Products.CMFPlone',
           'Pillow',
-          'Products.PloneMeeting', ],
+          'Products.PloneMeeting'],
       entry_points={},
       )
