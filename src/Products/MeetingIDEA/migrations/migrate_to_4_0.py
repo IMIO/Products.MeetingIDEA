@@ -5,7 +5,6 @@ logger = logging.getLogger('MeetingIDEA')
 
 from plone import api
 
-from Products.MeetingIDEA.profiles.examples_fr.import_data import annexeSeance
 from Products.PloneMeeting.migrations.migrate_to_4_0 import Migrate_To_4_0 as PMMigrate_To_4_0
 
 
@@ -78,16 +77,16 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
                                                 'meetingcouncil_workflow'))]
         logger.info('Done.')
 
-    def _addSampleAnnexTypeForMeetings(self):
-        """Add a sample annexType for Meetings now that
-           annexes may be added to meetings."""
-        logger.info('Adding sample annexType in meeting_annexes...')
-        for cfg in self.tool.objectValues('MeetingConfig'):
-            if not cfg.annexes_types.meeting_annexes.objectIds():
-                source = self.ps.getProfileInfo(
-                    self.profile_name)['path'].replace('/default', '/examples_fr')
-                cfg.addAnnexType(annexeSeance, source)
-        logger.info('Done.')
+    # def _addSampleAnnexTypeForMeetings(self):
+    #     """Add a sample annexType for Meetings now that
+    #        annexes may be added to meetings."""
+    #     logger.info('Adding sample annexType in meeting_annexes...')
+    #     for cfg in self.tool.objectValues('MeetingConfig'):
+    #         if not cfg.annexes_types.meeting_annexes.objectIds():
+    #             source = self.ps.getProfileInfo(
+    #                 self.profile_name)['path'].replace('/default', '/examples_fr')
+    #             cfg.addAnnexType(annexeSeance, source)
+    #     logger.info('Done.')
 
     def _deleteUselessWorkflows(self):
         """Finally, remove useless workflows."""
@@ -109,7 +108,7 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
             logger.info('Migrating to MeetingIDEA 4.0...')
             self._cleanCDLD()
             self._migrateItemPositiveDecidedStates()
-            self._addSampleAnnexTypeForMeetings()
+            # self._addSampleAnnexTypeForMeetings()
             self._deleteUselessWorkflows()
 
 
