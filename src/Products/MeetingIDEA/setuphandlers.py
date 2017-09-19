@@ -13,17 +13,11 @@ __author__ = """Andre Nuyens <andre.nuyens@imio.be>"""
 __docformat__ = 'plaintext'
 
 
-import os
 import logging
+import os
+
 logger = logging.getLogger('MeetingIDEA: setuphandlers')
-from DateTime import DateTime
 from plone import api
-from plone import namedfile
-from plone.app.textfield.value import RichTextValue
-from plone.dexterity.utils import createContentInContainer
-from collective.iconifiedcategory.utils import calculate_category_id
-from collective.iconifiedcategory.utils import get_config_root
-from Products.CMFPlone.utils import _createObjectByType
 from Products.PloneMeeting.exportimport.content import ToolInitializer
 from Products.MeetingIDEA.config import PROJECTNAME
 
