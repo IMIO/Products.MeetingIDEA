@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2005-05-17 15:00-100\n"
+"POT-Creation-Date: 2011-03-01 09:00-100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -9,121 +9,269 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
-"Language-Code: en\n"
-"Language-Name: English\n"
+"Language-Code: fr\n"
+"Language-Name: French\n"
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: PloneMeeting\n"
-"Language-code: fr\n"
-"Language-name: French\n"
-"Preferred-encodings: utf-8 latin1\n"
 "X-is-fallback-for: fr-be fr-ca fr-lu fr-mc fr-ch fr-fr\n"
 
 # portal_tabs
-#. Default: "Meeting config College"
-msgid "Meeting config College"
-msgstr "Collège Communal"
-
-#. Default: "Meeting config Council"
-msgid "Meeting config Council"
-msgstr "Conseil Communal"
-
-#. Default: "Finances advice"
-msgid "MeetingAdviceFinances"
-msgstr "Avis finances"
-
-#. Default: "If the group is responsible of other groups, select them here above, either do not select any elements of the list."
-msgid "MeetingIDEA_descr_echevinServices"
-msgstr "Si ce groupe est responsable d'autres groupes, selectionnez les ci-dessous."
-
-#. Default: "Alderman of the following services (departments)"
-msgid "MeetingIDEA_label_echevinServices"
-msgstr "Echevin des services suivants"
-
-#. Default: "Initialize the item decision when deciding meeting"
-msgid "MeetingIDEA_label_initItemDecisionIfEmptyOnDecide"
-msgstr "Initialiser le champ décision des points lorsque la séance passe 'En rédaction du PV'?"
-
-#. Default: "Add a finances advice"
-msgid "add_new_meetingadvicefinances"
-msgstr "Ajouter un avis finances"
-
-#. Default: "Cautious opinion"
-msgid "cautious_finance"
-msgstr "Avis finances réservé"
-
-#. Default: "Financial controllers"
-msgid "financialcontrollers"
-msgstr "Contrôleurs financiers"
-
-#. Default: "Financial editors"
-msgid "financialeditors"
-msgstr "Rédacteurs financiers"
-
-#. Default: "Financial managers"
-msgid "financialmanagers"
-msgstr "Directeurs financiers"
-
-#. Default: "Financial reviewers"
-msgid "financialreviewers"
-msgstr "Validateurs financiers"
-
-msgid "front_page_body"
-msgstr "<p>Avant de tester, nous vous recommandons de lire la <span class=\"link-external\"><a target='_blank' href='http://www.imio.be/support/documentation/manual/plonemeeting32'>documentation</a></span> qui explique en détails le fonctionnement du logiciel. Ce manuel évolue constamment.<br> <br>La gestion de cette application repose sur différents profils auxquels sont liés des droits (un même utilisateur peut avoir plusieurs profils), <i>le mot de passe pour vous connecter avec les différents profils vous a été envoyé par e-mail</i>:</p><p><strong>1) Le profil \"agent communal\"</strong> qui permet de créer des points à proposer à la séance</p> <p>Pour vous connecter en tant qu'agent du service du \"Personnel\", utilisez le login de test créé à cet effet (login=<strong>agentPers</strong>).&nbsp;</p> <p class='discreet'>Une fois connecté, vous pouvez cliquer sur l'onglet désiré et gérer vos points.<br>N'oubliez pas de vous déconnecter avant de tester un autre profil.</p><p><strong>2) Le profil \"chef de service\"</strong> qui permet de valider un point proposé par un agent de son service</p> <p>Pour vous vous connecter en tant que chef du service \"Personnel\", utilisez le login de test créé à cet effet (login=<strong>chefPers</strong>).&nbsp;</p> <p class='discreet'>Une fois connecté, vous pouvez cliquer sur l'onglet désiré et gérer vos points et ceux du service.<br>N'oubliez pas de vous déconnecter avant de tester un autre profil.</p><p><strong>3) Le profil \"émetteur d'avis\"</strong> qui permet de donner un avis sur un point (si cet avis a été demandé)</p> <p>Pour vous connecter en tant qu'émetteur d'avis pour le service \"Comptabilité\", utilisez le login de test créé à cet effet (login=<strong>chefCompta</strong>).</p> <p class='discreet'>Une fois connecté, vous pouvez cliquer sur l'onglet désiré et visualiser les points pour lesquels un avis est nécessaire.<br>N'oubliez pas de vous déconnecter avant de tester un autre profil.</p><p><strong>4) Le profil \"Directeur Général\"</strong> qui permet de créer un ordre du jour, d'y ajouter des points proposés et de compléter le PV des séances<br> Pour vous connecter en tant que \"Directeur Général\", utilisez le login de test créé à cet effet (login=<strong>dgen</strong>).</p> <p class='discreet'>Une fois connecté, vous pouvez cliquer sur l'onglet désiré et visualiser les points, les séances, les PV, ...<br>N'oubliez pas de vous déconnecter avant de tester un autre profil.</p><p><strong>5) Le profil \"échevin\" ou lecteur</strong> qui permet de consulter les points sans pouvoir les modifier</p> <p>Pour vous connecter en tant que personne pouvant consulter des points pour le service \"Personnel\", utilisez le login de test créé à cet effet (login=<strong>echevinPers</strong>).</p> <p class='discreet'>Une fois connecté, vous pouvez visualiser les points du service et les points inclus à l'odre du jour.<br>N'oubliez pas de vous déconnecter avant de tester un autre profil.</p><p><strong>6) Un profil \"observateur de toutes les séances\"</strong> qui permet d'avoir un accès en lecture à tous à partir du moment où l'élément est passé par l'étape \"gelé\"</p> <p>Pour vous connecter en tant que personne pouvant consulter tout, utilisez le login de test créé à cet effet (login=<strong>bourgmestre</strong>).</p><p class='discreet'>Une fois connecté, vous pouvez cliquer sur n'importe quel onglet et accéder à l'ensemble des points.<br>N'oubliez pas de vous déconnecter avant de tester un autre profil.</p><p><strong>7) Un profil \"observateur pour le conseil\"</strong> qui permet d'avoir un accès en lecture à tout le conseil à partir du moment où l'élément est passé par l'étape \"gelé\"</p> <p>Pour vous connecter en tant que personne pouvant consulter tout le conseil, utilisez le login de test créé à cet effet (login=<strong>conseiller</strong>).</p><p class='discreet'>Une fois connecté, vous pouvez accéder à un type de séance et visualiser l'ensemble des points.<br>N'oubliez pas de vous déconnecter avant de tester un autre profil.</p><p><strong>6) Un profil \"Directeur Financier\"</strong> qui est un profil cumulant plusieurs rôles : accès à tous les points en lecture, possibilité de modifier les informations budgétaires des points dans certains états, possibilité de rendre un avis sur un point même si l'avis n'a pas été demandé, ...</p> <p>Pour vous connecter en tant que \"Directeur Financier\", utilisez le login de test créé à cet effet (login=<strong>dfin</strong>).</p><p class='discreet'>Une fois connecté, vous pouvez cliquer sur l'onglet désiré et tester sur les différents points existants dans différents états.<br>N'oubliez pas de vous déconnecter avant de tester un autre profil.</p>"
-
-#. Default: "If you check this box, when a meeting will be decided, if an item does not have a decision defined, this decision will be automatically filled with title and description of the item"
-msgid "init_item_decision_if_empty_on_decide"
-msgstr "Si cette case est cochée, lorsqu'une séance passera 'En rédaction du PV', pour tous les points dont le champ 'Décision' est vide, ce champ sera automatiquement rempli avec une concaténation de ce qui est défini dans le titre et la description du point"
-
-#. Default: "Unfavorable opinion"
-msgid "negative_finance"
-msgstr "Avis finances défavorable"
-
-#. Default: "Not given opinion"
-msgid "not_given_finance"
-msgstr "Avis finances non remis"
-
-#. Default: "Not required opinion"
-msgid "not_required_finance"
-msgstr "Avis finances non requis"
-
-#. Default: "Favorable opinion"
-msgid "positive_finance"
-msgstr "Avis finances favorable"
-
-#. Default: "Favorable opinion with remarks"
-msgid "positive_with_remarks_finance"
-msgstr "Avis finances favorable avec remarques"
-
-#. Default: "Advices proposed to financial controller"
-msgid "searchadviceproposedtocontroller"
-msgstr "Avis proposés au contrôleur financier"
-
-#. Default: "Advices proposed to financial editor"
-msgid "searchadviceproposedtoeditor"
-msgstr "Avis proposés au rédacteur financier"
-
-#. Default: "Advices proposed to financial manager"
-msgid "searchadviceproposedtomanager"
-msgstr "Avis proposés au Directeur financier"
-
-#. Default: "Advices proposed to financial reviewer"
-msgid "searchadviceproposedtoreviewer"
-msgstr "Avis proposés au validateur financier"
 
 #. Default: "Items to control completeness of"
 msgid "searchitemstocontrolcompletenessof"
 msgstr "Complétude à contrôler"
 
-# searches
-#. Default: "Synthesis finance advices"
-msgid "searchitemswithfinanceadvice"
-msgstr "Synthèse Avis DF"
+#. Default: "CA"
+msgid "Meeting config IDEA CA"
+msgstr "Conseil d'administration"
+
+#. Default: "AG"
+msgid "Meeting config IDEA AG"
+msgstr "AssemblÃ©e gÃ©nÃ©rale"
+
+#. Default: "Transcription of interventions"
+msgid "MeetingIDEA_descr_interventions"
+msgstr "Retranscription des interventions"
+
+#. Default: "Default value for the item decision field"
+msgid "MeetingIDEA_label_defaultMeetingItemDecision"
+msgstr "Valeur par dÃ©faut du champ 'DÃ©libÃ©ration/Extrait du ProcÃ¨s-verbal'"
+
+#. Default: "Premeeting observations"
+msgid "MeetingIDEA_label_meetingAGobservations"
+msgstr "Avant-sÃ©ance"
+
+# MeetingItem
+#. Default: "Signatures delegation"
+msgid "MeetingCommunes_descr_echevinServices"
+msgstr "DÃ©lÃ©gation de signatures"
+
+# import what was done in MeetingCommunes
+# MeetingItem
+#. Default: "Decision"
+msgid "PloneMeeting_label_decision"
+msgstr "Extrait du ProcÃ¨s-verbal"
+
+#. Default: "Linked items"
+msgid "PloneMeeting_label_predecessor"
+msgstr "Point(s) liÃ©(s)"
+
+# object_buttons
+#. Default: "Send to AG"
+msgid "Send to AG"
+msgstr "Envoyer Ã  l'AssemblÃ©e GÃ©nÃ©rale"
+
+#. Default: "Sent to AG"
+msgid "Sent to AG"
+msgstr "EnvoyÃ© Ã  l'AssemblÃ©e GÃ©nÃ©rale"
+
+#. Default: "PloneMeeting"
+msgid "app_name"
+msgstr "PloneMeeting"
+
+#. Default: "Add [[ ]] around absent people (like [[Mister Sample Peter]])"
+msgid "assembly_meeting_descr"
+msgstr "Ajoutez des double crochets [[ ]] autour des personnes absentes, par exemple : [[Mr. Untel Didier]]"
+
+# Suffix
+#. Default: "budget impact reviewers"
+msgid "budgetimpactreviewers"
+msgstr "correspondants financier"
+
+#. Default: "Please as this item comes from the CA, you need to define the 'commission' for it before being able to propose it."
+msgid "check_category"
+msgstr "Attention, comme ce point provient du CA communal, vous devez dÃ©finir la commission Ã  laquelle il doit passer en passant par l'onglet 'Modifier' avant de pouvoir le proposer au chef de bureau."
+
+#. Default: "Please as you defined an item initiator, check if the linked category should not be 'Points AG'. If not, just ignore this message, it will not be displayed anymore when the item will be validated."
+msgid "check_intitiator_and_category"
+msgstr "Attention, en gÃ©nÃ©ral si vous sÃ©lectionnez une personne 'A l'initative de ce point', la catÃ©gorie 'Points AG' doit Ãªtre Ã©galement sÃ©lectionnÃ©e.  VÃ©rifiez vos donnÃ©es, si elles sont justes, ignorez cet avertissement, il disparaÃ®tra une fois le point 'validÃ©'."
+
+#. Default: "Default value for the item decision field"
+msgid "default_meetingitem_decision"
+msgstr "DÃ©finissez ici le texte prÃ©dÃ©fini qui sera prÃ©sent dans le champ 'DÃ©libÃ©ration/Extrait du ProcÃ¨s-verbal' chaque fois qu'un utilisateur crÃ©e un nouveau point."
+
+# Suffix
+#. Default: "Department heads"
+msgid "departmentheads"
+msgstr "Chefs de service"
+
+#. Default: "Configure PloneMeeting"
+msgid "hs_configuration"
+msgstr "Configurer PloneMeeting"
+
+#. Default: "Welcome to HubSessions!"
+msgid "hs_welcome_title"
+msgstr "Bienvenue sur PloneMeeting!"
+
+#. Default: "Assembly"
+msgid "listingheader_premeeting_assembly"
+msgstr "AssemblÃ©e"
+
+#. Default: "Date"
+msgid "listingheader_premeeting_date"
+msgstr "Date"
+
+#. Default: "Description"
+msgid "meeting_item_description"
+msgstr "Description dans l'Ordre du jour"
+
+#. Default: "Choose advisers that will have to issue an optional advice for this item"
+msgid "optional_advisers_item_descr"
+msgstr "SÃ©lectionnez les groupes qui pourront remettre un avis sur ce point. SÃ©lectionnez plusieurs groupes Ã  l'aide de CTRL+clic"
+
+#. Default: "PowerObservers"
+msgid "powerObserversGroupTitle"
+msgstr "Echevins"
+
+#. Default: "MeetingItemCA"
+msgid "predecessor_MeetingItemCA"
+msgstr "CA"
+
+#. Default: "MeetingItemAG"
+msgid "predecessor_MeetingItemAG"
+msgstr "AG"
+
+#. Default: "Present every selected items"
+msgid "present_several_items"
+msgstr "PrÃ©senter tous les points sÃ©lectionnÃ©s"
+
+#. Default: "The comment was : ${comments}.\n\nMore information at ${objectUrl}."
+msgid "returnedToService_mail_body"
+msgstr ""
+"Commentaire laissÃ© par le SecrÃ©tariat communal : ${comments}.\n"
+"\n"
+"Plus d'information ici: ${objectUrl}."
+
+#. Default: "The item '${itemTitle}' has been send back to you by the secretary"
+msgid "returnedToService_mail_subject"
+msgstr "Le point '${itemTitle}' vous a Ã©tÃ© renvoyÃ© pour corrections par le SecrÃ©tariat communal"
+
+# Suffix
+#. Default: "reviewers"
+msgid "reviewers"
+msgstr "Directeur"
+
+#. Default: "Configure PloneMeeting"
+msgid "search_advanced"
+msgstr "Configurer PloneMeeting"
+
+#. Default: "corrected items"
+msgid "searchcorrecteditems"
+msgstr "points corrigÃ©s"
+
+#. Default: "decided items"
+msgid "searchdecideditems"
+msgstr "points dÃ©cidÃ©s"
+
+#. Default: "Items of my group"
+msgid "searchgroupitems"
+msgstr "points de mon service"
+
+#. Default: "items to validate"
+msgid "searchitemstovalidate"
+msgstr "points Ã  valider"
 
 # searches
-#. Default: "Proposed items"
+#. Default: "proposed items"
 msgid "searchproposeditems"
-msgstr "Points proposés"
+msgstr "points proposÃ©s"
 
-#. Default: "Validated items"
+#. Default: "items to correct"
+msgid "searchreturnedtoserviceitems"
+msgstr "points Ã  corriger"
+
+#. Default: "validated items"
 msgid "searchvalidateditems"
-msgstr "Points validés"
+msgstr "points validÃ©s"
+
+#. Default: "Please enter 12 lines for signatures delegations"
+msgid "signatures_length_error"
+msgstr "Renseignez 12 lignes pour les signatures.  Si une signature ne doit pas Ãªtre surchargÃ©e (si la signature dÃ©finie dans la configuration de sÃ©ance dans le champ 'Signatures certifiÃ©es' doit Ãªtre utilisÃ©e), renseignez un tiret (-)."
+
+#. Default: "Detailed description"
+msgid "PloneMeeting_label_detailedDescription"
+msgstr "Justification de l'urgence"
+
+#. Default: "Detailed description"
+msgid "Detaileddescription"
+msgstr "Justification de l'urgence"
+
+#. Default: "Detailed description"
+msgid "DetailedDescriptionMethode"
+msgstr "Justification de l'urgence"
+
+#. Default: "Detailed description"
+msgid "detailedDescription_item_descr"
+msgstr "Pour les points supplÃ©mentaires, veuillez justifier l'urgence"
+
+#. Default: "Internal communication description"
+msgid "item_internalCommunication_descr"
+msgstr "Indiquez vos notes personnelles ici. Elles ne seront vues que par les gestionnaires de sÃ©ances"
+
+#. Default: "Internal communication"
+msgid "PloneMeeting_label_internalCommunication"
+msgstr "Communication interne"
+
+#. Default: "Internal communication"
+msgid "InternalCommunication"
+msgstr "Communication interne"
+
+#. Default: "searchdepartmentheaditems"
+msgid "searchdepartmentheaditems"
+msgstr "chef de service"
+
+#. Default: "searchdirectoritems"
+msgid "searchdirectoritems"
+msgstr "directeur"
+
+#. Default: "searchsecretariatitems"
+msgid "searchsecretariatitems"
+msgstr "secrÃ©tariat"
+
+#. Default: "searchdgitems"
+msgid "searchdgitems"
+msgstr "points Ã  valider"
+
+#. Default: "To discuss ?"
+msgid "PloneMeeting_label_toDiscuss"
+msgstr "Pris acte?"
+
+#. Default: "Not to be discussed during the meeting."
+msgid "to_discuss_no"
+msgstr "Pris acte"
+
+#. Default: "Not to be discussed during the meeting. Click on the image for discussing the item."
+msgid "to_discuss_no_edit"
+msgstr "Pris acte en sÃ©ance, cliquez sur l'image pour Ã©voquer ce point."
+
+#. Default: "To be discussed during the meeting. Click on the image for not discussing the item."
+msgid "to_discuss_yes_edit"
+msgstr "A Ã©voquer en sÃ©ance, cliquez sur l'image pour prendre acte de ce point."
+
+#. Default: "meetingCDGroupTitle"
+msgid "meetingCDGroupTitle"
+msgstr "Conseil de Direction"
+
+#. Default: "Observations"
+msgid "PloneMeeting_itemObservations"
+msgstr "Interventions en sÃ©ance"
+
+#. Default: "The interventions is currently under edit by managers, you can not access it."
+msgid "intervention_under_edit"
+msgstr "<p>Les interventions sont en cours de rÃ©daction par les gestionnaires de sÃ©ances, vous ne pouvez pas y accÃ©der pour l'instant.</p>"
+
+#. Default: "StrategicAxis"
+msgid "item_strategicAxis_descr"
+msgstr "Choississez vos axes stratÃ©giques"
+
+#. Default: "StrategicAxis"
+msgid "PloneMeeting_label_strategicAxis"
+msgstr "Axes StratÃ©giques"
+
+#. Default: "Initialize the item decision when deciding meeting"
+msgid "MeetingCommunes_label_initItemDecisionIfEmptyOnDecide"
+msgstr ""
+
+#. Default: "If you check this box, when a meeting will be decided, if an item does not have a decision defined, this decision will be automatically filled with title and description of the item"
+msgid "init_item_decision_if_empty_on_decide"
+msgstr "Si cette case est cochÃ©e, lorsqu'une sÃ©ance passera 'En rÃ©daction du PV', pour tous les points dont le champ 'DÃ©cision' est vide, ce champ sera automatiquement rempli avec une concatÃ©nation de ce qui est dÃ©fini dans le titre et la description du point"

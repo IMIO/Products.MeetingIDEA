@@ -9,7 +9,7 @@
 # GNU General Public License (GPL)
 #
 
-__author__ = """Gauthier Bastien <g.bastien@imio.be>, Stephan Geulette <s.geulette@imio.be>"""
+__author__ = """Andre Nuyens <andre.nuyens@imio.be>"""
 __docformat__ = 'plaintext'
 
 
@@ -23,6 +23,7 @@ __docformat__ = 'plaintext'
 # will be included (by importing) in this file if found.
 
 from Products.CMFCore.permissions import setDefaultRoles
+from collections import OrderedDict
 
 PROJECTNAME = "MeetingIDEA"
 
@@ -40,38 +41,22 @@ DEPENDENCIES = []
 # override in custom configuration
 PRODUCT_DEPENDENCIES = []
 
-# extra suffixes while using 'meetingadvicefinances_workflow'
-FINANCE_GROUP_SUFFIXES = ('financialcontrollers',
-                          'financialeditors',
-                          'financialreviewers',
-                          'financialmanagers')
-FINANCE_STATE_TO_GROUPS_MAPPINGS = {
-    'proposed_to_financial_controller': 'financialcontrollers',
-    'proposed_to_financial_editor': 'financialeditors',
-    'proposed_to_financial_reviewer': 'financialreviewers',
-    'proposed_to_financial_manager': 'financialmanagers', }
+from Products.PloneMeeting import config as PMconfig
+IDEAROLES = {}
+IDEAROLES['departmentheads'] = 'MeetingDepartmentHead'
+PMconfig.MEETINGROLES.update(IDEAROLES)
+PMconfig.MEETING_GROUP_SUFFIXES = PMconfig.MEETINGROLES.keys()
 
-# states in which the finance advice may be given
-FINANCE_WAITING_ADVICES_STATES = ['prevalidated_waiting_advices']
+from Products.PloneMeeting.model import adaptations
+MIDEA_RETURN_TO_PROPOSING_GROUP_MAPPINGS = {'backTo_presented_from_returned_to_proposing_group':
+                                            ['created', ],
+                                            'backTo_validated_by_cd_from_returned_to_proposing_group':
+                                            ['validated_by_cd', ],
+                                            'backTo_itemfrozen_from_returned_to_proposing_group':
+                                            ['frozen', 'decided', ],
+                                            'NO_MORE_RETURNABLE_STATES': ['closed', 'archived', ], }
+adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(MIDEA_RETURN_TO_PROPOSING_GROUP_MAPPINGS)
 
-# the id of the collection querying finance advices
-FINANCE_ADVICES_COLLECTION_ID = 'searchitemswithfinanceadvice'
-
-# if True, a positive finances advice may be signed by a finances reviewer
-# if not, only the finances manager may sign advices
-POSITIVE_FINANCE_ADVICE_SIGNABLE_BY_REVIEWER = False
-
-# text about FD advice used in templates
-FINANCE_ADVICE_LEGAL_TEXT_PRE = "<p>Attendu la demande d'avis adressée sur " \
-    "base d'un dossier complet au Directeur financier en date du {0};<br/></p>"
-
-FINANCE_ADVICE_LEGAL_TEXT = "<p>Attendu l'avis {0} du Directeur financier " \
-    "rendu en date du {1} conformément à l'article L1124-40 du Code de la " \
-    "démocratie locale et de la décentralisation;</p>"
-
-FINANCE_ADVICE_LEGAL_TEXT_NOT_GIVEN = "<p>Attendu l'absence d'avis du " \
-    "Directeur financier rendu dans le délai prescrit à l'article L1124-40 " \
-    "du Code de la démocratie locale et de la décentralisation;</p>"
-
-STYLESHEETS = [{'id': 'meetingcommunes.css',
-                'title': 'MeetingIDEA CSS styles'}]
+IDEAMEETINGREVIEWERS = OrderedDict([('reviewers',  'proposed_to_director'),
+                                    ('departmentheads', 'proposed_to_departmenthead'), ])
+PMconfig.MEETINGREVIEWERS = IDEAMEETINGREVIEWERS

@@ -16,28 +16,13 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
   
-  <!-- ##code-section profiles.zcml-bottom #fill in your manual code here -->
   <genericsetup:registerProfile
-   name="demo"
-   title="PloneMeeting / Demo profile for Communes with french examples"
-   description="Demo profile for Communes with french examples"
+   name="idea"
+   title="MeetingIDEA / CA with french examples"
+   directory="profiles/idea"
+   description="Extension profile for MeetingIDEA (Mons)"
    provides="Products.GenericSetup.interfaces.EXTENSION"
    for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="examples_fr"
-   title="PloneMeeting / Communes with french examples"
-   directory="profiles/examples_fr"
-   description="PloneMeeting for City College and Council (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="financesadvice"
-   title="PloneMeeting / Finances advice specific behavior"
-   directory="profiles/financesadvice"
-   description="PloneMeeting specific profile for advanced finances advice management"
-   provides="Products.GenericSetup.interfaces.EXTENSION"/>
 
   <genericsetup:registerProfile
    name="zag"
@@ -50,90 +35,6 @@
    name="zca"
    title="PloneMeeting / CA"
    description="PloneMeeting for CA (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="zbourgmestre"
-   title="PloneMeeting / Bourgmestre"
-   description="PloneMeeting for Bourgmestre (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="zcodir"
-   title="PloneMeeting / CoDir"
-   description="PloneMeeting for CoDir (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="zcoges"
-   title="PloneMeeting / CoGes"
-   description="PloneMeeting for CoGes (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="zcpas"
-   title="PloneMeeting / CPAS"
-   description="PloneMeeting for CPAS (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="zones"
-   title="PloneMeeting / zones (police ou secours)"
-   description="PloneMeeting for zones (help or police) (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="zetat_major"
-   title="PloneMeeting / Etat Major"
-   description="PloneMeeting for EM (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="zcoordinate_office"
-   title="PloneMeeting / Bureau de Coordination"
-   description="PloneMeeting for BureauCoord (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="ztechnicalcommittee"
-   title="PloneMeeting / Commission technique"
-   description="PloneMeeting for CT (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="znegotiation"
-   title="PloneMeeting / Comité de concertation et négociation"
-   description="PloneMeeting for Negociation (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="zwellbeing"
-   title="PloneMeeting / Comité bien-être"
-   description="PloneMeeting for WellBeing (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="zscresthome"
-   title="PloneMeeting / comité spécial de la maison de repos"
-   description="PloneMeeting for SCRestHome (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-
-  <genericsetup:registerProfile
-   name="zremunarate"
-   title="PloneMeeting / comité de rémunération"
-   description="PloneMeeting for REMUNARATE (Belgium)"
    provides="Products.GenericSetup.interfaces.EXTENSION"
    for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
@@ -160,7 +61,5 @@
       destination="4.0"
       handler="Products.MeetingIDEA.migrations.migrate_to_4_0.migrate_step3"
       profile="Products.MeetingIDEA:default" />
-
-  <!-- ##/code-section profiles.zcml-bottom -->
 
 </configure>

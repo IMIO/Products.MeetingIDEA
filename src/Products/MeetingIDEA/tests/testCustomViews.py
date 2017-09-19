@@ -23,7 +23,6 @@
 #
 
 from DateTime import DateTime
-from Products.MeetingIDEA.config import FINANCE_ADVICES_COLLECTION_ID
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
 from plone import api
 from plone.app.textfield import RichTextValue

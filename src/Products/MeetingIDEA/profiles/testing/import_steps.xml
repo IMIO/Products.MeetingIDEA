@@ -9,7 +9,6 @@
               handler="Products.MeetingIDEA.setuphandlers.initializeTool"
               title="Initialize MeetingIDEA with examples.">
   <dependency step="installMeetingIDEA"/>
-  Initialize portal_plonemeeting folders.
+  Initialize portal_plonemeeting folders for IDEA Mons.
  </import-step>
-
 </import-steps>

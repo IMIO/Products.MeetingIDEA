@@ -24,7 +24,7 @@
 # 02110-1301, USA.
 #
 
-__author__ = """Gauthier Bastien <g.bastien@imio.be>, Stephan Geulette <s.geulette@imio.be>"""
+__author__ = """Andre Nuyens <andre.nuyens@imio.be>, Olivier Delaere <olivier.delaere@imio.be>"""
 __docformat__ = 'plaintext'
 
 

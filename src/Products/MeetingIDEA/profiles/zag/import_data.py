@@ -50,107 +50,88 @@ agTemplates = [agendaTemplate, decisionsTemplate, itemTemplate]
 agMeeting = MeetingConfigDescriptor(
     'meeting-config-ag', 'Assemblée Générale',
     'Assemblée Générale')
-agMeeting.meetingManagers = []
-agMeeting.assembly = 'Pierre Dupont - Président,\n' \
-                     'Charles Exemple - Premier membre assemblée,\n' \
-                     'Luc Un, Luc Deux, Luc Trois - Membres,\n' \
-                     'Jacqueline Exemple, Observateur'
-agMeeting.signatures = 'Le Secrétaire communal\nPierre Dupont\nLe Bourgmestre\nCharles Exemple'
-agMeeting.certifiedSignatures = [
-    {'signatureNumber': '1',
-     'name': u'Vraiment Présent',
-     'function': u'Le Secrétaire communal',
-     'date_from': '',
-     'date_to': '',
-     },
-    {'signatureNumber': '2',
-     'name': u'Charles Exemple',
-     'function': u'Le Bourgmestre',
-     'date_from': '',
-     'date_to': '',
-     },
-]
-agMeeting.places = """Place1\r
-Place2\r
-Place3\r"""
+agMeeting.meetingManagers = ['pmManager',]
+agMeeting.assembly = 'Default assembly'
+                     
+agMeeting.signatures = 'Default signatures'
+agMeeting.certifiedSignatures = []
+
 agMeeting.categories = categories
 agMeeting.shortName = 'AG'
 agMeeting.annexTypes = [annexe, annexeDecision, annexeAvis, annexeSeance]
-agMeeting.usedItemAttributes = ['detailedDescription',
-                                'budgetInfos',
-                                'observations',
-                                'toDiscuss',
-                                'itemAssembly',
-                                'itemIsSigned', ]
-agMeeting.usedMeetingAttributes = ['startDate', 'endDate', 'signatures', 'assembly', 'place', 'observations', ]
-agMeeting.recordMeetingHistoryStates = []
-agMeeting.xhtmlTransformFields = ()
-agMeeting.xhtmlTransformTypes = ()
-agMeeting.itemWorkflow = 'meetingitemcommunes_workflow'
-agMeeting.meetingWorkflow = 'meetingcommunes_workflow'
-agMeeting.itemConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCollegeWorkflowConditions'
-agMeeting.itemActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCollegeWorkflowActions'
-agMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCollegeWorkflowConditions'
-agMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCollegeWorkflowActions'
-agMeeting.transitionsToConfirm = ['MeetingItem.delay', ]
-agMeeting.meetingTopicStates = ('created', 'frozen')
+agMeeting.itemWorkflow = 'meetingitemcaidea_workflow'
+agMeeting.meetingWorkflow = 'meetingcaidea_workflow'
+agMeeting.itemConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCAIDEAWorkflowConditions'
+agMeeting.itemActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCAIDEAWorkflowActions'
+agMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowConditions'
+agMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
+agMeeting.transitionsToConfirm = []
+agMeeting.meetingTopicStates = ('created', 'frozen', 'published')
 agMeeting.decisionTopicStates = ('decided', 'closed')
 agMeeting.enforceAdviceMandatoriness = False
-agMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_proposing_groups',
+agMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_categories',
                                         'reverse': '0'}, )
 agMeeting.recordItemHistoryStates = []
 agMeeting.maxShownMeetings = 5
 agMeeting.maxDaysDecisions = 60
 agMeeting.meetingAppDefaultView = 'searchmyitems'
-agMeeting.useAdvices = True
-agMeeting.itemAdviceStates = ('validated',)
-agMeeting.itemAdviceEditStates = ('validated',)
-agMeeting.itemAdviceViewStates = ('validated',
-                                  'presented',
-                                  'itemfrozen',
-                                  'accepted',
-                                  'refused',
-                                  'accepted_but_modified',
-                                  'delayed',
-                                  'pre_accepted',)
+agMeeting.usedItemAttributes = ('toDiscuss', 'associatedGroups', 'itemIsSigned',)
+agMeeting.useAdvices = False
+agMeeting.itemAdviceStates = ('proposed_to_director',)
+agMeeting.itemAdviceEditStates = ('proposed_to_director', 'validated',)
+agMeeting.itemAdviceViewStates = ('presented',)
+agMeeting.transitionReinitializingDelays = 'backToItemCreated'
 agMeeting.usedAdviceTypes = ['positive', 'positive_with_remarks', 'negative', 'nil', ]
 agMeeting.enableAdviceInvalidation = False
 agMeeting.itemAdviceInvalidateStates = []
 agMeeting.customAdvisers = []
-agMeeting.itemPowerObserversStates = ('itemfrozen',
-                                      'accepted',
-                                      'delayed',
-                                      'refused',
-                                      'accepted_but_modified',
-                                      'pre_accepted')
+agMeeting.itemPowerObserversStates = ('itemcreated', 'presented', 'accepted', 'delayed', 'refused')
 agMeeting.itemDecidedStates = ['accepted', 'refused', 'delayed', 'accepted_but_modified', 'pre_accepted']
 agMeeting.workflowAdaptations = ['no_publication', 'no_global_observation', 'return_to_proposing_group']
-agMeeting.transitionsForPresentingAnItem = ('propose', 'validate', 'present', )
+agMeeting.transitionsForPresentingAnItem = ('validate', 'present', )
 agMeeting.onTransitionFieldTransforms = (
     ({'transition': 'delay',
       'field_name': 'MeetingItem.decision',
       'tal_expression': "string:<p>Le Comité décide de reporter le point.</p>"},))
-agMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'freeze',
+agMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'validateByCD',
+                                                         'item_transition': 'itemValidateByCD'},
+
+                                                        {'meeting_transition': 'freeze',
+                                                         'item_transition': 'itemValidateByCD'},
+                                                        {'meeting_transition': 'freeze',
                                                          'item_transition': 'itemfreeze'},
 
                                                         {'meeting_transition': 'decide',
+                                                         'item_transition': 'itemValidateByCD'},
+                                                        {'meeting_transition': 'decide',
                                                          'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'decide',
+                                                         'item_transition': 'itempublish'},
 
-                                                        {'meeting_transition': 'publish_decisions',
+
+                                                        {'meeting_transition': 'close',
+                                                         'item_transition': 'itemValidateByCD'},
+                                                        {'meeting_transition': 'close',
                                                          'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'publish_decisions',
+                                                        {'meeting_transition': 'close',
+                                                         'item_transition': 'itempublish'},
+                                                        {'meeting_transition': 'close',
                                                          'item_transition': 'accept'},
 
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'accept'},)
-agMeeting.meetingPowerObserversStates = ('frozen', 'decided', 'closed')
+                                                        {'meeting_transition': 'backToCreated',
+                                                         'item_transition': 'backToValidatedByCD'},
+                                                        {'meeting_transition': 'backToCreated',
+                                                         'item_transition': 'backToPresented'},
+
+                                                        {'meeting_transition': 'backToValidatedByCD',
+                                                         'item_transition': 'backToValidatedByCD'},)
+agMeeting.meetingPowerObserversStates = ('frozen', 'published', 'decided', 'closed')
 agMeeting.powerAdvisersGroups = ()
 agMeeting.itemBudgetInfosStates = ('proposed', 'validated', 'presented')
 agMeeting.useCopies = True
 agMeeting.selectableCopyGroups = []
-agMeeting.podTemplates = agTemplates
+agMeeting.useVotes = True
+agMeeting.meetingUsers = []
 agMeeting.meetingConfigsToCloneTo = []
 agMeeting.recurringItems = []
 agMeeting.itemTemplates = []
