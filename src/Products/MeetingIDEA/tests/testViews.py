@@ -27,8 +27,7 @@ from Products.PloneMeeting.tests.testViews import testViews as pmtv
 
 
 class testViews(MeetingIDEATestCase, pmtv):
-    ''' '''
-
+    """ """
 
 def test_suite():
     from unittest import TestSuite, makeSuite

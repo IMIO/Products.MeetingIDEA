@@ -27,9 +27,7 @@ from Products.PloneMeeting.tests.testAnnexes import testAnnexes as pmta
 
 
 class testAnnexes(MeetingIDEATestCase, pmta):
-    ''' '''
-
-
+    """ """
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

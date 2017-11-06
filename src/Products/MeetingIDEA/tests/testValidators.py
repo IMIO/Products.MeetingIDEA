@@ -31,7 +31,6 @@ class testValidators(MeetingIDEATestCase, pmtv):
         Tests the validators.
     """
 
-
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

@@ -41,5 +41,5 @@ class MeetingIDEATestCase(PloneMeetingTestCase, MeetingIDEATestingHelpers):
 
     def setUp(self):
         PloneMeetingTestCase.setUp(self)
-        self.meetingConfig = getattr(self.tool, 'meeting-config-CA')
-        # self.meetingConfig2 = getattr(self.tool, 'meeting-config-council')
+        self.meetingConfig = getattr(self.tool, 'meeting-config-college')
+        self.meetingConfig2 = getattr(self.tool, 'meeting-config-council')

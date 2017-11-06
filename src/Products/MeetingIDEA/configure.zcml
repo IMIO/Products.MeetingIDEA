@@ -48,9 +48,5 @@
            provides="Products.PloneMeeting.interfaces.IMeetingConfigCustom"/>
 
   <!-- Searches adapters -->
-  <adapter for="*"
-           factory="Products.MeetingIDEA.adapters.ItemsToControlCompletenessOfAdapter"
-           provides="collective.compoundcriterion.interfaces.ICompoundCriterionFilter"
-           name="items-to-control-completeness-of" />
 
 </configure>

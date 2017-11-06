@@ -21,14 +21,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
-
+import logging
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testMeetingConfig import testMeetingConfig as pmtmc
+from Products.PloneMeeting.tests.testMeetingConfig import testMeetingConfig as mctmc
+from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
 
 
-class testMeetingConfig(MeetingIDEATestCase, pmtmc):
-    '''Tests the MeetingConfig class methods.'''
-
+class testMeetingConfig(MeetingIDEATestCase, mctmc):
+    '''Call testMeetingConfig tests.'''
 
 def test_suite():
     from unittest import TestSuite, makeSuite

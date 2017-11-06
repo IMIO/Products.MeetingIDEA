@@ -23,13 +23,11 @@
 #
 
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testMeeting import testMeeting as pmtm
+from Products.PloneMeeting.tests.testMeeting import testMeeting as mctm
 
 
-class testMeeting(MeetingIDEATestCase, pmtm):
-    """
-        Tests the Meeting class methods.
-    """
+class testMeeting(MeetingIDEATestCase, mctm):
+    """Tests the Meeting class methods."""
 
 
 def test_suite():

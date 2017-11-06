@@ -29,7 +29,6 @@ from Products.PloneMeeting.tests.testSearches import testSearches as pmts
 class testSearches(MeetingIDEATestCase, pmts):
     """Test searches."""
 
-
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

@@ -1,25 +1,26 @@
 <?xml version="1.0"?>
-<dc-workflow workflow_id="meetingcommunes_workflow"
-             title="meetingcommunes_workflow"
+<dc-workflow workflow_id="meetingcaidea_workflow"
+             title="meetingcaidea_workflow"
              state_variable="review_state"
              initial_state="created"
              xmlns:i18n="http://xml.zope.org/namespaces/i18n"
              i18n:domain="plone">
  <permission>View</permission>
  <permission>Access contents information</permission>
- <permission>Delete objects</permission>
  <permission>Modify portal content</permission>
  <permission>Review portal content</permission>
+ <permission>Delete objects</permission>
  <permission>PloneMeeting: Add annex</permission>
  <state state_id="closed"
         title="closed"
         i18n:attributes="title">
-  <exit-transition transition_id="backToDecided"/>
+  <exit-transition transition_id="backToPublish"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
+   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
@@ -43,18 +44,20 @@
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
+   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
  </state>
  <state state_id="created"
         title="created"
         i18n:attributes="title">
-  <exit-transition transition_id="freeze"/>
+  <exit-transition transition_id="validateByCD"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
+   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
@@ -82,59 +85,21 @@
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
+   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
  </state>
  <state state_id="decided"
         title="decided"
         i18n:attributes="title">
-  <exit-transition transition_id="backToPublished"/>
-  <exit-transition transition_id="close"/>
-  <permission-map name="Access contents information"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingObserverGlobal</permission-role>
-   <permission-role>Reader</permission-role>
-  </permission-map>
-  <permission-map name="Delete objects"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="Modify portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="PloneMeeting: Add annex"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="Review portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="View"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingObserverGlobal</permission-role>
-   <permission-role>Reader</permission-role>
-  </permission-map>
- </state>
- <state state_id="frozen"
-        title="frozen"
-        i18n:attributes="title">
-  <exit-transition transition_id="backToCreated"/>
+  <exit-transition transition_id="backToFrozen"/>
   <exit-transition transition_id="publish"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
+   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
@@ -162,19 +127,63 @@
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
+   <permission-role>MeetingCD</permission-role>
+   <permission-role>Reader</permission-role>
+  </permission-map>
+ </state>
+ <state state_id="frozen"
+        title="frozen"
+        i18n:attributes="title">
+  <exit-transition transition_id="decide"/>
+  <exit-transition transition_id="backToValidatedByCD"/>
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+   <permission-role>MeetingObserverGlobal</permission-role>
+   <permission-role>MeetingCD</permission-role>
+   <permission-role>Reader</permission-role>
+  </permission-map>
+  <permission-map name="Delete objects"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+  </permission-map>
+  <permission-map name="PloneMeeting: Add annex"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+  </permission-map>
+  <permission-map name="Review portal content"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+  </permission-map>
+  <permission-map name="View"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+   <permission-role>MeetingObserverGlobal</permission-role>
+   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
  </state>
  <state state_id="published"
         title="published"
         i18n:attributes="title">
-  <exit-transition transition_id="backToFrozen"/>
-  <exit-transition transition_id="decide"/>
+  <exit-transition transition_id="close"/>
+  <exit-transition transition_id="backToDecided"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
+   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
@@ -202,6 +211,49 @@
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
+   <permission-role>MeetingCD</permission-role>
+   <permission-role>Reader</permission-role>
+  </permission-map>
+ </state>
+ <state state_id="validated_by_cd"
+        title="validated_by_cd"
+        i18n:attributes="title">
+  <exit-transition transition_id="backToCreated"/>
+  <exit-transition transition_id="freeze"/>
+  <permission-map name="Access contents information"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+   <permission-role>MeetingObserverGlobal</permission-role>
+   <permission-role>MeetingCD</permission-role>
+   <permission-role>Reader</permission-role>
+  </permission-map>
+  <permission-map name="Delete objects"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+  </permission-map>
+  <permission-map name="PloneMeeting: Add annex"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+  </permission-map>
+  <permission-map name="Review portal content"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+  </permission-map>
+  <permission-map name="View"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>MeetingManager</permission-role>
+   <permission-role>MeetingObserverGlobal</permission-role>
+   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
  </state>
@@ -212,9 +264,9 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">backToCreated</action>
+  <action url="" category="workflow" i18n:translate="">backToCreated</action>
   <guard>
-    <guard-expression>python:here.wfConditions().mayCorrect('created')</guard-expression>
+    <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
  </transition>
  <transition transition_id="backToDecided"
@@ -224,9 +276,9 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">backToDecided</action>
+  <action url="" category="workflow" i18n:translate="">backToDecided</action>
   <guard>
-    <guard-expression>python:here.wfConditions().mayCorrect('decided')</guard-expression>
+    <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
  </transition>
  <transition transition_id="backToFrozen"
@@ -236,21 +288,33 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">backToFrozen</action>
+  <action url="" category="workflow" i18n:translate="">backToFrozen</action>
   <guard>
-    <guard-expression>python:here.wfConditions().mayCorrect('frozen')</guard-expression>
+    <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
  </transition>
- <transition transition_id="backToPublished"
-             title="backToPublished"
+ <transition transition_id="backToPublish"
+             title="backToPublish"
              new_state="published"
              trigger="USER"
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">backToPublished</action>
+  <action url="" category="workflow" i18n:translate="">backToPublish</action>
   <guard>
-    <guard-expression>python:here.wfConditions().mayCorrect('published')</guard-expression>
+    <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
+  </guard>
+ </transition>
+ <transition transition_id="backToValidatedByCD"
+             title="backToValidatedByCD"
+             new_state="validated_by_cd"
+             trigger="USER"
+             before_script=""
+             after_script=""
+             i18n:attributes="title">
+  <action url="" category="workflow" i18n:translate="">backToValidatedByCD</action>
+  <guard>
+    <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
  </transition>
  <transition transition_id="close"
@@ -260,7 +324,7 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">close</action>
+  <action url="" category="workflow" i18n:translate="">close</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayClose()</guard-expression>
   </guard>
@@ -272,7 +336,7 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">decide</action>
+  <action url="" category="workflow" i18n:translate="">decide</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayDecide()</guard-expression>
   </guard>
@@ -284,7 +348,7 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">freeze</action>
+  <action url="" category="workflow" i18n:translate="">freeze</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayFreeze()</guard-expression>
   </guard>
@@ -296,9 +360,21 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">publish</action>
+  <action url="" category="workflow" i18n:translate="">publish</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayPublish()</guard-expression>
+  </guard>
+ </transition>
+ <transition transition_id="validateByCD"
+             title="validateByCD"
+             new_state="validated_by_cd"
+             trigger="USER"
+             before_script=""
+             after_script=""
+             i18n:attributes="title">
+  <action url="" category="workflow" i18n:translate="">validateByCD</action>
+  <guard>
+    <guard-expression>python:here.wfConditions().mayValidateByCD()</guard-expression>
   </guard>
  </transition>
  <variable variable_id="action" for_catalog="False"
@@ -348,7 +424,5 @@
   <guard>
   </guard>
  </variable>
-<!-- ##code-section FOOT -->
-<!-- ##/code-section FOOT -->
  <!-- We dont use workflow scripts any more, we use subscribers -->
 </dc-workflow>

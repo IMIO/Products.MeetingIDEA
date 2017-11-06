@@ -27,8 +27,7 @@ from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
 
 
 class testSetup(MeetingIDEATestCase, pmts):
-    '''Tests the setup, especially registered profiles.'''
-
+    """Tests the setup, especially registered profiles."""
 
 def test_suite():
     from unittest import TestSuite, makeSuite

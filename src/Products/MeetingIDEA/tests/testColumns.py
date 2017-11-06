@@ -27,8 +27,7 @@ from Products.PloneMeeting.tests.testColumns import testColumns as pmtc
 
 
 class testColumns(MeetingIDEATestCase, pmtc):
-    ''' '''
-
+    """ """
 
 def test_suite():
     from unittest import TestSuite, makeSuite

@@ -32,6 +32,7 @@ agendaTemplate.pod_formats = ['odt', 'pdf', ]
 agendaTemplate.pod_portal_types = ['MeetingAG']
 agendaTemplate.tal_condition = 'python:tool.isManager(here)'
 
+
 decisionsTemplate = PodTemplateDescriptor('pv', 'Procès-verbal')
 decisionsTemplate.odt_file = '../../examples_fr/templates/pv.odt'
 decisionsTemplate.pod_formats = ['odt', 'pdf', ]
@@ -69,8 +70,8 @@ agMeeting.transitionsToConfirm = []
 agMeeting.meetingTopicStates = ('created', 'frozen', 'published')
 agMeeting.decisionTopicStates = ('decided', 'closed')
 agMeeting.enforceAdviceMandatoriness = False
-agMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_categories',
-                                        'reverse': '0'}, )
+agMeeting.useGroupsAsCategories = False
+agMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_categories', 'reverse': '0'}, )
 agMeeting.recordItemHistoryStates = []
 agMeeting.maxShownMeetings = 5
 agMeeting.maxDaysDecisions = 60
@@ -87,7 +88,7 @@ agMeeting.itemAdviceInvalidateStates = []
 agMeeting.customAdvisers = []
 agMeeting.itemPowerObserversStates = ('itemcreated', 'presented', 'accepted', 'delayed', 'refused')
 agMeeting.itemDecidedStates = ['accepted', 'refused', 'delayed', 'accepted_but_modified', 'pre_accepted']
-agMeeting.workflowAdaptations = ['no_publication', 'no_global_observation', 'return_to_proposing_group']
+# agMeeting.workflowAdaptations = ['no_publication', 'no_global_observation', 'return_to_proposing_group']
 agMeeting.transitionsForPresentingAnItem = ('validate', 'present', )
 agMeeting.onTransitionFieldTransforms = (
     ({'transition': 'delay',
@@ -125,9 +126,9 @@ agMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': '
 
                                                         {'meeting_transition': 'backToValidatedByCD',
                                                          'item_transition': 'backToValidatedByCD'},)
-agMeeting.meetingPowerObserversStates = ('frozen', 'published', 'decided', 'closed')
+agMeeting.meetingPowerObserversStates = ('frozen', 'decided', 'closed')
 agMeeting.powerAdvisersGroups = ()
-agMeeting.itemBudgetInfosStates = ('proposed', 'validated', 'presented')
+agMeeting.itemBudgetInfosStates = ('proposed_to_departmenthead', 'proposed_to_director', 'validated', 'presented')
 agMeeting.useCopies = True
 agMeeting.selectableCopyGroups = []
 agMeeting.useVotes = True

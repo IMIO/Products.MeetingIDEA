@@ -21,8 +21,7 @@ itemAnnex = AnnexTypeDescriptor('item-annex', 'Other annex(es)', 'attach.png', '
 annexeDecision = AnnexTypeDescriptor('annexeDecision', 'Annexe a la decision', 'attach.png', '', 'item_decision')
 # Some type of annexes taken from the default PloneMeeting test profile
 marketingAnalysis = AnnexTypeDescriptor(
-    'marketing-annex', 'Marketing annex(es)', 'attach.png', '', 'item_decision',
-    active=False)
+    'marketing-annex', 'Marketing annex(es)', 'attach.png', '', 'item_decision', enabled=False)
 overheadAnalysis = AnnexTypeDescriptor(
     'overhead-analysis', 'Administrative overhead analysis',
     'attach.png', '')
@@ -35,18 +34,23 @@ adviceLegalAnalysis = AnnexTypeDescriptor(
 
 # Pod templates ----------------------------------------------------------------
 agendaTemplate = PodTemplateDescriptor('agendaTemplate', 'Meeting agenda')
-agendaTemplate.podTemplate = 'Agenda.odt'
-agendaTemplate.podCondition = 'python:here.meta_type=="Meeting"'
+agendaTemplate.odt_file = 'Agenda.odt'
+agendaTemplate.pod_formats = ['odt', 'pdf', ]
+agendaTemplate.pod_portal_types = ['MeetingCA']
+agendaTemplate.tal_condition = ''
 
-decisionsTemplate = PodTemplateDescriptor('decisionsTemplate',
-                                          'Meeting decisions')
-decisionsTemplate.podTemplate = 'Decisions.odt'
-decisionsTemplate.podCondition = 'python:here.meta_type=="Meeting" and ' \
-                                 'here.adapted().isDecided()'
+decisionsTemplate = PodTemplateDescriptor('decisionsTemplate', 'Meeting decisions')
+decisionsTemplate.odt_file = 'Decisions.odt'
+decisionsTemplate.pod_formats = ['odt', 'pdf', ]
+decisionsTemplate.pod_portal_types = ['MeetingCA']
+decisionsTemplate.tal_condition = 'here.adapted().isDecided()'
 
 itemTemplate = PodTemplateDescriptor('itemTemplate', 'Meeting item')
-itemTemplate.podTemplate = 'Item.odt'
 itemTemplate.podCondition = 'python:here.meta_type=="MeetingItem"'
+itemTemplate.odt_file = 'Item.odt'
+itemTemplate.pod_formats = ['odt', 'pdf', ]
+itemTemplate.pod_portal_types = ['MeetingItemCA']
+itemTemplate.tal_condition = ''
 
 # item templates
 template1 = ItemTemplateDescriptor(id='template1',
@@ -265,7 +269,7 @@ caMeeting.decisionTopicStates = ('decided', 'closed')
 caMeeting.recordItemHistoryStates = []
 caMeeting.maxShownMeetings = 5
 caMeeting.maxDaysDecisions = 60
-caMeeting.meetingAppDefaultView = 'topic_searchmyitems'
+caMeeting.meetingAppDefaultView = 'searchmyitems'
 caMeeting.itemDocFormats = ('odt', 'pdf')
 caMeeting.meetingDocFormats = ('odt', 'pdf')
 caMeeting.useAdvices = True
@@ -308,7 +312,6 @@ data = PloneMeetingConfiguration(
     meetingFolderTitle='Mes seances',
     meetingConfigs=(caMeeting, ),
     groups=(developers, vendors, endUsers))
-data.unoEnabledPython = '/usr/bin/python'
 data.usersOutsideGroups = [voter1, voter2, powerobserver1, powerobserver2,
                            restrictedpowerobserver1, restrictedpowerobserver2]
 # ------------------------------------------------------------------------------

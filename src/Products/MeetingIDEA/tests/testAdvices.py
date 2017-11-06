@@ -2,7 +2,7 @@
 #
 # File: testAdvices.py
 #
-# Copyright (c) 2016 by Imio.be
+# Copyright (c) 2007-2012 by CommunesPlone.org
 #
 # GNU General Public License (GPL)
 #
@@ -21,15 +21,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
-
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testAdvices import testAdvices as pmta
+from Products.PloneMeeting.tests.testAdvices import testAdvices as mcta
 
 
-class testAdvices(MeetingIDEATestCase, pmta):
+class testAdvices(MeetingIDEATestCase, mcta):
     '''Tests various aspects of advices management.
        Advices are enabled for PloneGov Assembly, not for PloneMeeting Assembly.'''
-
 
 def test_suite():
     from unittest import TestSuite, makeSuite

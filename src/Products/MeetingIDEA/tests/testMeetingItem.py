@@ -2,7 +2,7 @@
 #
 # File: testMeetingItem.py
 #
-# Copyright (c) 2013 by Imio.be
+# Copyright (c) 2007-2012 by CommunesPlone.org
 #
 # GNU General Public License (GPL)
 #
@@ -23,17 +23,17 @@
 #
 
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testMeetingItem import testMeetingItem as pmtmi
+from Products.PloneMeeting.tests.testMeetingItem import testMeetingItem as mctmi
 
 
-class testMeetingItem(MeetingIDEATestCase, pmtmi):
+class testMeetingItem(MeetingIDEATestCase, mctmi):
     """
         Tests the MeetingItem class methods.
     """
 
-
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
+    # launch only tests prefixed by 'test_mc_' to avoid launching the tests coming from pmtmi
     suite.addTest(makeSuite(testMeetingItem, prefix='test_pm_'))
     return suite

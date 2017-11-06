@@ -22,115 +22,81 @@
 # 02110-1301, USA.
 #
 
-from Products.PloneMeeting.tests.testWFAdaptations import testWFAdaptations as pmtwfa
+from DateTime import DateTime
+
+from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
+
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
+from Products.PloneMeeting.tests.testWFAdaptations import testWFAdaptations as mctwfa
 
 
-class testWFAdaptations(MeetingIDEATestCase, pmtwfa):
-    '''See doc string in PloneMeeting.tests.testWFAdaptations.'''
+class testWFAdaptations(MeetingIDEATestCase, mctwfa):
+    '''Tests various aspects of votes management.'''
 
     def test_pm_WFA_availableWFAdaptations(self):
-        '''Test what are the available wfAdaptations.'''
-        # we removed the 'archiving' and 'creator_initiated_decisions' wfAdaptations
-        self.assertEquals(sorted(self.meetingConfig.listWorkflowAdaptations().keys()),
-                          ['creator_edits_unless_closed',
-                           'everyone_reads_all',
-                           'hide_decisions_when_under_writing',
-                           'items_come_validated',
-                           'mark_not_applicable',
-                           'no_global_observation',
-                           'no_proposal',
-                           'no_publication',
-                           'only_creator_may_delete',
-                           'postpone_next_meeting',
-                           'pre_validation',
-                           'pre_validation_keep_reviewer_permissions',
-                           'removed',
-                           'removed_and_duplicated',
-                           'return_to_proposing_group',
-                           'return_to_proposing_group_with_all_validations',
-                           'return_to_proposing_group_with_last_validation',
-                           'reviewers_take_back_validated_item',
-                           'waiting_advices'])
+        '''Most of wfAdaptations makes no sense, just make sure most are disabled.'''
+        self.assertEquals(sorted(self.meetingConfig.listWorkflowAdaptations().keys()), ['return_to_proposing_group'])
 
-    def test_pm_Validate_workflowAdaptations_added_no_publication(self):
-        '''See doc in PloneMeeting/tests/testWFAdaptations.py'''
-        # we have a 'published' state in self.meetingConfig2
-        self.meetingConfig = self.meetingConfig2
-        super(testWFAdaptations, self).test_pm_Validate_workflowAdaptations_added_no_publication()
+    def _return_to_proposing_group_active_state_to_clone(self):
+        '''Helper method to test 'return_to_proposing_group' wfAdaptation regarding the
+           RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE defined value.
+           In our usecase, this is Nonsense as we use RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS.'''
+        return
 
-    def test_pm_WFA_no_publication(self):
-        '''See doc in PloneMeeting/tests/testWFAdaptations.py'''
-        # we have a 'published' state in self.meetingConfig2
-        self.meetingConfig = self.meetingConfig2
-        super(testWFAdaptations, self).test_pm_WFA_no_publication()
+    def _return_to_proposing_group_active_custom_permissions(self):
+        '''Helper method to test 'return_to_proposing_group' wfAdaptation regarding the
+           RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS defined value.
+           In our use case, just test that permissions of 'returned_to_proposing_group' state
+           are the one defined in RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS.'''
+        itemWF = self.wfTool.getWorkflowsFor(self.meetingConfig.getItemTypeName())[0]
+        returned_to_proposing_group_state_permissions = itemWF.states['returned_to_proposing_group'].permission_roles
+        for permission in returned_to_proposing_group_state_permissions:
+            self.assertEquals(returned_to_proposing_group_state_permissions[permission],
+                              RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS['meetingitemcaidea_workflow'][permission])
 
-    def test_pm_WFA_no_proposal(self):
-        '''See doc in PloneMeeting/tests/testWFAdaptations.py'''
-        super(testWFAdaptations, self).test_pm_WFA_no_proposal()
-        self.meetingConfig = self.meetingConfig2
-        super(testWFAdaptations, self).test_pm_WFA_no_proposal()
-
-    def test_pm_WFA_pre_validation(self):
-        '''See doc in PloneMeeting/tests/testWFAdaptations.py'''
-        super(testWFAdaptations, self).test_pm_WFA_pre_validation()
-        self.meetingConfig = self.meetingConfig2
-        super(testWFAdaptations, self).test_pm_WFA_pre_validation()
-
-    def test_pm_WFA_pre_validation_keep_reviewer_permissions(self):
-        '''See doc in PloneMeeting/tests/testWFAdaptations.py'''
-        super(testWFAdaptations, self).test_pm_WFA_pre_validation_keep_reviewer_permissions()
-        self.meetingConfig = self.meetingConfig2
-        super(testWFAdaptations, self).test_pm_WFA_pre_validation_keep_reviewer_permissions()
-
-    def test_pm_WFA_creator_initiated_decisions(self):
-        '''See doc in PloneMeeting/tests/testWFAdaptations.py
-           In MC WFs this wfAdaptation is not used (deactivated in adapters.py) because it is
-           always 'enabled', the creator can edit the decision field by default.'''
-        # we just call the subtest while wfAdaptation should be active
-        super(testWFAdaptations, self)._creator_initiated_decisions_active()
-
-    def test_pm_WFA_items_come_validated(self):
-        '''See doc in PloneMeeting/tests/testWFAdaptations.py'''
-        super(testWFAdaptations, self).test_pm_WFA_items_come_validated()
-        self.meetingConfig = self.meetingConfig2
-        super(testWFAdaptations, self).test_pm_WFA_items_come_validated()
-
-    def test_pm_WFA_archiving(self):
-        '''See doc in PloneMeeting/tests/testWFAdaptations.py'''
-        # we do not have an 'archived' state in the meeting/item WFs...
-        # just call the subtest while wfAdaptation sould be inactive
-        # it is deactived in adapters.py
-        super(testWFAdaptations, self)._archiving_inactive()
-
-    def test_pm_WFA_only_creator_may_delete(self):
-        '''See doc in PloneMeeting/tests/testWFAdaptations.py'''
-        super(testWFAdaptations, self).test_pm_WFA_only_creator_may_delete()
-        self.meetingConfig = self.meetingConfig2
-        super(testWFAdaptations, self).test_pm_WFA_only_creator_may_delete()
-
-    def test_pm_WFA_no_global_observation(self):
-        '''See doc in PloneMeeting/tests/testWFAdaptations.py'''
-        # we have a 'published' state in self.meetingConfig2
-        # once item is 'itempublished'
-        self.meetingConfig = self.meetingConfig2
-        super(testWFAdaptations, self).test_pm_WFA_no_global_observation()
-
-    def test_pm_WFA_everyone_reads_all(self):
-        '''See doc in PloneMeeting/tests/testWFAdaptations.py'''
-        self.meetingConfig = self.meetingConfig2
-        super(testWFAdaptations, self).test_pm_WFA_everyone_reads_all()
-
-    def test_pm_WFA_creator_edits_unless_closed(self):
-        '''See doc in PloneMeeting/tests/testWFAdaptations.py'''
-        super(testWFAdaptations, self).test_pm_WFA_creator_edits_unless_closed()
-        self.meetingConfig = self.meetingConfig2
-        super(testWFAdaptations, self).test_pm_WFA_creator_edits_unless_closed()
-
-    def test_pm_WFA_return_to_proposing_group(self):
-        '''See doc in PloneMeeting/tests/testWFAdaptations.py'''
-        self.meetingConfig = self.meetingConfig2
-        super(testWFAdaptations, self).test_pm_WFA_return_to_proposing_group()
+    def _return_to_proposing_group_active_wf_functionality(self):
+        '''Tests the workflow functionality of using the 'return_to_proposing_group' wfAdaptation.
+           Same as default test until the XXX here under.'''
+        # while it is active, the creators of the item can edit the item as well as the MeetingManagers
+        self.changeUser('pmCreator1')
+        item = self.create('MeetingItem')
+        self.proposeItem(item)
+        self.changeUser('pmReviewer1')
+        self.validateItem(item)
+        # create a Meeting and add the item to it
+        self.changeUser('pmManager')
+        self.create('Meeting', date=DateTime())
+        self.presentItem(item)
+        # now that it is presented, some persons can not edit it anymore
+        for userId in ('pmCreator1', 'pmDepartmentHead1'):
+            self.changeUser(userId)
+            self.failIf(self.hasPermission('Modify portal content', item))
+        # the item can be send back to the proposing group by the MeetingManagers only
+        for userId in ('pmCreator1', 'pmDepartmentHead1', 'pmReviewer1'):
+            self.changeUser(userId)
+            self.failIf(self.wfTool.getTransitionsFor(item))
+        self.changeUser('pmManager')
+        self.failUnless('return_to_proposing_group' in [tr['name'] for tr in self.wfTool.getTransitionsFor(item)])
+        # send the item back to the proposing group so the proposing group as an edit access to it
+        self.do(item, 'return_to_proposing_group')
+        self.changeUser('pmCreator1')
+        self.failUnless(self.hasPermission('Modify portal content', item))
+        # MeetingManagers can still edit it also
+        self.changeUser('pmManager')
+        self.failUnless(self.hasPermission('Modify portal content', item))
+        # the creator can send the item back to the meeting managers, as the meeting managers
+        for userId in ('pmCreator1', 'pmManager'):
+            self.changeUser(userId)
+            self.failUnless('backTo_presented_from_returned_to_proposing_group' in
+                            [tr['name'] for tr in self.wfTool.getTransitionsFor(item)])
+        # when the creator send the item back to the meeting, it is in the right state depending
+        # on the meeting state.  Here, when meeting is 'created', the item is back to 'presented'
+        self.do(item, 'backTo_presented_from_returned_to_proposing_group')
+        self.assertEquals(item.queryState(), 'presented')
+        # XXX changed by MeetingIDEA
+        # send the item back to proposing group, set the meeting in_committee then send the item back to the meeting
+        # the item should be now in the item state corresponding to the meeting frozen state, so 'itemfrozen'
+        self.do(item, 'return_to_proposing_group')
 
 
 def test_suite():

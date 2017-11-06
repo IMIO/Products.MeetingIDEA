@@ -23,10 +23,10 @@
 #
 
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testToolPloneMeeting import testToolPloneMeeting as pmtt
+from Products.PloneMeeting.tests.testToolPloneMeeting import testToolPloneMeeting as mctt
 
 
-class testToolPloneMeeting(MeetingIDEATestCase, pmtt):
+class testToolPloneMeeting(MeetingIDEATestCase, mctt):
     '''Tests the ToolPloneMeeting class methods.'''
 
 

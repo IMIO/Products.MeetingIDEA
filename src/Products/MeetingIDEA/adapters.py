@@ -37,7 +37,6 @@ from Products.PloneMeeting.MeetingItem import MeetingItem
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowActions
 from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowConditions
 from Products.PloneMeeting.ToolPloneMeeting import ToolPloneMeeting
-from Products.PloneMeeting.adapters import CompoundCriterionBaseAdapter
 from Products.PloneMeeting.config import ITEM_NO_PREFERRED_MEETING_VALUE
 from Products.PloneMeeting.interfaces import IMeetingConfigCustom
 from Products.PloneMeeting.interfaces import IMeetingCustom
@@ -45,7 +44,6 @@ from Products.PloneMeeting.interfaces import IMeetingItemCustom
 from Products.PloneMeeting.interfaces import IToolPloneMeetingCustom
 from Products.PloneMeeting.model import adaptations
 from Products.PloneMeeting.model.adaptations import WF_APPLIED
-from Products.PloneMeeting.utils import getCurrentMeetingObject
 
 from AccessControl import ClassSecurityInfo, getSecurityManager
 from AccessControl.class_init import InitializeClass
@@ -54,18 +52,38 @@ from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from appy.gen import No
+from Products.PloneMeeting import PMMessageFactory as _
+from imio.helpers.xhtml import xhtmlContentIsEmpty
 from plone import api
-from plone.memoize import ram
 from zope.i18n import translate
 from zope.interface import implements
 
-customWfAdaptations = ('return_to_proposing_group',)
-MeetingConfig.wfAdaptations = customWfAdaptations
+# # Names of available workflow adaptations.
+# customwfAdaptations = list(MeetingConfig.wfAdaptations)
+# # remove the 'creator_initiated_decisions' as this is always the case in our wfs
+# if 'creator_initiated_decisions' in customwfAdaptations:
+#     customwfAdaptations.remove('creator_initiated_decisions')
+# # remove the 'archiving' as we do not handle archive in our wfs
+# if 'archiving' in customwfAdaptations:
+#     customwfAdaptations.remove('archiving')
+#
+# MeetingConfig.wfAdaptations = customwfAdaptations
+
+MeetingConfig.wfAdaptations = ['return_to_proposing_group']
 # configure parameters for the returned_to_proposing_group wfAdaptation
 # we keep also 'itemfrozen' and 'itempublished' in case this should be activated for meeting-config-college...
-RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = ('presented', 'validated_by_cd', 'itemfrozen',)
-adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES
-RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {'meetingitemidea_workflow':
+adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = ('presented', 'validated_by_cd', 'itemfrozen',)
+
+RETURN_TO_PROPOSING_GROUP_MAPPINGS = {'backTo_presented_from_returned_to_proposing_group':
+                                                      ['created', 'validated_by_cd'],
+                                                  'backTo_itemfrozen_from_returned_to_proposing_group':
+                                                      ['frozen', 'decided', 'published', 'decisions_published', ],
+                                                  'NO_MORE_RETURNABLE_STATES': ['closed', 'archived', ]
+                                                  }
+
+adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(RETURN_TO_PROPOSING_GROUP_MAPPINGS)
+
+RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {'meetingitemcaidea_workflow':
                                                 # view permissions
                                                     {'Access contents information':
                                                          ('Manager', 'MeetingManager', 'MeetingMember',
@@ -111,6 +129,8 @@ RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {'meetingitemidea_workflow':
                                                      'PloneMeeting: Add annex':
                                                          ('Manager', 'MeetingMember', 'MeetingDepartmentHead',
                                                           'MeetingReviewer', 'MeetingManager',),
+                                                     'PloneMeeting: Add annexDecision':
+                                                         ('Manager', 'MeetingMember', 'MeetingManager',),
                                                      'PloneMeeting: Add MeetingFile':
                                                          ('Manager', 'MeetingMember', 'MeetingDepartmentHead',
                                                           'MeetingReviewer', 'MeetingManager',),
@@ -123,39 +143,22 @@ RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {'meetingitemidea_workflow':
                                                      'PloneMeeting: Write budget infos':
                                                          ('Manager', 'MeetingMember', 'MeetingOfficeManager',
                                                           'MeetingManager', 'MeetingBudgetImpactEditor',),
+                                                     'PloneMeeting: Write marginal notes':
+                                                         ('Manager', 'MeetingManager',),
                                                      # MeetingManagers edit permissions
                                                      'Delete objects':
                                                          ['Manager', 'MeetingManager', ],
                                                      'PloneMeeting: Write item observations':
+                                                         ('Manager', 'MeetingManager',),
+                                                     'PloneMeeting: Write item MeetingManager reserved fields':
                                                          ('Manager', 'MeetingManager',),
                                                      }
                                                 }
 
 adaptations.RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
 
-# ORIGINAL CONTENT FROM MeetingCommune
-# -------------------------------------
-# # Names of available workflow adaptations.
-# customwfAdaptations = list(MeetingConfig.wfAdaptations)
-# # remove the 'creator_initiated_decisions' as this is always the case in our wfs
-# if 'creator_initiated_decisions' in customwfAdaptations:
-#     customwfAdaptations.remove('creator_initiated_decisions')
-# # remove the 'archiving' as we do not handle archive in our wfs
-# if 'archiving' in customwfAdaptations:
-#     customwfAdaptations.remove('archiving')
-#
-# MeetingConfig.wfAdaptations = customwfAdaptations
-#
-# # states taken into account by the 'no_global_observation' wfAdaptation
-# noGlobalObsStates = ('itempublished', 'itemfrozen', 'accepted', 'refused',
-#                      'delayed', 'accepted_but_modified', 'pre_accepted')
-# adaptations.noGlobalObsStates = noGlobalObsStates
-#
-# adaptations.WF_NOT_CREATOR_EDITS_UNLESS_CLOSED = ('delayed', 'refused', 'accepted',
-#                                                   'pre_accepted', 'accepted_but_modified')
-#
-# RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = {'meetingitemcommunes_workflow': 'meetingitemcommunes_workflow.itemcreated'}
-# adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
+RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = {'meetingitemcaidea_workflow': 'meetingitemcaidea_workflow.itemcreated', }
+adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
 
 
 class CustomMeeting(Meeting):
@@ -353,6 +356,7 @@ class CustomMeeting(Meeting):
                 return 1
             else:
                 return 0
+
         res = []
         items = []
         tool = getToolByName(self.context, 'portal_plonemeeting')
@@ -849,6 +853,20 @@ class CustomMeetingItem(MeetingItem):
     def __init__(self, item):
         self.context = item
 
+    def _initDecisionFieldIfEmpty(self):
+        '''
+          If decision field is empty, it will be initialized
+          with data coming from title and description.
+        '''
+        # set keepWithNext to False as it will add a 'class' and so
+        # xhtmlContentIsEmpty will never consider it empty...
+        if xhtmlContentIsEmpty(self.getDecision(keepWithNext=False)):
+            self.setDecision("<p>%s</p>%s" % (self.Title(),
+                                              self.Description()))
+            self.reindexObject()
+
+    MeetingItem._initDecisionFieldIfEmpty = _initDecisionFieldIfEmpty
+
     security.declarePublic('getObservations')
 
     def getObservations(self, **kwargs):
@@ -932,8 +950,6 @@ class CustomMeetingConfig(MeetingConfig):
     def __init__(self, item):
         self.context = item
 
-    security.declarePublic('getUsedFinanceGroupIds')
-
     def _extraSearchesInfo(self, infos):
         """Add some specific searches."""
         cfg = self.getSelf()
@@ -990,14 +1006,7 @@ class CustomMeetingConfig(MeetingConfig):
 
     def getMeetingsAcceptingItemsAdditionalManagerStates(self):
         """See doc in interfaces.py."""
-        return 'created', 'validated_by_cd', 'frozen',
-
-    old_listItemsListVisibleFields = MeetingConfig.listItemsListVisibleFields
-    def listItemsListVisibleFields(self):
-        res = old_listItemsListVisibleFields()
-        res.add(('strategicAxis', 'Strategic axis'))
-        return res
-    MeetingConfig.listItemsListVisibleFields = listItemsListVisibleFields
+        return 'created', 'validated_by_cd', 'frozen', 'decided'
 
 
 class MeetingCAIDEAWorkflowActions(MeetingWorkflowActions):
@@ -1010,11 +1019,11 @@ class MeetingCAIDEAWorkflowActions(MeetingWorkflowActions):
     security.declarePrivate('doDecide')
 
     def doDecide(self, stateChange):
-        '''We pass every item that is 'presented' in the 'itemfrozen'
+        """We pass every item that is 'presented' in the 'itemfrozen'
            state.  It is the case for late items. Moreover, if
            MeetingConfig.initItemDecisionIfEmptyOnDecide is True, we
            initialize the decision field with content of Title+Description
-           if decision field is empty.'''
+           if decision field is empty."""
         tool = getToolByName(self.context, 'portal_plonemeeting')
         cfg = tool.getMeetingConfig(self.context)
         if cfg.getInitItemDecisionIfEmptyOnDecide():
@@ -1048,6 +1057,7 @@ class MeetingCAIDEAWorkflowConditions(MeetingWorkflowConditions):
 
     def __init__(self, meeting):
         self.context = meeting
+
         customAcceptItemsStates = ('created', 'validated_by_cd', 'frozen', 'decided')
         self.acceptItemsStates = customAcceptItemsStates
 
@@ -1057,8 +1067,8 @@ class MeetingCAIDEAWorkflowConditions(MeetingWorkflowConditions):
         res = False
         if _checkPermission(ReviewPortalContent, self.context):
             res = True  # At least at present
-            if not self.context.getRawItems():
-                res = No(translate('item_required_to_publish', domain='PloneMeeting', context=self.context.REQUEST))
+            # if not self.context.getRawItems():
+            #    res = No(translate('item_required_to_publish', domain='PloneMeeting', context=self.context.REQUEST))
         return res
 
     security.declarePublic('mayCorrect')
@@ -1115,30 +1125,22 @@ class MeetingItemCAIDEAWorkflowActions(MeetingItemWorkflowActions):
     def doItemValidateByCD(self, stateChange):
         pass
 
-    security.declarePrivate('doPresent')
+    def _freezePresentedItem(self):
+        """Freeze presented item, this is done to be easy to override in case
+           WF transitions to freeze an item is different, without redefining
+           the entire doPresent."""
+        wTool = api.portal.get_tool('portal_workflow')
+        try:
+            wTool.doActionFor(self.context, 'itempublish')
+        except:
+            pass  # Maybe does state 'itempublish' not exist.
 
-    def doPresent(self, stateChange):
-        """Presents an item into a meeting. If p_forceNormal is True, and the
-           item should be inserted as a late item, it is nevertheless inserted
-           as a normal item."""
-        meeting = getCurrentMeetingObject(self.context)
-        # if we were not on a meeting view, we will present
-        # the item in the next available meeting
-        if not meeting:
-            # find meetings accepting items in the future
-            meeting = self.context.getMeetingToInsertIntoWhenNoCurrentMeetingObject()
-        tool = getToolByName(self.context, 'portal_plonemeeting')
-        forceNormal = bool(tool.readCookie('forceInsertNormal') == 'true')
-        meeting.insertItem(self.context, forceNormal=forceNormal)
-        # If the meeting is already frozen and this item is a "late" item,
-        # I must set automatically the item to "validate_by_cd befor frozen".
-        meetingState = meeting.queryState()
-        if meetingState in self.meetingAlreadyFrozenStates:
-            wTool = getToolByName(self.context, 'portal_workflow')
+        try:
             wTool.doActionFor(self.context, 'itemValidateByCD')
-            wTool.doActionFor(self.context, 'itemfreeze')
-        # We may have to send a mail.
-        self.context.sendMailIfRelevant('itemPresented', 'Owner', isRole=True)
+        except:
+            pass  # Maybe ITEM IS ALREADY FROZEN
+
+        wTool.doActionFor(self.context, 'itemfreeze')
 
 
 class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
@@ -1201,17 +1203,13 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
     security.declarePublic('mayProposeToDepartmentHead')
 
     def mayProposeToDepartmentHead(self):
-        """
-          Check that the user has the 'Review portal content'
-        """
-        res = False
+        '''We may propose an item if the workflow permits it and if the
+           necessary fields are filled.  In the case an item is transferred from
+           another meetingConfig, the category could not be defined.'''
         if not self.context.getCategory():
-            return No(translate('required_category_ko',
-                                domain="PloneMeeting",
-                                context=self.context.REQUEST))
+            return No(_('required_category_ko'))
         if _checkPermission(ReviewPortalContent, self.context):
-            res = True
-        return res
+            return True
 
     security.declarePublic('mayProposeToDirector')
 
@@ -1390,39 +1388,3 @@ InitializeClass(MeetingCAIDEAWorkflowConditions)
 InitializeClass(MeetingItemCAIDEAWorkflowActions)
 InitializeClass(MeetingItemCAIDEAWorkflowConditions)
 InitializeClass(CustomToolPloneMeeting)
-
-
-# ------------------------------------------------------------------------------
-
-
-class ItemsToControlCompletenessOfAdapter(CompoundCriterionBaseAdapter):
-    def itemstocontrolcompletenessof_cachekey(method, self):
-        '''cachekey method for every CompoundCriterion adapters.'''
-        return str(self.request._debug)
-
-    @property
-    @ram.cache(itemstocontrolcompletenessof_cachekey)
-    def query_itemstocontrolcompletenessof(self):
-        '''Queries all items for which there is completeness to evaluate, so where completeness
-           is not 'completeness_complete'.'''
-        groupIds = []
-        member = api.user.get_current()
-        userGroups = member.getGroups()
-        tool = api.portal.get_tool('portal_plonemeeting')
-        cfg = tool.getMeetingConfig(self.context)
-        for financeGroup in cfg.adapted().getUsedFinanceGroupIds():
-            # only keep finance groupIds the current user is controller for
-            if '%s_financialcontrollers' % financeGroup in userGroups:
-                # advice not given yet
-                groupIds.append('delay__%s_advice_not_giveable' % financeGroup)
-                # advice was already given once and come back to the finance
-                groupIds.append('delay__%s_proposed_to_financial_controller' % financeGroup)
-        return {'portal_type': {'query': self.cfg.getItemTypeName()},
-                'getCompleteness': {'query': ('completeness_not_yet_evaluated',
-                                              'completeness_incomplete',
-                                              'completeness_evaluation_asked_again')},
-                'indexAdvisers': {'query': groupIds},
-                'review_state': {'query': FINANCE_WAITING_ADVICES_STATES}}
-
-    # we may not ram.cache methods in same file with same name...
-    query = query_itemstocontrolcompletenessof

@@ -203,17 +203,13 @@ restrictedpowerobserver2.ploneGroups = [council_restrictedpowerobservers, ]
 developers = GroupDescriptor('developers', 'Developers', 'Devel')
 developers.creators.append(pmCreator1)
 developers.creators.append(pmCreator1b)
-developers.creators.append(pmDepartmentHead1)
 developers.creators.append(pmManager)
-developers.reviewers.append(pmReviewer1)
-developers.reviewers.append(pmManager)
 developers.observers.append(pmObserver1)
 developers.observers.append(pmReviewer1)
 developers.observers.append(pmManager)
 developers.advisers.append(pmAdviser1)
 developers.advisers.append(pmManager)
 developers.departmentheads.append(pmDepartmentHead1)
-developers.departmentheads.append(pmReviewer1)
 developers.departmentheads.append(pmManager)
 developers.reviewers.append(pmReviewer1)
 developers.reviewers.append(pmDirector1)
@@ -295,7 +291,7 @@ caMeeting.itemActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCA
 caMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowConditions'
 caMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
 caMeeting.transitionsToConfirm = []
-caMeeting.transitionsForPresentingAnItem = ['validate', 'present', ]
+caMeeting.transitionsForPresentingAnItem = ['proposeToDepartmentHead', 'proposeToDirector', 'validate', 'present', ]
 caMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'validateByCD',
                                                          'item_transition': 'itemValidateByCD'},
 
@@ -346,13 +342,15 @@ caMeeting.transitionsReinitializingDelays = ('backToItemCreated',)
 caMeeting.enforceAdviceMandatoriness = False
 caMeeting.itemPowerObserversStates = ('itemcreated', 'presented', 'accepted', 'delayed', 'refused')
 caMeeting.itemDecidedStates = ['accepted', 'refused', 'delayed', 'accepted_but_modified', 'pre_accepted']
-caMeeting.workflowAdaptations = ['no_publication', 'no_global_observation']
+# caMeeting.workflowAdaptations = ['return_to_proposing_group']
 caMeeting.insertingMethodsOnAddItem = ({'insertingMethod': 'on_proposing_groups',
                                         'reverse': '0'},)
 caMeeting.useGroupsAsCategories = True
 caMeeting.meetingPowerObserversStates = ('frozen', 'decided', 'closed')
 caMeeting.useCopies = True
 caMeeting.selectableCopyGroups = [developers.getIdSuffixed('reviewers'), vendors.getIdSuffixed('reviewers'), ]
+caMeeting.useVotes = True
+caMeeting.meetingUsers = [muser_voter1, muser_voter2, ]
 caMeeting.podTemplates = [agendaTemplate, decisionsTemplate, itemTemplate]
 caMeeting.meetingConfigsToCloneTo = [{'meeting_config': 'meeting-config-council',
                                       'trigger_workflow_transitions_until': '__nothing__'}, ]
@@ -396,7 +394,7 @@ agMeeting.itemActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingItemCA
 agMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowConditions'
 agMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
 agMeeting.transitionsToConfirm = []
-agMeeting.transitionsForPresentingAnItem = ['validate', 'present', ]
+agMeeting.transitionsForPresentingAnItem = ['proposeToDepartmentHead', 'proposeToDirector', 'validate', 'present', ]
 agMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'validateByCD',
                                                          'item_transition': 'itemValidateByCD'},
 
@@ -448,6 +446,7 @@ agMeeting.itemAdviceViewStates = ['presented', ]
 agMeeting.transitionsReinitializingDelays = ('backToItemCreated')
 agMeeting.enforceAdviceMandatoriness = False
 agMeeting.itemDecidedStates = ['accepted', 'refused', 'delayed', 'accepted_but_modified', 'pre_accepted']
+# agMeeting.workflowAdaptations = ['return_to_proposing_group']
 agMeeting.itemPowerObserversStates = caMeeting.itemPowerObserversStates
 agMeeting.meetingPowerObserversStates = caMeeting.meetingPowerObserversStates
 agMeeting.useCopies = True
