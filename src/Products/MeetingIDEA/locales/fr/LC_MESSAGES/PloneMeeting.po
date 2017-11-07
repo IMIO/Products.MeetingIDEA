@@ -27,7 +27,7 @@ msgstr "Conseil d'administration"
 
 #. Default: "AG"
 msgid "Meeting config IDEA AG"
-msgstr "AssemblÃ©e gÃ©nÃ©rale"
+msgstr "Assemblée générale"
 
 #. Default: "Transcription of interventions"
 msgid "MeetingIDEA_descr_interventions"
@@ -35,16 +35,16 @@ msgstr "Retranscription des interventions"
 
 #. Default: "Default value for the item decision field"
 msgid "MeetingIDEA_label_defaultMeetingItemDecision"
-msgstr "Valeur par dÃ©faut du champ 'DÃ©libÃ©ration/Extrait du ProcÃ¨s-verbal'"
+msgstr "Valeur par défaut du champ 'Délibération/Extrait du ProcÃ¨s-verbal'"
 
 #. Default: "Premeeting observations"
 msgid "MeetingIDEA_label_meetingAGobservations"
-msgstr "Avant-sÃ©ance"
+msgstr "Avant-séance"
 
 # MeetingItem
 #. Default: "Signatures delegation"
 msgid "MeetingCommunes_descr_echevinServices"
-msgstr "DÃ©lÃ©gation de signatures"
+msgstr "Délégation de signatures"
 
 # import what was done in MeetingCommunes
 # MeetingItem
@@ -54,16 +54,16 @@ msgstr "Extrait du ProcÃ¨s-verbal"
 
 #. Default: "Linked items"
 msgid "PloneMeeting_label_predecessor"
-msgstr "Point(s) liÃ©(s)"
+msgstr "Point(s) lié(s)"
 
 # object_buttons
 #. Default: "Send to AG"
 msgid "Send to AG"
-msgstr "Envoyer Ã  l'AssemblÃ©e GÃ©nÃ©rale"
+msgstr "Envoyer Ã  l'Assemblée Générale"
 
 #. Default: "Sent to AG"
 msgid "Sent to AG"
-msgstr "EnvoyÃ© Ã  l'AssemblÃ©e GÃ©nÃ©rale"
+msgstr "Envoyé Ã  l'Assemblée Générale"
 
 #. Default: "PloneMeeting"
 msgid "app_name"
@@ -80,15 +80,15 @@ msgstr "correspondants financier"
 
 #. Default: "Please as this item comes from the CA, you need to define the 'commission' for it before being able to propose it."
 msgid "check_category"
-msgstr "Attention, comme ce point provient du CA communal, vous devez dÃ©finir la commission Ã  laquelle il doit passer en passant par l'onglet 'Modifier' avant de pouvoir le proposer au chef de bureau."
+msgstr "Attention, comme ce point provient du CA communal, vous devez définir la commission Ã  laquelle il doit passer en passant par l'onglet 'Modifier' avant de pouvoir le proposer au chef de bureau."
 
 #. Default: "Please as you defined an item initiator, check if the linked category should not be 'Points AG'. If not, just ignore this message, it will not be displayed anymore when the item will be validated."
 msgid "check_intitiator_and_category"
-msgstr "Attention, en gÃ©nÃ©ral si vous sÃ©lectionnez une personne 'A l'initative de ce point', la catÃ©gorie 'Points AG' doit Ãªtre Ã©galement sÃ©lectionnÃ©e.  VÃ©rifiez vos donnÃ©es, si elles sont justes, ignorez cet avertissement, il disparaÃ®tra une fois le point 'validÃ©'."
+msgstr "Attention, en général si vous sélectionnez une personne 'A l'initative de ce point', la catégorie 'Points AG' doit Ãªtre également sélectionnée.  Vérifiez vos données, si elles sont justes, ignorez cet avertissement, il disparaÃ®tra une fois le point 'validé'."
 
 #. Default: "Default value for the item decision field"
 msgid "default_meetingitem_decision"
-msgstr "DÃ©finissez ici le texte prÃ©dÃ©fini qui sera prÃ©sent dans le champ 'DÃ©libÃ©ration/Extrait du ProcÃ¨s-verbal' chaque fois qu'un utilisateur crÃ©e un nouveau point."
+msgstr "Définissez ici le texte prédéfini qui sera présent dans le champ 'Délibération/Extrait du ProcÃ¨s-verbal' chaque fois qu'un utilisateur crée un nouveau point."
 
 # Suffix
 #. Default: "Department heads"
@@ -105,7 +105,7 @@ msgstr "Bienvenue sur PloneMeeting!"
 
 #. Default: "Assembly"
 msgid "listingheader_premeeting_assembly"
-msgstr "AssemblÃ©e"
+msgstr "Assemblée"
 
 #. Default: "Date"
 msgid "listingheader_premeeting_date"
@@ -117,7 +117,7 @@ msgstr "Description dans l'Ordre du jour"
 
 #. Default: "Choose advisers that will have to issue an optional advice for this item"
 msgid "optional_advisers_item_descr"
-msgstr "SÃ©lectionnez les groupes qui pourront remettre un avis sur ce point. SÃ©lectionnez plusieurs groupes Ã  l'aide de CTRL+clic"
+msgstr "Sélectionnez les groupes qui pourront remettre un avis sur ce point. Sélectionnez plusieurs groupes Ã  l'aide de CTRL+clic"
 
 #. Default: "PowerObservers"
 msgid "powerObserversGroupTitle"
@@ -133,18 +133,18 @@ msgstr "AG"
 
 #. Default: "Present every selected items"
 msgid "present_several_items"
-msgstr "PrÃ©senter tous les points sÃ©lectionnÃ©s"
+msgstr "Présenter tous les points sélectionnés"
 
 #. Default: "The comment was : ${comments}.\n\nMore information at ${objectUrl}."
 msgid "returnedToService_mail_body"
 msgstr ""
-"Commentaire laissÃ© par le SecrÃ©tariat communal : ${comments}.\n"
+"Commentaire laissé par le Secrétariat communal : ${comments}.\n"
 "\n"
 "Plus d'information ici: ${objectUrl}."
 
 #. Default: "The item '${itemTitle}' has been send back to you by the secretary"
 msgid "returnedToService_mail_subject"
-msgstr "Le point '${itemTitle}' vous a Ã©tÃ© renvoyÃ© pour corrections par le SecrÃ©tariat communal"
+msgstr "Le point '${itemTitle}' vous a été renvoyé pour corrections par le Secrétariat communal"
 
 # Suffix
 #. Default: "reviewers"
@@ -157,11 +157,11 @@ msgstr "Configurer PloneMeeting"
 
 #. Default: "corrected items"
 msgid "searchcorrecteditems"
-msgstr "points corrigÃ©s"
+msgstr "points corrigés"
 
 #. Default: "decided items"
 msgid "searchdecideditems"
-msgstr "points dÃ©cidÃ©s"
+msgstr "points décidés"
 
 #. Default: "Items of my group"
 msgid "searchgroupitems"
@@ -174,7 +174,7 @@ msgstr "points Ã  valider"
 # searches
 #. Default: "proposed items"
 msgid "searchproposeditems"
-msgstr "points proposÃ©s"
+msgstr "points proposés"
 
 #. Default: "items to correct"
 msgid "searchreturnedtoserviceitems"
@@ -182,11 +182,11 @@ msgstr "points Ã  corriger"
 
 #. Default: "validated items"
 msgid "searchvalidateditems"
-msgstr "points validÃ©s"
+msgstr "points validés"
 
 #. Default: "Please enter 12 lines for signatures delegations"
 msgid "signatures_length_error"
-msgstr "Renseignez 12 lignes pour les signatures.  Si une signature ne doit pas Ãªtre surchargÃ©e (si la signature dÃ©finie dans la configuration de sÃ©ance dans le champ 'Signatures certifiÃ©es' doit Ãªtre utilisÃ©e), renseignez un tiret (-)."
+msgstr "Renseignez 12 lignes pour les signatures.  Si une signature ne doit pas Ãªtre surchargée (si la signature définie dans la configuration de séance dans le champ 'Signatures certifiées' doit Ãªtre utilisée), renseignez un tiret (-)."
 
 #. Default: "Detailed description"
 msgid "PloneMeeting_label_detailedDescription"
@@ -202,11 +202,11 @@ msgstr "Justification de l'urgence"
 
 #. Default: "Detailed description"
 msgid "detailedDescription_item_descr"
-msgstr "Pour les points supplÃ©mentaires, veuillez justifier l'urgence"
+msgstr "Pour les points supplémentaires, veuillez justifier l'urgence"
 
 #. Default: "Internal communication description"
 msgid "item_internalCommunication_descr"
-msgstr "Indiquez vos notes personnelles ici. Elles ne seront vues que par les gestionnaires de sÃ©ances"
+msgstr "Indiquez vos notes personnelles ici. Elles ne seront vues que par les gestionnaires de séances"
 
 #. Default: "Internal communication"
 msgid "PloneMeeting_label_internalCommunication"
@@ -226,7 +226,7 @@ msgstr "directeur"
 
 #. Default: "searchsecretariatitems"
 msgid "searchsecretariatitems"
-msgstr "secrÃ©tariat"
+msgstr "secrétariat"
 
 #. Default: "searchdgitems"
 msgid "searchdgitems"
@@ -242,11 +242,11 @@ msgstr "Pris acte"
 
 #. Default: "Not to be discussed during the meeting. Click on the image for discussing the item."
 msgid "to_discuss_no_edit"
-msgstr "Pris acte en sÃ©ance, cliquez sur l'image pour Ã©voquer ce point."
+msgstr "Pris acte en séance, cliquez sur l'image pour évoquer ce point."
 
 #. Default: "To be discussed during the meeting. Click on the image for not discussing the item."
 msgid "to_discuss_yes_edit"
-msgstr "A Ã©voquer en sÃ©ance, cliquez sur l'image pour prendre acte de ce point."
+msgstr "A évoquer en séance, cliquez sur l'image pour prendre acte de ce point."
 
 #. Default: "meetingCDGroupTitle"
 msgid "meetingCDGroupTitle"
@@ -254,19 +254,19 @@ msgstr "Conseil de Direction"
 
 #. Default: "Observations"
 msgid "PloneMeeting_itemObservations"
-msgstr "Interventions en sÃ©ance"
+msgstr "Interventions en séance"
 
 #. Default: "The interventions is currently under edit by managers, you can not access it."
 msgid "intervention_under_edit"
-msgstr "<p>Les interventions sont en cours de rÃ©daction par les gestionnaires de sÃ©ances, vous ne pouvez pas y accÃ©der pour l'instant.</p>"
+msgstr "<p>Les interventions sont en cours de rédaction par les gestionnaires de séances, vous ne pouvez pas y accéder pour l'instant.</p>"
 
 #. Default: "StrategicAxis"
 msgid "item_strategicAxis_descr"
-msgstr "Choississez vos axes stratÃ©giques"
+msgstr "Choississez vos axes stratégiques"
 
 #. Default: "StrategicAxis"
 msgid "PloneMeeting_label_strategicAxis"
-msgstr "Axes StratÃ©giques"
+msgstr "Axes Stratégiques"
 
 #. Default: "Initialize the item decision when deciding meeting"
 msgid "MeetingCommunes_label_initItemDecisionIfEmptyOnDecide"
@@ -274,4 +274,4 @@ msgstr ""
 
 #. Default: "If you check this box, when a meeting will be decided, if an item does not have a decision defined, this decision will be automatically filled with title and description of the item"
 msgid "init_item_decision_if_empty_on_decide"
-msgstr "Si cette case est cochÃ©e, lorsqu'une sÃ©ance passera 'En rÃ©daction du PV', pour tous les points dont le champ 'DÃ©cision' est vide, ce champ sera automatiquement rempli avec une concatÃ©nation de ce qui est dÃ©fini dans le titre et la description du point"
+msgstr "Si cette case est cochée, lorsqu'une séance passera 'En rédaction du PV', pour tous les points dont le champ 'Décision' est vide, ce champ sera automatiquement rempli avec une concaténation de ce qui est défini dans le titre et la description du point"

@@ -264,7 +264,7 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" category="workflow" i18n:translate="">backToCreated</action>
+  <action url="" icon="" category="workflow" i18n:translate="">backToCreated</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
@@ -276,7 +276,7 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" category="workflow" i18n:translate="">backToDecided</action>
+  <action url="" icon="" category="workflow" i18n:translate="">backToDecided</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
@@ -288,7 +288,7 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" category="workflow" i18n:translate="">backToFrozen</action>
+  <action url="" icon="" category="workflow" i18n:translate="">backToFrozen</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
@@ -300,7 +300,7 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" category="workflow" i18n:translate="">backToPublish</action>
+  <action url="" icon="" category="workflow" i18n:translate="">backToPublish</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
@@ -312,7 +312,7 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" category="workflow" i18n:translate="">backToValidatedByCD</action>
+  <action url="" icon="" category="workflow" i18n:translate="">backToValidatedByCD</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
@@ -324,7 +324,7 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" category="workflow" i18n:translate="">close</action>
+  <action url="" icon="" category="workflow" i18n:translate="">close</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayClose()</guard-expression>
   </guard>
@@ -336,7 +336,7 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" category="workflow" i18n:translate="">decide</action>
+  <action url="" icon="" category="workflow" i18n:translate="">decide</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayDecide()</guard-expression>
   </guard>
@@ -348,7 +348,7 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" category="workflow" i18n:translate="">freeze</action>
+  <action url="" icon="" category="workflow" i18n:translate="">freeze</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayFreeze()</guard-expression>
   </guard>
@@ -360,7 +360,7 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" category="workflow" i18n:translate="">publish</action>
+  <action url="" icon="" category="workflow" i18n:translate="">publish</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayPublish()</guard-expression>
   </guard>
@@ -372,7 +372,7 @@
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" category="workflow" i18n:translate="">validateByCD</action>
+  <action url="" icon="" category="workflow" i18n:translate="">validateByCD</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayValidateByCD()</guard-expression>
   </guard>
@@ -424,5 +424,7 @@
   <guard>
   </guard>
  </variable>
+<!-- ##code-section FOOT -->
+<!-- ##/code-section FOOT -->
  <!-- We dont use workflow scripts any more, we use subscribers -->
 </dc-workflow>
