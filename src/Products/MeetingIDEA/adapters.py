@@ -306,6 +306,105 @@ class CustomMeeting(Meeting):
             group = item.getProposingGroup(True)
             self._insertGroupInCategory(categoryList, group, groupPrefixes, groups, item)
 
+    security.declarePublic('getPrintableItemsByDepartement')
+
+    def getPrintableItemsByDepartement(self, itemUids=[], listTypes=['normal'],
+                                    ignore_review_states=[], group_prefixes={},
+                                    privacy='*', toDiscuss='both',
+                                    groupIds=[], excludedGroupIds=[],
+                                    includeEmptyGroups=True,):
+        '''Returns a list of (late or normal or both) items (depending on p_listTypes)
+           ordered by category. Items being in a state whose name is in
+           p_ignore_review_state will not be included in the result.
+           If p_by_proposing_group is True, items are grouped by proposing group
+           within every category. In this case, specifying p_group_prefixes will
+           allow to consider all groups whose acronym starts with a prefix from
+           this param prefix as a unique group. p_group_prefixes is a dict whose
+           keys are prefixes and whose values are names of the logical big
+           groups. A privacy,A toDiscuss and oralQuestion can also be given, the item is a
+           toDiscuss (oralQuestion) or not (or both) item.
+           If p_forceCategOrderFromConfig is True, the categories order will be
+           the one in the config and not the one from the meeting.
+           If p_groupIds are given, we will only consider these proposingGroups.
+           If p_includeEmptyCategories is True, categories for which no
+           item is defined are included nevertheless. If p_includeEmptyGroups
+           is True, proposing groups for which no item is defined are included
+           nevertheless.Some specific categories can be given or some categories to exclude.
+           These 2 parameters are exclusive.  If renumber is True, a list of tuple
+           will be return with first element the number and second element, the item.
+           In this case, the firstNumber value can be used.'''
+
+        # The result is a list of lists, where every inner list contains:
+        # - at position 0: the category object (MeetingCategory or MeetingGroup)
+        # - at position 1 to n: the items in this category
+        # If by_proposing_group is True, the structure is more complex.
+        # listTypes is a list that can be filled with 'normal' and/or 'late'
+        # oralQuestion can be 'both' or False or True
+        # toDiscuss can be 'both' or 'False' or 'True'
+        # privacy can be '*' or 'public' or 'secret'
+        # Every inner list contains:
+        # - at position 0: the category object
+        # - at positions 1 to n: inner lists that contain:
+        #   * at position 0: the proposing group object
+        #   * at positions 1 to n: the items belonging to this group.
+
+        res = []
+        # Retrieve the list of items
+        for elt in itemUids:
+            if elt == '':
+                itemUids.remove(elt)
+
+        items = self.context.getItems(uids=itemUids, listTypes=listTypes, ordered=True)
+
+
+        current_departement = ''
+        current_service = ''
+
+        if items:
+            groups={}
+            tool = api.portal.get_tool('portal_plonemeeting')
+
+            for item in items:
+                # Check if the review_state has to be taken into account
+                if item.queryState() in ignore_review_states:
+                    continue
+                elif not (privacy == '*' or item.getPrivacy() == privacy):
+                    continue
+                elif not (toDiscuss == 'both' or item.getToDiscuss() == toDiscuss):
+                    continue
+                elif groupIds and not item.getProposingGroup() in groupIds:
+                    continue
+                elif excludedGroupIds and item.getProposingGroup() in excludedGroupIds:
+                    continue
+
+                group = item.getProposingGroup(theObject=True)
+
+                # Structure is :
+                # 1 DEPARTEMENT (only those that contain items in this Meeting)
+                #      1.1 SERVICE (only those that contain items in this Meeting)
+                #             1.1.1  MeetingItem
+
+                # CHECK IF DEPARTEMENT CHANGED
+                if group.getGroupsInCharge():
+                    # only 1 group in charge at a time
+                    # relationship is 1 DPT has many SRV but 1 SRV has only 1 DPT
+                    # Only the SRV groups can create MeetingItems
+                    if group.getGroupsInCharge()[0] != current_departement:
+                        # insert new DPT
+                        current_departement = group.getGroupsInCharge()[0]
+                        res.append([tool.get(current_departement).Title(),[]])
+
+                # CHECK IF SERVICE CHANGED
+                if group.getId() != current_service:
+                    # insert new SRV
+                    current_service = group.getId()
+                    res[-1][-1].append([group.Title(), []])
+
+                # insert item
+                res[-1][-1][-1][-1].append(item)
+
+        return res
+
     security.declarePublic('getPrintableItemsByCategory')
 
     def getPrintableItemsByCategory(self, itemUids=[], listTypes=['normal'],
