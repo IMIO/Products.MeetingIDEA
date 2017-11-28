@@ -29,6 +29,7 @@ from Products.MeetingIDEA.interfaces import IMeetingCAIDEAWorkflowActions
 from Products.MeetingIDEA.interfaces import IMeetingCAIDEAWorkflowConditions
 from Products.MeetingIDEA.interfaces import IMeetingItemCAIDEAWorkflowActions
 from Products.MeetingIDEA.interfaces import IMeetingItemCAIDEAWorkflowConditions
+from Products.PloneMeeting import PMMessageFactory as _
 from Products.PloneMeeting.Meeting import Meeting
 from Products.PloneMeeting.Meeting import MeetingWorkflowActions
 from Products.PloneMeeting.Meeting import MeetingWorkflowConditions
@@ -52,7 +53,6 @@ from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from appy.gen import No
-from Products.PloneMeeting import PMMessageFactory as _
 from imio.helpers.xhtml import xhtmlContentIsEmpty
 from plone import api
 from zope.annotation import IAnnotations
@@ -76,11 +76,11 @@ MeetingConfig.wfAdaptations = ['return_to_proposing_group']
 adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = ('presented', 'validated_by_cd', 'itemfrozen',)
 
 RETURN_TO_PROPOSING_GROUP_MAPPINGS = {'backTo_presented_from_returned_to_proposing_group':
-                                                      ['created', 'validated_by_cd'],
-                                                  'backTo_itemfrozen_from_returned_to_proposing_group':
-                                                      ['frozen', 'decided', 'published', 'decisions_published', ],
-                                                  'NO_MORE_RETURNABLE_STATES': ['closed', 'archived', ]
-                                                  }
+                                          ['created', 'validated_by_cd'],
+                                      'backTo_itemfrozen_from_returned_to_proposing_group':
+                                          ['frozen', 'decided', 'published', 'decisions_published', ],
+                                      'NO_MORE_RETURNABLE_STATES': ['closed', 'archived', ]
+                                      }
 
 adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(RETURN_TO_PROPOSING_GROUP_MAPPINGS)
 
@@ -310,10 +310,8 @@ class CustomMeeting(Meeting):
     security.declarePublic('getPrintableItemsByDepartement')
 
     def getPrintableItemsByDepartement(self, itemUids=[], listTypes=['normal'],
-                                    ignore_review_states=[], group_prefixes={},
-                                    privacy='*', toDiscuss='both',
-                                    groupIds=[], excludedGroupIds=[],
-                                    includeEmptyGroups=True,):
+                                       ignore_review_states=[], privacy='*', toDiscuss='both',
+                                       groupIds=[], excludedGroupIds=[]):
         '''Returns a list of (late or normal or both) items (depending on p_listTypes)
            ordered by category. Items being in a state whose name is in
            p_ignore_review_state will not be included in the result.
@@ -365,15 +363,12 @@ class CustomMeeting(Meeting):
 
         items = self.context.getItems(uids=itemUids, listTypes=listTypes, ordered=True)
 
-
         current_departement = ''
         current_service = ''
 
         if items:
-            groups={}
             tool = api.portal.get_tool('portal_plonemeeting')
             groups = tool.getMeetingGroups()
-            import ipdb; ipdb.set_trace()
             for group in groups:
                 pass
 
@@ -405,7 +400,7 @@ class CustomMeeting(Meeting):
                     if group.getGroupsInCharge()[0] != current_departement:
                         # insert new DPT
                         current_departement = group.getGroupsInCharge()[0]
-                        res.append([tool.get(current_departement).Title(),[]])
+                        res.append([tool.get(current_departement).Title(), []])
 
                 # CHECK IF SERVICE CHANGED
                 if group.getId() != current_service:
@@ -419,10 +414,10 @@ class CustomMeeting(Meeting):
         return res
 
     def getPrintableItemsByDepartementOld(self, itemUids=[], late=False,
-                                    ignore_review_states=[], by_proposing_group=False, group_prefixes={},
-                                    oralQuestion='both', toDiscuss='both', excludeCategories=[],
-                                    includeEmptyCategories=False, includeEmptyDepartment=False,
-                                    includeEmptyGroups=False):
+                                          ignore_review_states=[], by_proposing_group=False, group_prefixes={},
+                                          oralQuestion='both', toDiscuss='both', excludeCategories=[],
+                                          includeEmptyCategories=False, includeEmptyDepartment=False,
+                                          includeEmptyGroups=False):
         '''Returns a list of (late-)items (depending on p_late) ordered by
            category. Items being in a state whose name is in
            p_ignore_review_state will not be included in the result.
@@ -511,7 +506,7 @@ class CustomMeeting(Meeting):
             usedCategories = [elem[0] for elem in res]
             for cat in allCategories:
                 if cat not in usedCategories:
-                    #no empty service, we want only show department
+                    # no empty service, we want only show department
                     if cat.getAcronym().find('-') > 0:
                         continue
                     elif not includeEmptyDepartment:
@@ -522,12 +517,12 @@ class CustomMeeting(Meeting):
                                 break
                         if dpt_empty:
                             continue
-                     # Insert the category among used categories at the right place.
+                            # Insert the category among used categories at the right place.
                     categoryInserted = False
                     for i in range(len(usedCategories)):
                         try:
                             if allCategories.index(cat) < \
-                               allCategories.index(usedCategories[i]):
+                                    allCategories.index(usedCategories[i]):
                                 usedCategories.insert(i, cat)
                                 res.insert(i, [cat])
                                 categoryInserted = True
