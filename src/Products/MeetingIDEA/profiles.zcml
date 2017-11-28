@@ -17,19 +17,26 @@
       />
   
   <genericsetup:registerProfile
-   name="idea"
-   title="MeetingIDEA / CA with french examples"
-   directory="profiles/idea"
-   description="Extension profile for MeetingIDEA (Mons)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+      name="idea"
+      title="MeetingIDEA / CA with french examples"
+      directory="profiles/idea"
+      description="Extension profile for MeetingIDEA (Mons)"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
   <genericsetup:registerProfile
-   name="zag"
-   title="MeetingIDEA / AG"
-   description="Extension profil for MeetingIDEA for AG (Belgium)"
-   provides="Products.GenericSetup.interfaces.EXTENSION"
-   for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+      name="zcodir"
+      title="PloneMeeting / CoDir"
+      description="PloneMeeting for CoDir (Belgium)"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+  <genericsetup:registerProfile
+      name="zcoges"
+      title="PloneMeeting / CoGes"
+      description="PloneMeeting for CoGes (Belgium)"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
   <genericsetup:upgradeStep
       title="Go to MeetingIDEA 4.0 (Step 1)"

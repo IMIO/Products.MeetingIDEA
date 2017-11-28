@@ -108,7 +108,8 @@ def logStep(method, context):
 
 def isMeetingIDEAConfigureProfile(context):
     return context.readDataFile("MeetingIDEA_idea_marker.txt") or \
-        context.readDataFile("MeetingIDEA_ag_marker.txt") or \
+        context.readDataFile("MeetingIDEA_codir_marker.txt") or \
+        context.readDataFile("MeetingIDEA_coges_marker.txt") or \
         context.readDataFile("MeetingIDEA_testing_marker.txt")
 
 def isNotMeetingIDEADemoProfile(context):

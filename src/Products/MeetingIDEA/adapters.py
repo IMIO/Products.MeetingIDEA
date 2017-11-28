@@ -55,6 +55,7 @@ from appy.gen import No
 from Products.PloneMeeting import PMMessageFactory as _
 from imio.helpers.xhtml import xhtmlContentIsEmpty
 from plone import api
+from zope.annotation import IAnnotations
 from zope.i18n import translate
 from zope.interface import implements
 
@@ -348,6 +349,14 @@ class CustomMeeting(Meeting):
         #   * at position 0: the proposing group object
         #   * at positions 1 to n: the items belonging to this group.
 
+        ann = IAnnotations(self.context.REQUEST)
+
+        if 'printableItemsByDepartement' in ann:
+            return ann['printableItemsByDepartement']
+
+        def _listDemartment(self):
+            return []
+
         res = []
         # Retrieve the list of items
         for elt in itemUids:
@@ -363,6 +372,10 @@ class CustomMeeting(Meeting):
         if items:
             groups={}
             tool = api.portal.get_tool('portal_plonemeeting')
+            groups = tool.getMeetingGroups()
+            import ipdb; ipdb.set_trace()
+            for group in groups:
+                pass
 
             for item in items:
                 # Check if the review_state has to be taken into account
@@ -403,6 +416,152 @@ class CustomMeeting(Meeting):
                 # insert item
                 res[-1][-1][-1][-1].append(item)
 
+        return res
+
+    def getPrintableItemsByDepartementOld(self, itemUids=[], late=False,
+                                    ignore_review_states=[], by_proposing_group=False, group_prefixes={},
+                                    oralQuestion='both', toDiscuss='both', excludeCategories=[],
+                                    includeEmptyCategories=False, includeEmptyDepartment=False,
+                                    includeEmptyGroups=False):
+        '''Returns a list of (late-)items (depending on p_late) ordered by
+           category. Items being in a state whose name is in
+           p_ignore_review_state will not be included in the result.
+           If p_by_proposing_group is True, items are grouped by proposing group
+           within every category. In this case, specifying p_group_prefixes will
+           allow to consider all groups whose acronym starts with a prefix from
+           this param prefix as a unique group. p_group_prefixes is a dict whose
+           keys are prefixes and whose values are names of the logical big
+           groups. A toDiscuss and oralQuestion can also be given, the item is a
+           toDiscuss (oralQuestion) or not (or both) item.
+           If p_includeEmptyCategories is True, categories for which no
+           item is defined are included nevertheless. If p_includeEmptyGroups
+           is True, proposing groups for which no item is defined are included
+           nevertheless.'''
+        # The result is a list of lists, where every inner list contains:
+        # - at position 0: the category object (MeetingCategory or MeetingGroup)
+        # - at position 1 to n: the items in this category
+        # If by_proposing_group is True, the structure is more complex.
+        # oralQuestion can be 'both' or False or True
+        # toDiscuss can be 'both' or 'False' or 'True'
+        # Every inner list contains:
+        # - at position 0: the category object
+        # - at positions 1 to n: inner lists that contain:
+        #   * at position 0: the proposing group object
+        #   * at positions 1 to n: the items belonging to this group.
+        ann = IAnnotations(self.context.REQUEST)
+        if not late:
+            printableItems = 'printableItems'
+            printableItemsByCat = 'printableItemsByCategory'
+        else:
+            printableItems = 'printableLateItems'
+            printableItemsByCat = 'printableItemsLateByCategory'
+        if printableItemsByCat in ann:
+            return ann[printableItemsByCat]
+        if 'activeGroupes' not in ann:
+            ann['activeGroupes'] = self.context.portal_plonemeeting.getMeetingGroups()
+        res = []
+        items = []
+        previousCatId = None
+        # Retrieve the list of items
+        for elt in itemUids:
+            if elt == '':
+                itemUids.remove(elt)
+        if printableItems not in ann:
+            ann[printableItems] = self.context.getItemsInOrder(late=late, uids=itemUids)
+        items = ann[printableItems]
+        if by_proposing_group:
+            groups = ann['activeGroupes']
+        else:
+            groups = None
+
+        if items:
+            for item in items:
+                # Check if the review_state has to be taken into account
+                if item.queryState() in ignore_review_states:
+                    continue
+                elif excludeCategories != [] and item.getProposingGroup() in excludeCategories:
+                    continue
+                elif not (oralQuestion == 'both' or item.getOralQuestion() == oralQuestion):
+                    continue
+                elif not (toDiscuss == 'both' or item.getToDiscuss() == toDiscuss):
+                    continue
+                currentCat = item.getCategory(theObject=True)
+                currentCatId = currentCat.getId()
+                if currentCatId != previousCatId:
+                    # Add the item to a new category, excepted if the
+                    # category already exists.
+                    catExists = False
+                    for catList in res:
+                        if catList[0] == currentCat:
+                            catExists = True
+                            break
+                    if catExists:
+                        self._insertItemInCategory(catList, item, by_proposing_group, group_prefixes, groups)
+                    else:
+                        res.append([currentCat])
+                        self._insertItemInCategory(res[-1], item, by_proposing_group, group_prefixes, groups)
+                    previousCatId = currentCatId
+                else:
+                    # Append the item to the same category
+                    self._insertItemInCategory(res[-1], item, by_proposing_group, group_prefixes, groups)
+        if includeEmptyCategories:
+            meetingConfig = self.context.portal_plonemeeting.getMeetingConfig(
+                self.context)
+            allCategories = meetingConfig.getCategories()
+            usedCategories = [elem[0] for elem in res]
+            for cat in allCategories:
+                if cat not in usedCategories:
+                    #no empty service, we want only show department
+                    if cat.getAcronym().find('-') > 0:
+                        continue
+                    elif not includeEmptyDepartment:
+                        dpt_empty = True
+                        for uc in usedCategories:
+                            if uc.getAcronym().startswith(cat.getAcronym()):
+                                dpt_empty = False
+                                break
+                        if dpt_empty:
+                            continue
+                     # Insert the category among used categories at the right place.
+                    categoryInserted = False
+                    for i in range(len(usedCategories)):
+                        try:
+                            if allCategories.index(cat) < \
+                               allCategories.index(usedCategories[i]):
+                                usedCategories.insert(i, cat)
+                                res.insert(i, [cat])
+                                categoryInserted = True
+                                break
+                        except:
+                            continue
+                    if not categoryInserted:
+                        usedCategories.append(cat)
+                        res.append([cat])
+        if by_proposing_group and includeEmptyGroups:
+            # Include, in every category list, not already used groups.
+            # But first, compute "macro-groups": we will put one group for
+            # every existing macro-group.
+            macroGroups = []  # Contains only 1 group of every "macro-group"
+            consumedPrefixes = []
+            for group in groups:
+                prefix = self._getAcronymPrefix(group, group_prefixes)
+                if not prefix:
+                    group._v_printableName = group.Title()
+                    macroGroups.append(group)
+                else:
+                    if prefix not in consumedPrefixes:
+                        consumedPrefixes.append(prefix)
+                        group._v_printableName = group_prefixes[prefix]
+                        macroGroups.append(group)
+            # Every category must have one group from every macro-group
+            for catInfo in res:
+                for group in macroGroups:
+                    self._insertGroupInCategory(catInfo, group, group_prefixes,
+                                                groups)
+                    # The method does nothing if the group (or another from the
+                    # same macro-group) is already there.
+        if printableItemsByCat not in ann:
+            ann[printableItemsByCat] = res
         return res
 
     security.declarePublic('getPrintableItemsByCategory')
