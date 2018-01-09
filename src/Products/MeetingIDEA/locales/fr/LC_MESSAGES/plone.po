@@ -313,26 +313,6 @@ msgstr "Le point a été validé: il est maintenant visible par le gestionnaire 
 msgid "validated"
 msgstr "Validé"
 
-#. Default: "ItemValidateByCD"
-msgid "itemValidateByCD"
-msgstr "Valider par le CD"
-
-#. Default: "validated_by_cd"
-msgid "validated_by_cd"
-msgstr "Validé par le CD"
-
-#. Default: "send back"
-msgid "backToValidateByCD"
-msgstr "Renvoyer au CD"
-
-#. Default: "validate by CD"
-msgid "validateByCD"
-msgstr "Valider par le CD"
-
-#. Default: "back to validated by CD"
-msgid "backToValidatedByCD"
-msgstr "Renvoyer pour validation par le CD"
-
 #. Default: "Item created from a CA item"
 msgid "create_to_meeting-config-AG_from_meeting-config-CA_comments"
 msgstr "Point créé depuis un point CA"

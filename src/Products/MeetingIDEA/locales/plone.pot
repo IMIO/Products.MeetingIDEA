@@ -309,26 +309,6 @@ msgstr ""
 msgid "validated"
 msgstr ""
 
-#. Default: "ItemValidateByCD"
-msgid "itemValidateByCD"
-msgstr ""
-
-#. Default: "validated_by_cd"
-msgid "validated_by_cd"
-msgstr ""
-
-#. Default: "send back"
-msgid "backToValidateByCD"
-msgstr ""
-
-#. Default: "validate by CD"
-msgid "validateByCD"
-msgstr ""
-
-#. Default: "back to validated by CD"
-msgid "backToValidatedByCD"
-msgstr ""
-
 #. Default: "Item created from a CA item"
 msgid "create_to_meeting-config-AG_from_meeting-config-CA_comments"
 msgstr ""

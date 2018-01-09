@@ -14,13 +14,12 @@
  <state state_id="closed"
         title="closed"
         i18n:attributes="title">
-  <exit-transition transition_id="backToPublish"/>
+  <exit-transition transition_id="backToPublished"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
-   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
@@ -44,20 +43,18 @@
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
-   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
  </state>
  <state state_id="created"
         title="created"
         i18n:attributes="title">
-  <exit-transition transition_id="validateByCD"/>
+  <exit-transition transition_id="freeze"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
-   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
@@ -85,7 +82,6 @@
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
-   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
  </state>
@@ -99,7 +95,6 @@
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
-   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
@@ -127,7 +122,6 @@
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
-   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
  </state>
@@ -135,13 +129,12 @@
         title="frozen"
         i18n:attributes="title">
   <exit-transition transition_id="decide"/>
-  <exit-transition transition_id="backToValidatedByCD"/>
+  <exit-transition transition_id="backToCreated"/>
   <permission-map name="Access contents information"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
-   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
@@ -169,7 +162,6 @@
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
-   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
  </state>
@@ -183,7 +175,6 @@
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
-   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
@@ -211,49 +202,6 @@
    <permission-role>Manager</permission-role>
    <permission-role>MeetingManager</permission-role>
    <permission-role>MeetingObserverGlobal</permission-role>
-   <permission-role>MeetingCD</permission-role>
-   <permission-role>Reader</permission-role>
-  </permission-map>
- </state>
- <state state_id="validated_by_cd"
-        title="validated_by_cd"
-        i18n:attributes="title">
-  <exit-transition transition_id="backToCreated"/>
-  <exit-transition transition_id="freeze"/>
-  <permission-map name="Access contents information"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingObserverGlobal</permission-role>
-   <permission-role>MeetingCD</permission-role>
-   <permission-role>Reader</permission-role>
-  </permission-map>
-  <permission-map name="Delete objects"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="Modify portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="PloneMeeting: Add annex"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="Review portal content"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-  </permission-map>
-  <permission-map name="View"
-                  acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>MeetingManager</permission-role>
-   <permission-role>MeetingObserverGlobal</permission-role>
-   <permission-role>MeetingCD</permission-role>
    <permission-role>Reader</permission-role>
   </permission-map>
  </state>
@@ -293,26 +241,14 @@
     <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
  </transition>
- <transition transition_id="backToPublish"
-             title="backToPublish"
+ <transition transition_id="backToPublished"
+             title="backToPublished"
              new_state="published"
              trigger="USER"
              before_script=""
              after_script=""
              i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">backToPublish</action>
-  <guard>
-    <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
-  </guard>
- </transition>
- <transition transition_id="backToValidatedByCD"
-             title="backToValidatedByCD"
-             new_state="validated_by_cd"
-             trigger="USER"
-             before_script=""
-             after_script=""
-             i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">backToValidatedByCD</action>
+  <action url="" icon="" category="workflow" i18n:translate="">backToPublished</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayCorrect()</guard-expression>
   </guard>
@@ -363,18 +299,6 @@
   <action url="" icon="" category="workflow" i18n:translate="">publish</action>
   <guard>
     <guard-expression>python:here.wfConditions().mayPublish()</guard-expression>
-  </guard>
- </transition>
- <transition transition_id="validateByCD"
-             title="validateByCD"
-             new_state="validated_by_cd"
-             trigger="USER"
-             before_script=""
-             after_script=""
-             i18n:attributes="title">
-  <action url="" icon="" category="workflow" i18n:translate="">validateByCD</action>
-  <guard>
-    <guard-expression>python:here.wfConditions().mayValidateByCD()</guard-expression>
   </guard>
  </transition>
  <variable variable_id="action" for_catalog="False"

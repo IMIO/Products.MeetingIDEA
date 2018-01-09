@@ -90,7 +90,7 @@ decisionsTemplate = PodTemplateDescriptor('decisionsTemplate',
                                           'Meeting decisions')
 decisionsTemplate.odt_file = 'Decisions.odt'
 decisionsTemplate.pod_portal_types = ['MeetingCollege']
-decisionsTemplate.tal_condition = 'python:here.adapted().isDecided()'
+decisionsTemplate.tal_condition = 'python:here.isDecided()'
 
 itemTemplate = PodTemplateDescriptor('itemTemplate', 'Meeting item')
 itemTemplate.odt_file = 'Item.odt'
@@ -292,38 +292,17 @@ caMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeeting
 caMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
 caMeeting.transitionsToConfirm = []
 caMeeting.transitionsForPresentingAnItem = ['proposeToDepartmentHead', 'proposeToDirector', 'validate', 'present', ]
-caMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'validateByCD',
-                                                         'item_transition': 'itemValidateByCD'},
-
-                                                        {'meeting_transition': 'freeze',
-                                                         'item_transition': 'itemValidateByCD'},
-
+caMeeting.onMeetingTransitionItemTransitionToTrigger = (
                                                         {'meeting_transition': 'freeze',
                                                          'item_transition': 'itemfreeze'},
-
-                                                        {'meeting_transition': 'decide',
-                                                         'item_transition': 'itemValidateByCD'},
                                                         {'meeting_transition': 'decide',
                                                          'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'decide',
-                                                         'item_transition': 'itempublish'},
-
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'itemValidateByCD'},
                                                         {'meeting_transition': 'close',
                                                          'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'itempublish'},
                                                         {'meeting_transition': 'close',
                                                          'item_transition': 'accept'},
-
                                                         {'meeting_transition': 'backToCreated',
-                                                         'item_transition': 'backToValidateByCD'},
-                                                        {'meeting_transition': 'backToCreated',
-                                                         'item_transition': 'backToPresented'},
-
-                                                        {'meeting_transition': 'backToValidatedByCD',
-                                                         'item_transition': 'backToValidateByCD'},)
+                                                         'item_transition': 'backToPresented'},)
 
 caMeeting.meetingTopicStates = ('created', 'frozen')
 caMeeting.decisionTopicStates = ('decided', 'closed')
@@ -395,38 +374,17 @@ agMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeeting
 agMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
 agMeeting.transitionsToConfirm = []
 agMeeting.transitionsForPresentingAnItem = ['proposeToDepartmentHead', 'proposeToDirector', 'validate', 'present', ]
-agMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'validateByCD',
-                                                         'item_transition': 'itemValidateByCD'},
-
-                                                        {'meeting_transition': 'freeze',
-                                                         'item_transition': 'itemValidateByCD'},
+agMeeting.onMeetingTransitionItemTransitionToTrigger = (
                                                         {'meeting_transition': 'freeze',
                                                          'item_transition': 'itemfreeze'},
-
-                                                        {'meeting_transition': 'decide',
-                                                         'item_transition': 'itemValidateByCD'},
                                                         {'meeting_transition': 'decide',
                                                          'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'decide',
-                                                         'item_transition': 'itempublish'},
-
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'itemValidateByCD'},
                                                         {'meeting_transition': 'close',
                                                          'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'itempublish'},
                                                         {'meeting_transition': 'close',
                                                          'item_transition': 'accept'},
-
                                                         {'meeting_transition': 'backToCreated',
-                                                         'item_transition': 'backToValidatedByCD'},
-                                                        {'meeting_transition': 'backToCreated',
-                                                         'item_transition': 'backToPresented'},
-
-                                                        {'meeting_transition': 'backToValidatedByCD',
-                                                         'item_transition': 'backToValidatedByCD'},)
-
+                                                         'item_transition': 'backToPresented'},)
 agMeeting.meetingTopicStates = ('created', 'frozen', 'published')
 agMeeting.decisionTopicStates = ('decided', 'closed')
 agMeeting.itemAdviceStates = ('validated',)

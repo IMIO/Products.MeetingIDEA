@@ -51,31 +51,14 @@ class testCustomWorkflows(MeetingIDEATestCase):
         self.presentItem(item2)
         wftool = self.portal.portal_workflow
         # every presented items are in the 'presented' state
-        self.assertEquals('presented', wftool.getInfoFor(item1, 'review_state'))
-        self.assertEquals('presented', wftool.getInfoFor(item2, 'review_state'))
-        # every items must be in the 'validated_by_cd' state if we validateByCD the meeting
-        self.do(meeting, 'validateByCD')
-        self.assertEquals('validated_by_cd', item1.queryState())
-        self.assertEquals('validated_by_cd', item2.queryState())
-
-        self.do(meeting, 'backToCreated')
-        # when correcting the meeting back to created, the items must be corrected
-        # back to "presented"
         self.assertEquals('presented', item1.queryState())
         self.assertEquals('presented', item2.queryState())
-        self.do(meeting, 'validateByCD')
         # every items must be in the 'itemfrozen' state if we freeze the meeting
         self.do(meeting, 'freeze')
         self.assertEquals('itemfrozen', item1.queryState())
         self.assertEquals('itemfrozen', item2.queryState())
         # when correcting the meeting back to created, the items must be corrected
         # when correcting the meeting back to created, the items must be corrected back to "presented"
-        self.do(meeting, 'backToValidatedByCD')
-        # when correcting the meeting back to created, the items must be corrected
-        # when correcting the meeting back to created, the items must be corrected back to "validated_by_cd"
-        self.assertEquals('validated_by_cd', item1.queryState())
-        self.assertEquals('validated_by_cd', item2.queryState())
-
         self.do(meeting, 'backToCreated')
         # when correcting the meeting back to created, the items must be corrected
         # back to "presented"
@@ -138,7 +121,11 @@ class testCustomWorkflows(MeetingIDEATestCase):
         self.do(item6, 'accept')
         # we publish the meeting
         self.do(meeting, 'publish')
+        self.backToState(meeting, 'decided')
         # we close the meeting
+        self.do(meeting, 'publish')
+        self.do(meeting, 'close')
+        self.backToState(meeting, 'published')
         self.do(meeting, 'close')
         # every items must be in the 'decided' state if we close the meeting
         wftool = self.portal.portal_workflow
@@ -190,8 +177,6 @@ class testCustomWorkflows(MeetingIDEATestCase):
         self.do(item, 'validate')
         _checkObserverMayView(item)
         self.do(item, 'present')
-        _checkObserverMayView(item)
-        self.do(meeting, 'validateByCD')
         _checkObserverMayView(item)
         self.do(meeting, 'freeze')
         _checkObserverMayView(item)
@@ -295,7 +280,6 @@ class testCustomWorkflows(MeetingIDEATestCase):
         self.changeUser('pmManager')
         meeting = self.create('Meeting', date='2007/12/11 09:00:00')
         self.failUnless(len(meeting.getItems()) == 2)
-        self.do(meeting, 'validateByCD')
         self.do(meeting, 'freeze')
         self.failUnless(len(meeting.getItems()) == 2)
         self.do(meeting, 'decide')

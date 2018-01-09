@@ -27,6 +27,84 @@ categories = [CategoryDescriptor('category1', 'Catégorie 1'),
               CategoryDescriptor('category4', 'Catégorie 4'),
               CategoryDescriptor('category5', 'Catégorie 5')]
 
+# Pod templates ----------------------------------------------------------------
+agendaTemplate = PodTemplateDescriptor('oj', 'Ordre du jour')
+agendaTemplate.odt_file = '../../examples_fr/templates/oj.odt'
+agendaTemplate.pod_formats = ['odt', 'pdf', ]
+agendaTemplate.pod_portal_types = ['MeetingCOGES']
+agendaTemplate.tal_condition = 'python:tool.isManager(here)'
+
+decisionsTemplate = PodTemplateDescriptor('pv', 'Procès-verbal')
+decisionsTemplate.odt_file = '../../examples_fr/templates/pv.odt'
+decisionsTemplate.pod_formats = ['odt', 'pdf', ]
+decisionsTemplate.pod_portal_types = ['MeetingCOGES']
+decisionsTemplate.tal_condition = 'python:tool.isManager(here)'
+
+itemTemplate = PodTemplateDescriptor('deliberation', 'Délibération')
+itemTemplate.odt_file = '../../examples_fr/templates/deliberation.odt'
+itemTemplate.pod_formats = ['odt', 'pdf', ]
+itemTemplate.pod_portal_types = ['MeetingItemCOGES']
+
+coGesTemplates = [agendaTemplate, decisionsTemplate, itemTemplate]
+
+# Users and groups -------------------------------------------------------------
+dgen = UserDescriptor('dgen', [], email="test@test.be", fullname="Henry Directeur")
+dfin = UserDescriptor('dfin', [], email="test@test.be", fullname="Directeur Financier")
+agentInfo = UserDescriptor('agentInfo', [], email="test@test.be", fullname="Agent Service Informatique")
+agentCompta = UserDescriptor('agentCompta', [], email="test@test.be", fullname="Agent Service Comptabilité")
+agentPers = UserDescriptor('agentPers', [], email="test@test.be", fullname="Agent Service du Personnel")
+chefPers = UserDescriptor('chefPers', [], email="test@test.be", fullname="Chef Personnel")
+chefCompta = UserDescriptor('chefCompta', [], email="test@test.be", fullname="Chef Comptabilité")
+
+groups = [GroupDescriptor('dirgen', 'Directeur Général', 'DG'),
+          GroupDescriptor('secretariat', 'Secrétariat communal', 'Secr'),
+          GroupDescriptor('informatique', 'Service informatique', 'Info'),
+          GroupDescriptor('personnel', 'Service du personnel', 'Pers'),
+          GroupDescriptor('dirfin', 'Directeur Financier', 'DF'),
+          GroupDescriptor('comptabilite', 'Service comptabilité', 'Compt')]
+
+# MeetingManager
+groups[0].creators.append(dgen)
+groups[0].reviewers.append(dgen)
+groups[0].observers.append(dgen)
+groups[0].advisers.append(dgen)
+
+groups[1].creators.append(dgen)
+groups[1].reviewers.append(dgen)
+groups[1].observers.append(dgen)
+groups[1].advisers.append(dgen)
+
+groups[2].creators.append(agentInfo)
+groups[2].creators.append(dgen)
+groups[2].reviewers.append(agentInfo)
+groups[2].reviewers.append(dgen)
+groups[2].observers.append(agentInfo)
+groups[2].advisers.append(agentInfo)
+
+groups[3].creators.append(agentPers)
+groups[3].observers.append(agentPers)
+groups[3].creators.append(dgen)
+groups[3].reviewers.append(dgen)
+groups[3].creators.append(chefPers)
+groups[3].reviewers.append(chefPers)
+groups[3].observers.append(chefPers)
+
+groups[4].creators.append(dfin)
+groups[4].reviewers.append(dfin)
+groups[4].observers.append(dfin)
+groups[4].advisers.append(dfin)
+
+groups[5].creators.append(agentCompta)
+groups[5].creators.append(chefCompta)
+groups[5].creators.append(dfin)
+groups[5].creators.append(dgen)
+groups[5].reviewers.append(chefCompta)
+groups[5].reviewers.append(dfin)
+groups[5].reviewers.append(dgen)
+groups[5].observers.append(agentCompta)
+groups[5].advisers.append(chefCompta)
+groups[5].advisers.append(dfin)
+
 # Meeting configurations -------------------------------------------------------
 # cgpp
 cgppMeeting = MeetingConfigDescriptor('cgpp', 'CGPP', 'CGPP')
@@ -49,37 +127,17 @@ cgppMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeeti
 cgppMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
 cgppMeeting.transitionsToConfirm = []
 cgppMeeting.transitionsForPresentingAnItem = ['validate', 'present', ]
-cgppMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'validateByCD',
-                                                           'item_transition': 'itemValidateByCD'},
-
-                                                          {'meeting_transition': 'freeze',
-                                                           'item_transition': 'itemValidateByCD'},
-                                                          {'meeting_transition': 'freeze',
-                                                           'item_transition': 'itemfreeze'},
-
-                                                          {'meeting_transition': 'decide',
-                                                           'item_transition': 'itemValidateByCD'},
-                                                          {'meeting_transition': 'decide',
-                                                           'item_transition': 'itemfreeze'},
-                                                          {'meeting_transition': 'decide',
-                                                           'item_transition': 'itempublish'},
-
-                                                          {'meeting_transition': 'close',
-                                                           'item_transition': 'itemValidateByCD'},
-                                                          {'meeting_transition': 'close',
-                                                           'item_transition': 'itemfreeze'},
-                                                          {'meeting_transition': 'close',
-                                                           'item_transition': 'itempublish'},
-                                                          {'meeting_transition': 'close',
-                                                           'item_transition': 'accept'},
-
-                                                          {'meeting_transition': 'backToCreated',
-                                                           'item_transition': 'backToValidateByCD'},
-                                                          {'meeting_transition': 'backToCreated',
-                                                           'item_transition': 'backToPresented'},
-
-                                                          {'meeting_transition': 'backToValidatedByCD',
-                                                           'item_transition': 'backToValidateByCD'},)
+cgppMeeting.onMeetingTransitionItemTransitionToTrigger = (
+                                                        {'meeting_transition': 'freeze',
+                                                         'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'decide',
+                                                         'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'close',
+                                                         'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'close',
+                                                         'item_transition': 'accept'},
+                                                        {'meeting_transition': 'backToCreated',
+                                                         'item_transition': 'backToPresented'},)
 
 cgppMeeting.meetingTopicStates = ('created', 'frozen')
 cgppMeeting.decisionTopicStates = ('decided', 'closed')
@@ -105,21 +163,7 @@ cgppMeeting.useCopies = True
 cgppMeeting.selectableCopyGroups = []
 cgppMeeting.podTemplates = []
 cgppMeeting.meetingConfigsToCloneTo = []
-cgppMeeting.recurringItems = [
-    RecurringItemDescriptor(
-        id='recItem1',
-        description='<p>This is the first recurring item.</p>',
-        title='Recurring item #1',
-        proposingGroup='developers',
-        decision='First recurring item approved'),
-
-    RecurringItemDescriptor(
-        id='recItem2',
-        title='Recurring item #2',
-        description='<p>This is the second recurring item.</p>',
-        proposingGroup='developers',
-        decision='Second recurring item approved'),
-]
+cgppMeeting.recurringItems = []
 cgppMeeting.itemTemplates = []
 
 
@@ -145,37 +189,17 @@ cgpartMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMee
 cgpartMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
 cgpartMeeting.transitionsToConfirm = []
 cgpartMeeting.transitionsForPresentingAnItem = ['validate', 'present', ]
-cgpartMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'validateByCD',
-                                                           'item_transition': 'itemValidateByCD'},
-
-                                                          {'meeting_transition': 'freeze',
-                                                           'item_transition': 'itemValidateByCD'},
-                                                          {'meeting_transition': 'freeze',
-                                                           'item_transition': 'itemfreeze'},
-
-                                                          {'meeting_transition': 'decide',
-                                                           'item_transition': 'itemValidateByCD'},
-                                                          {'meeting_transition': 'decide',
-                                                           'item_transition': 'itemfreeze'},
-                                                          {'meeting_transition': 'decide',
-                                                           'item_transition': 'itempublish'},
-
-                                                          {'meeting_transition': 'close',
-                                                           'item_transition': 'itemValidateByCD'},
-                                                          {'meeting_transition': 'close',
-                                                           'item_transition': 'itemfreeze'},
-                                                          {'meeting_transition': 'close',
-                                                           'item_transition': 'itempublish'},
-                                                          {'meeting_transition': 'close',
-                                                           'item_transition': 'accept'},
-
-                                                          {'meeting_transition': 'backToCreated',
-                                                           'item_transition': 'backToValidateByCD'},
-                                                          {'meeting_transition': 'backToCreated',
-                                                           'item_transition': 'backToPresented'},
-
-                                                          {'meeting_transition': 'backToValidatedByCD',
-                                                           'item_transition': 'backToValidateByCD'},)
+cgpartMeeting.onMeetingTransitionItemTransitionToTrigger = (
+                                                        {'meeting_transition': 'freeze',
+                                                         'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'decide',
+                                                         'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'close',
+                                                         'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'close',
+                                                         'item_transition': 'accept'},
+                                                        {'meeting_transition': 'backToCreated',
+                                                         'item_transition': 'backToPresented'},)
 
 cgpartMeeting.meetingTopicStates = ('created', 'frozen')
 cgpartMeeting.decisionTopicStates = ('decided', 'closed')
@@ -201,26 +225,11 @@ cgpartMeeting.useCopies = True
 cgpartMeeting.selectableCopyGroups = []
 cgpartMeeting.podTemplates = []
 cgpartMeeting.meetingConfigsToCloneTo = []
-cgpartMeeting.recurringItems = [
-    RecurringItemDescriptor(
-        id='recItem1',
-        description='<p>This is the first recurring item.</p>',
-        title='Recurring item #1',
-        proposingGroup='developers',
-        decision='First recurring item approved'),
-
-    RecurringItemDescriptor(
-        id='recItem2',
-        title='Recurring item #2',
-        description='<p>This is the second recurring item.</p>',
-        proposingGroup='developers',
-        decision='Second recurring item approved'),
-]
+cgpartMeeting.recurringItems = []
 cgpartMeeting.itemTemplates = []
 
 data = PloneMeetingConfiguration(meetingFolderTitle='Mes séances',
                                  meetingConfigs=(cgppMeeting, cgpartMeeting),
-                                 groups=[])
+                                 groups=groups)
 data.enableUserPreferences = False
-
 # ------------------------------------------------------------------------------

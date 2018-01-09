@@ -43,7 +43,7 @@ decisionsTemplate = PodTemplateDescriptor('decisionsTemplate', 'Meeting decision
 decisionsTemplate.odt_file = 'Decisions.odt'
 decisionsTemplate.pod_formats = ['odt', 'pdf', ]
 decisionsTemplate.pod_portal_types = ['MeetingCA']
-decisionsTemplate.tal_condition = 'here.adapted().isDecided()'
+decisionsTemplate.tal_condition = 'here.isDecided()'
 
 itemTemplate = PodTemplateDescriptor('itemTemplate', 'Meeting item')
 itemTemplate.podCondition = 'python:here.meta_type=="MeetingItem"'
@@ -231,38 +231,17 @@ caMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeeting
 caMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
 caMeeting.transitionsToConfirm = []
 caMeeting.transitionsForPresentingAnItem = ['validate', 'present', ]
-caMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'validateByCD',
-                                                         'item_transition': 'itemValidateByCD'},
-
-                                                        {'meeting_transition': 'freeze',
-                                                         'item_transition': 'itemValidateByCD'},
+caMeeting.onMeetingTransitionItemTransitionToTrigger = (
                                                         {'meeting_transition': 'freeze',
                                                          'item_transition': 'itemfreeze'},
-
-                                                        {'meeting_transition': 'decide',
-                                                         'item_transition': 'itemValidateByCD'},
                                                         {'meeting_transition': 'decide',
                                                          'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'decide',
-                                                         'item_transition': 'itempublish'},
-
-
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'itemValidateByCD'},
                                                         {'meeting_transition': 'close',
                                                          'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'itempublish'},
                                                         {'meeting_transition': 'close',
                                                          'item_transition': 'accept'},
-
                                                         {'meeting_transition': 'backToCreated',
-                                                         'item_transition': 'backToValidateByCD'},
-                                                        {'meeting_transition': 'backToCreated',
-                                                         'item_transition': 'backToPresented'},
-
-                                                        {'meeting_transition': 'backToValidatedByCD',
-                                                         'item_transition': 'backToValidateByCD'},)
+                                                         'item_transition': 'backToPresented'},)
 
 caMeeting.meetingTopicStates = ('created', 'frozen')
 caMeeting.decisionTopicStates = ('decided', 'closed')

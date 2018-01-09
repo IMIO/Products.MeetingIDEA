@@ -72,7 +72,6 @@ from zope.interface import implements
 
 MeetingConfig.wfAdaptations = ['return_to_proposing_group']
 # configure parameters for the returned_to_proposing_group wfAdaptation
-# we keep also 'itemfrozen' and 'itempublished' in case this should be activated for meeting-config-college...
 adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = ('presented', 'validated_by_cd', 'itemfrozen',)
 
 RETURN_TO_PROPOSING_GROUP_MAPPINGS = {'backTo_presented_from_returned_to_proposing_group':
@@ -131,11 +130,9 @@ RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {'meetingitemcaidea_workflow':
                                                          ('Manager', 'MeetingMember', 'MeetingDepartmentHead',
                                                           'MeetingReviewer', 'MeetingManager',),
                                                      'PloneMeeting: Add annexDecision':
-                                                         ('Manager', 'MeetingMember', 'MeetingManager',),
-                                                     'PloneMeeting: Add MeetingFile':
                                                          ('Manager', 'MeetingMember', 'MeetingDepartmentHead',
                                                           'MeetingReviewer', 'MeetingManager',),
-                                                     'PloneMeeting: Write decision annex':
+                                                     'PloneMeeting: Add MeetingFile':
                                                          ('Manager', 'MeetingMember', 'MeetingDepartmentHead',
                                                           'MeetingReviewer', 'MeetingManager',),
                                                      'PloneMeeting: Write optional advisers':
@@ -832,16 +829,6 @@ class CustomMeetingItem(MeetingItem):
     implements(IMeetingItemCustom)
     security = ClassSecurityInfo()
 
-    customMeetingNotClosedStates = ('validated_by_cd', 'frozen', 'decided', 'published')
-    MeetingItem.meetingNotClosedStates = customMeetingNotClosedStates
-
-    customMeetingTransitionsAcceptingRecurringItems = ('_init_', 'validateByCD', 'freeze', 'decide', 'published')
-    MeetingItem.meetingTransitionsAcceptingRecurringItems = customMeetingTransitionsAcceptingRecurringItems
-
-    # this list is used by doPresent defined in PloneMeeting
-    customMeetingAlreadyFrozenStates = ('validated_by_cd', 'frozen', 'decided', 'published')
-    MeetingItem.meetingAlreadyFrozenStates = customMeetingAlreadyFrozenStates
-
     def __init__(self, item):
         self.context = item
 
@@ -1030,15 +1017,6 @@ class MeetingCAIDEAWorkflowActions(MeetingWorkflowActions):
         """We do not impact items while going back from decided."""
         pass
 
-    def doValidateByCD(self, stateChange):
-        '''When validated by CD the meeting, we initialize sequence number.'''
-        self.initSequenceNumber()
-
-    security.declarePrivate('doBackToValidatedByCD')
-
-    def doBackToValidatedByCD(self, stateChange):
-        pass
-
 
 class MeetingCAIDEAWorkflowConditions(MeetingWorkflowConditions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -1052,16 +1030,6 @@ class MeetingCAIDEAWorkflowConditions(MeetingWorkflowConditions):
 
         customAcceptItemsStates = ('created', 'validated_by_cd', 'frozen', 'decided')
         self.acceptItemsStates = customAcceptItemsStates
-
-    security.declarePublic('mayValidateByCD')
-
-    def mayValidateByCD(self):
-        res = False
-        if _checkPermission(ReviewPortalContent, self.context):
-            res = True  # At least at present
-            # if not self.context.getRawItems():
-            #    res = No(translate('item_required_to_publish', domain='PloneMeeting', context=self.context.REQUEST))
-        return res
 
     security.declarePublic('mayCorrect')
 
@@ -1112,28 +1080,6 @@ class MeetingItemCAIDEAWorkflowActions(MeetingItemWorkflowActions):
     def doProposeToDirector(self, stateChange):
         pass
 
-    security.declarePrivate('doItemValidateByCD')
-
-    def doItemValidateByCD(self, stateChange):
-        pass
-
-    def _freezePresentedItem(self):
-        """Freeze presented item, this is done to be easy to override in case
-           WF transitions to freeze an item is different, without redefining
-           the entire doPresent."""
-        wTool = api.portal.get_tool('portal_workflow')
-        try:
-            wTool.doActionFor(self.context, 'itempublish')
-        except:
-            pass  # Maybe does state 'itempublish' not exist.
-
-        try:
-            wTool.doActionFor(self.context, 'itemValidateByCD')
-        except:
-            pass  # Maybe ITEM IS ALREADY FROZEN
-
-        wTool.doActionFor(self.context, 'itemfreeze')
-
 
 class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
@@ -1157,20 +1103,6 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
         if _checkPermission(ReviewPortalContent, self.context) and \
                 meeting and meeting.adapted().isDecided():
             res = True
-        return res
-
-    security.declarePublic('mayPublish')
-
-    def mayPublish(self):
-        """
-          A MeetingManager may publish (itempublish) an item if the meeting is at least published
-        """
-        res = False
-        if _checkPermission(ReviewPortalContent, self.context):
-            if self.context.hasMeeting() and \
-                    (self.context.getMeeting().queryState() in (
-                            'published', 'decided', 'closed', 'decisions_published',)):
-                res = True
         return res
 
     def mayValidate(self):
@@ -1226,14 +1158,6 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
         if _checkPermission(ReviewPortalContent, self.context) and \
                 meeting and (meeting.queryState() in ['decided', 'published', 'closed', 'decisions_published', ]):
             res = True
-        return res
-
-    security.declarePublic('mayValidateByCD')
-
-    def mayValidateByCD(self):
-        res = False
-        if _checkPermission(ReviewPortalContent, self.context):
-            return True
         return res
 
 
