@@ -37,6 +37,55 @@ agentPers = UserDescriptor('agentPers', [], email="test@test.be", fullname="Agen
 chefPers = UserDescriptor('chefPers', [], email="test@test.be", fullname="Chef Personnel")
 chefCompta = UserDescriptor('chefCompta', [], email="test@test.be", fullname="Chef Comptabilité")
 
+groups = [GroupDescriptor('dirgen', 'Directeur Général', 'DG'),
+          GroupDescriptor('secretariat', 'Secrétariat communal', 'Secr'),
+          GroupDescriptor('informatique', 'Service informatique', 'Info'),
+          GroupDescriptor('personnel', 'Service du personnel', 'Pers'),
+          GroupDescriptor('dirfin', 'Directeur Financier', 'DF'),
+          GroupDescriptor('comptabilite', 'Service comptabilité', 'Compt')]
+
+# MeetingManager
+groups[0].creators.append(dgen)
+groups[0].reviewers.append(dgen)
+groups[0].observers.append(dgen)
+groups[0].advisers.append(dgen)
+
+groups[1].creators.append(dgen)
+groups[1].reviewers.append(dgen)
+groups[1].observers.append(dgen)
+groups[1].advisers.append(dgen)
+
+groups[2].creators.append(agentInfo)
+groups[2].creators.append(dgen)
+groups[2].reviewers.append(agentInfo)
+groups[2].reviewers.append(dgen)
+groups[2].observers.append(agentInfo)
+groups[2].advisers.append(agentInfo)
+
+groups[3].creators.append(agentPers)
+groups[3].observers.append(agentPers)
+groups[3].creators.append(dgen)
+groups[3].reviewers.append(dgen)
+groups[3].creators.append(chefPers)
+groups[3].reviewers.append(chefPers)
+groups[3].observers.append(chefPers)
+
+groups[4].creators.append(dfin)
+groups[4].reviewers.append(dfin)
+groups[4].observers.append(dfin)
+groups[4].advisers.append(dfin)
+
+groups[5].creators.append(agentCompta)
+groups[5].creators.append(chefCompta)
+groups[5].creators.append(dfin)
+groups[5].creators.append(dgen)
+groups[5].reviewers.append(chefCompta)
+groups[5].reviewers.append(dfin)
+groups[5].reviewers.append(dgen)
+groups[5].observers.append(agentCompta)
+groups[5].advisers.append(chefCompta)
+groups[5].advisers.append(dfin)
+
 # Meeting configurations -------------------------------------------------------
 # codir
 codirMeeting = MeetingConfigDescriptor('codir', 'CODIR', 'CODIR')
@@ -59,37 +108,17 @@ codirMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeet
 codirMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
 codirMeeting.transitionsToConfirm = []
 codirMeeting.transitionsForPresentingAnItem = ['validate', 'present', ]
-codirMeeting.onMeetingTransitionItemTransitionToTrigger = ({'meeting_transition': 'validateByCD',
-                                                            'item_transition': 'itemValidateByCD'},
-
-                                                           {'meeting_transition': 'freeze',
-                                                            'item_transition': 'itemValidateByCD'},
-                                                           {'meeting_transition': 'freeze',
-                                                            'item_transition': 'itemfreeze'},
-
-                                                           {'meeting_transition': 'decide',
-                                                            'item_transition': 'itemValidateByCD'},
-                                                           {'meeting_transition': 'decide',
-                                                            'item_transition': 'itemfreeze'},
-                                                           {'meeting_transition': 'decide',
-                                                            'item_transition': 'itempublish'},
-
-                                                           {'meeting_transition': 'close',
-                                                            'item_transition': 'itemValidateByCD'},
-                                                           {'meeting_transition': 'close',
-                                                            'item_transition': 'itemfreeze'},
-                                                           {'meeting_transition': 'close',
-                                                            'item_transition': 'itempublish'},
-                                                           {'meeting_transition': 'close',
-                                                            'item_transition': 'accept'},
-
-                                                           {'meeting_transition': 'backToCreated',
-                                                            'item_transition': 'backToValidateByCD'},
-                                                           {'meeting_transition': 'backToCreated',
-                                                            'item_transition': 'backToPresented'},
-
-                                                           {'meeting_transition': 'backToValidatedByCD',
-                                                            'item_transition': 'backToValidateByCD'},)
+codirMeeting.onMeetingTransitionItemTransitionToTrigger = (
+                                                        {'meeting_transition': 'freeze',
+                                                         'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'decide',
+                                                         'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'close',
+                                                         'item_transition': 'itemfreeze'},
+                                                        {'meeting_transition': 'close',
+                                                         'item_transition': 'accept'},
+                                                        {'meeting_transition': 'backToCreated',
+                                                         'item_transition': 'backToPresented'},)
 
 codirMeeting.meetingTopicStates = ('created', 'frozen')
 codirMeeting.decisionTopicStates = ('decided', 'closed')
@@ -115,25 +144,11 @@ codirMeeting.useCopies = True
 codirMeeting.selectableCopyGroups = []
 codirMeeting.podTemplates = []
 codirMeeting.meetingConfigsToCloneTo = []
-codirMeeting.recurringItems = [
-    RecurringItemDescriptor(
-        id='recItem1',
-        description='<p>This is the first recurring item.</p>',
-        title='Recurring item #1',
-        proposingGroup='developers',
-        decision='First recurring item approved'),
-
-    RecurringItemDescriptor(
-        id='recItem2',
-        title='Recurring item #2',
-        description='<p>This is the second recurring item.</p>',
-        proposingGroup='developers',
-        decision='Second recurring item approved'),
-]
+codirMeeting.recurringItems = []
 codirMeeting.itemTemplates = []
 
 data = PloneMeetingConfiguration(meetingFolderTitle='Mes séances',
                                  meetingConfigs=(codirMeeting,),
-                                 groups=[])
+                                 groups=groups)
 data.enableUserPreferences = False
 # ------------------------------------------------------------------------------
