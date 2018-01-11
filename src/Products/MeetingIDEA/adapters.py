@@ -72,10 +72,10 @@ from zope.interface import implements
 
 MeetingConfig.wfAdaptations = ['return_to_proposing_group']
 # configure parameters for the returned_to_proposing_group wfAdaptation
-adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = ('presented', 'validated_by_cd', 'itemfrozen',)
+adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = ('presented', 'itemfrozen',)
 
 RETURN_TO_PROPOSING_GROUP_MAPPINGS = {'backTo_presented_from_returned_to_proposing_group':
-                                          ['created', 'validated_by_cd'],
+                                          ['created'],
                                       'backTo_itemfrozen_from_returned_to_proposing_group':
                                           ['frozen', 'decided', 'published', 'decisions_published', ],
                                       'NO_MORE_RETURNABLE_STATES': ['closed', 'archived', ]
@@ -582,7 +582,7 @@ class CustomMeeting(Meeting):
            In the 'created' state, every validated items are availble, in other states, only items
            for wich the specific meeting is selected as preferred will appear.'''
         meeting = self.getSelf()
-        if meeting.queryState() not in ('created', 'validated_by_cd', 'frozen', 'decided'):
+        if meeting.queryState() not in ('created', 'frozen', 'decided'):
             return []
         meetingConfig = meeting.portal_plonemeeting.getMeetingConfig(meeting)
         # First, get meetings accepting items for which the date is lower or
@@ -599,7 +599,7 @@ class CustomMeeting(Meeting):
             review_state='validated',
             getPreferredMeeting=meetingUids,
             sort_on="modified")
-        if meeting.queryState() in ('validated_by_cd', 'frozen', 'decided'):
+        if meeting.queryState() in ('frozen', 'decided'):
             # Oups. I can only take items which are "late" items.
             res = []
             for uid in itemsUids:
@@ -985,7 +985,7 @@ class CustomMeetingConfig(MeetingConfig):
 
     def getMeetingsAcceptingItemsAdditionalManagerStates(self):
         """See doc in interfaces.py."""
-        return 'created', 'validated_by_cd', 'frozen', 'decided'
+        return 'created', 'frozen', 'decided'
 
 
 class MeetingCAIDEAWorkflowActions(MeetingWorkflowActions):
@@ -1028,7 +1028,7 @@ class MeetingCAIDEAWorkflowConditions(MeetingWorkflowConditions):
     def __init__(self, meeting):
         self.context = meeting
 
-        customAcceptItemsStates = ('created', 'validated_by_cd', 'frozen', 'decided')
+        customAcceptItemsStates = ('created', 'frozen', 'decided')
         self.acceptItemsStates = customAcceptItemsStates
 
     security.declarePublic('mayCorrect')

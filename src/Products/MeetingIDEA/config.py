@@ -46,14 +46,12 @@ IDEAROLES = {}
 IDEAROLES['departmentheads'] = 'MeetingDepartmentHead'
 PMconfig.MEETINGROLES.update(IDEAROLES)
 PMconfig.MEETING_GROUP_SUFFIXES = PMconfig.MEETINGROLES.keys()
-PMconfig.MEETING_STATES_ACCEPTING_ITEMS = ('created', 'validated_by_cd', 'frozen', 'published', 'decided')
-PMconfig.MEETING_NOT_CLOSED_STATES = ('validated_by_cd', 'frozen', 'published', 'decided', 'decisions_published')
+PMconfig.MEETING_STATES_ACCEPTING_ITEMS = ('created', 'frozen', 'published', 'decided')
+PMconfig.MEETING_NOT_CLOSED_STATES = ('frozen', 'published', 'decided', 'decisions_published')
 
 from Products.PloneMeeting.model import adaptations
 MIDEA_RETURN_TO_PROPOSING_GROUP_MAPPINGS = {'backTo_presented_from_returned_to_proposing_group':
                                             ['created', ],
-                                            'backTo_validated_by_cd_from_returned_to_proposing_group':
-                                            ['validated_by_cd', ],
                                             'backTo_itemfrozen_from_returned_to_proposing_group':
                                             ['frozen', 'decided', ],
                                             'NO_MORE_RETURNABLE_STATES': ['closed', 'archived', ], }
