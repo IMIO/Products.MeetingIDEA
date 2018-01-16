@@ -96,7 +96,7 @@ msgstr "Vous venez d'annuler le gel de l'ordre du jour."
 
 #. Default: "backToDecided_done_descr"
 msgid "backToDecided_done_descr"
-msgstr "Vous pouvez Ã  nouveau modifier le procÃ¨s-verbal."
+msgstr "Vous pouvez Ã  nouveau modifier le procès-verbal."
 
 #. Default: "backToFrozen_done_descr"
 msgid "backToFrozen_done_descr"
@@ -274,7 +274,7 @@ msgstr "Ce point a été envoyé Ã  l'AG."
 
 #. Default: "The creator of this item does not exist in the meeting config you try to send the item to!"
 msgid "sendtoag_error_no_corresponding_meetingconfigfolder"
-msgstr "Le créateur de ce point n'a pas d'accÃ¨s dans la partie AG, le point n'a pas pu Ãªtre transféré!"
+msgstr "Le créateur de ce point n'a pas d'accès dans la partie AG, le point n'a pas pu Ãªtre transféré!"
 
 #. Default: "The meeting config you try to send the item to does not exist!"
 msgid "sendtoag_error_no_existing_meetingconfig"
