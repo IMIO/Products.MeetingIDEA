@@ -37,14 +37,6 @@
       <tal:itemNavigation replace="structure context/@@item-navigation-widget" />
     </tal:itemNavigation>
 
-    <!--xxx specific field for idea-->
-    <tal:comment replace="nothing">Internal communication</tal:comment>
-    <tal:field condition="isManager" define="fieldName python: 'internalCommunication'; ajaxEdit python:True">
-       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
-    </tal:field>
-
-    <!--xxx end specific field for idea-->
-
     <table width="100%" border="0" class="item-infos">
       <tr valign="top">
         <td width="50%" style="padding-right: 0.5em;">
@@ -109,14 +101,14 @@
             </div>
 
             <!--xxx specific field for idea-->
-                <tal:comment replace="nothing">StrategicAxis</tal:comment>
-                <div class="discreet"
-                  tal:condition="python: 'strategicAxis' in usedAttrs"
-                  tal:define="strategicAxis python:context.adapted().getStrategicAxisView()">
-                     <i><span i18n:translate="PloneMeeting_label_strategicAxis"></span></i>:&nbsp;&nbsp;
-                        <span tal:condition="strategicAxis" tal:content="structure strategicAxis">-</span>
-                        <span tal:condition="not: strategicAxis">-</span>
-                </div>
+            <tal:comment replace="nothing">StrategicAxis</tal:comment>
+            <div class="discreet"
+                tal:condition="python: 'strategicAxis' in usedAttrs"
+                tal:define="strategicAxis python:context.adapted().getStrategicAxisView()">
+                <i><span i18n:translate="PloneMeeting_label_strategicAxis"></span></i>:&nbsp;&nbsp;
+                 <span tal:condition="strategicAxis" tal:content="structure strategicAxis">-</span>
+                 <span tal:condition="not: strategicAxis">-</span>
+            </div>
             <!--xxx end specific field for idea-->
 
             <tal:comment replace="nothing">Item assembly</tal:comment>
@@ -499,6 +491,13 @@
     <tal:itemNavigation tal:condition="python: meeting">
       <tal:itemNavigation replace="structure context/@@item-navigation-widget" />
     </tal:itemNavigation>
+
+    <!--xxx specific field for idea-->
+    <tal:comment replace="nothing">Internal communication</tal:comment>
+    <tal:field condition="isManager" define="fieldName python: 'internalCommunication'; ajaxEdit python:True">
+       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
+    </tal:field>
+    <!--xxx end specific field for idea-->
 
     <tal:comment replace="nothing">Fields that appear only if the item is defined in a configuration</tal:comment>
     <tal:itemInConfig condition="context/isDefinedInTool">

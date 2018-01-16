@@ -35,7 +35,7 @@ msgstr "Retranscription des interventions"
 
 #. Default: "Default value for the item decision field"
 msgid "MeetingIDEA_label_defaultMeetingItemDecision"
-msgstr "Valeur par défaut du champ 'Délibération/Extrait du ProcÃ¨s-verbal'"
+msgstr "Valeur par défaut du champ 'Délibération/Extrait du Procès-verbal'"
 
 #. Default: "Premeeting observations"
 msgid "MeetingIDEA_label_meetingAGobservations"
@@ -50,7 +50,7 @@ msgstr "Délégation de signatures"
 # MeetingItem
 #. Default: "Decision"
 msgid "PloneMeeting_label_decision"
-msgstr "Extrait du ProcÃ¨s-verbal"
+msgstr "Extrait du Procès-verbal"
 
 #. Default: "Linked items"
 msgid "PloneMeeting_label_predecessor"
@@ -88,7 +88,7 @@ msgstr "Attention, en général si vous sélectionnez une personne 'A l'initativ
 
 #. Default: "Default value for the item decision field"
 msgid "default_meetingitem_decision"
-msgstr "Définissez ici le texte prédéfini qui sera présent dans le champ 'Délibération/Extrait du ProcÃ¨s-verbal' chaque fois qu'un utilisateur crée un nouveau point."
+msgstr "Définissez ici le texte prédéfini qui sera présent dans le champ 'Délibération/Extrait du Procès-verbal' chaque fois qu'un utilisateur crée un nouveau point."
 
 # Suffix
 #. Default: "Department heads"
