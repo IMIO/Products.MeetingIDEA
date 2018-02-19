@@ -70,18 +70,18 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
             cfg.setUsedMeetingAttributes(('startDate', 'endDate', 'signatures', 'assembly', 'assemblyExcused',
                                           'assemblyAbsents', 'assemblyProxies', 'observations',))
             # dashboard list items
-            cfg.setItemColumns('Creator', 'ModificationDate', 'review_state', 'proposing_group_acronym', 'advices',
-                                'toDiscuss', 'linkedMeetingDate', 'getPreferredMeetingDate', 'actions')
+            cfg.setItemColumns(('Creator', 'ModificationDate', 'review_state', 'proposing_group_acronym', 'advices',
+                                'toDiscuss', 'linkedMeetingDate', 'getPreferredMeetingDate', 'actions',))
             # dashboard list available items for meeting
-            cfg.setAvailableItemsListVisibleColumns('Creator', 'ModificationDate', 'review_state',
+            cfg.setAvailableItemsListVisibleColumns(('Creator', 'ModificationDate', 'review_state',
                                                     'proposing_group_acronym', 'advices',
                                                     'toDiscuss', 'linkedMeetingDate', 'getPreferredMeetingDate',
-                                                    'actions')
+                                                    'actions',))
             cfg.setMaxShownAvailableItems('20')
             # dashboard list presented items in meeting
-            cfg.itemsListVisibleColumns('item_reference', 'Creator', 'ModificationDate', 'review_state',
+            cfg.itemsListVisibleColumns(('item_reference', 'Creator', 'ModificationDate', 'review_state',
                                         'proposing_group_acronym', 'advices',
-                                        'toDiscuss', 'actions')
+                                        'toDiscuss', 'actions',))
             cfg.setMaxShownMeetingItems('40')
 
     def _migrateAssemblies(self):
