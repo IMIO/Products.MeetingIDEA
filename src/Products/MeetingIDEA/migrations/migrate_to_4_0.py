@@ -70,7 +70,7 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
             cfg.setUsedMeetingAttributes(('startDate', 'endDate', 'signatures', 'assembly', 'assemblyExcused',
                                           'assemblyAbsents', 'assemblyProxies', 'observations',))
             # dashboard list items
-            cfg.setItemsColumns('Creator', 'ModificationDate', 'review_state', 'proposing_group_acronym', 'advices',
+            cfg.setItemColumns('Creator', 'ModificationDate', 'review_state', 'proposing_group_acronym', 'advices',
                                 'toDiscuss', 'linkedMeetingDate', 'getPreferredMeetingDate', 'actions')
             # dashboard list available items for meeting
             cfg.setAvailableItemsListVisibleColumns('Creator', 'ModificationDate', 'review_state',
