@@ -79,7 +79,7 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
                                                     'actions',))
             cfg.setMaxShownAvailableItems('20')
             # dashboard list presented items in meeting
-            cfg.itemsListVisibleColumns(('item_reference', 'Creator', 'ModificationDate', 'review_state',
+            cfg.setItemsListVisibleColumns(('item_reference', 'Creator', 'ModificationDate', 'review_state',
                                         'proposing_group_acronym', 'advices',
                                         'toDiscuss', 'actions',))
             cfg.setMaxShownMeetingItems('40')
