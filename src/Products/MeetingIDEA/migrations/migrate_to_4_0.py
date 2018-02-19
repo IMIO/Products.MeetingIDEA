@@ -58,6 +58,40 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
             wfTool.manage_delObjects(self.wfs_to_delete)
         logger.info('Done.')
 
+    def _migrateAssemblies(self):
+        brains = self.portal_catalog(meta_type='Meeting')
+
+        for brain in brains:
+            meeting = brain.getObject()
+
+            meeting.setAssemblyExcused('<p>' + self._getAssemblyPart(meeting.getAssembly(), 'absentee') + '</p>')
+            meeting.setAssemblyAbsents('<p>' + self._getAssemblyPart(meeting.getAssembly(), 'procuration') + '</p>')
+            meeting.setAssemblyProxies('<p>' + self._getAssemblyPart(meeting.getAssembly(), 'excused') + '</p>')
+            meeting.setAssembly('<p>' + self._getAssemblyPart(meeting.getAssembly(), 'present') + '</p>')
+
+    def _getAssemblyPart(self, assembly, filter=''):
+        # suppress paragraph
+        assembly = assembly.replace('<p>', '').replace('</p>', '')
+        assembly = assembly.split('<br />')
+        res = []
+        status = 'present'
+        for ass in assembly:
+            # ass line "Excusé:" is used for define list of persons who are excused
+            if ass.find('xcus') >= 0:
+                status = 'excused'
+                continue
+            # ass line "Procurations:" is used for defined list of persons who recieve a procuration
+            if ass.upper().find('PROCURATION') >= 0:
+                status = 'procuration'
+                continue
+            # ass line "Absents:" is used for define list of persons who are excused
+            if ass.upper().find('ABSENT') >= 0:
+                status = 'absentee'
+                continue
+            if filter == '*' or status == filter:
+                res.append(ass)
+        return "".join(res)
+
     def run(self, step=None):
         # change self.profile_name that is reinstalled at the beginning of the PM migration
         self.profile_name = u'profile-Products.MeetingIDEA:default'
@@ -72,7 +106,7 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
             self._migrateItemPositiveDecidedStates()
             # self._addSampleAnnexTypeForMeetings()
             self._deleteUselessWorkflows()
-
+            self._migrateAssemblies()
 
 # The migration function -------------------------------------------------------
 def migrate(context):
