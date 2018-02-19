@@ -58,10 +58,34 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
             wfTool.manage_delObjects(self.wfs_to_delete)
         logger.info('Done.')
 
-    def _migrateAssemblies(self):
+    def _updateConfig(self):
+        logger.info('Updating specific config for IDEA...')
+
         for cfg in self.tool.objectValues('MeetingConfig'):
-            cfg.setUsedItemAttributes(('detailedDescription', 'budgetInfos', 'observations', 'toDiscuss', 'itemAssembly', 'internalCommunication', 'strategicAxis',))
-            cfg.setUsedMeetingAttributes(('startDate', 'endDate', 'signatures', 'assembly', 'assemblyExcused', 'assemblyAbsents', 'assemblyProxies', 'observations',))
+            # item
+            cfg.setUsedItemAttributes((
+                'detailedDescription', 'budgetInfos', 'observations', 'toDiscuss', 'itemAssembly',
+                'internalCommunication', 'strategicAxis',))
+            # meeting
+            cfg.setUsedMeetingAttributes(('startDate', 'endDate', 'signatures', 'assembly', 'assemblyExcused',
+                                          'assemblyAbsents', 'assemblyProxies', 'observations',))
+            # dashboard list items
+            cfg.setItemsColumns('Creator', 'ModificationDate', 'review_state', 'proposing_group_acronym', 'advices',
+                                'toDiscuss', 'linkedMeetingDate', 'getPreferredMeetingDate', 'actions')
+            # dashboard list available items for meeting
+            cfg.setAvailableItemsListVisibleColumns('Creator', 'ModificationDate', 'review_state',
+                                                    'proposing_group_acronym', 'advices',
+                                                    'toDiscuss', 'linkedMeetingDate', 'getPreferredMeetingDate',
+                                                    'actions')
+            cfg.setMaxShownAvailableItems('20')
+            # dashboard list presented items in meeting
+            cfg.itemsListVisibleColumns('item_reference', 'Creator', 'ModificationDate', 'review_state',
+                                        'proposing_group_acronym', 'advices',
+                                        'toDiscuss', 'actions')
+            cfg.setMaxShownMeetingItems('40')
+
+    def _migrateAssemblies(self):
+        logger.info('Updating meeting assemblies for IDEA...')
 
         brains = self.portal.portal_catalog(meta_type='Meeting')
 
@@ -110,6 +134,7 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
             self._migrateItemPositiveDecidedStates()
             # self._addSampleAnnexTypeForMeetings()
             self._deleteUselessWorkflows()
+            self._updateConfig()
             self._migrateAssemblies()
 
 # The migration function -------------------------------------------------------
