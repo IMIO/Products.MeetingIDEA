@@ -59,7 +59,11 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
         logger.info('Done.')
 
     def _migrateAssemblies(self):
-        brains = self.portal_catalog(meta_type='Meeting')
+        for cfg in self.tool.objectValues('MeetingConfig'):
+            cfg.setUsedItemAttributes(('detailedDescription', 'budgetInfos', 'observations', 'toDiscuss', 'itemAssembly', 'internalCommunication', 'strategicAxis',))
+            cfg.setUsedMeetingAttributes(('startDate', 'endDate', 'signatures', 'assembly', 'assemblyExcused', 'assemblyAbsents', 'assemblyProxies', 'observations',))
+
+        brains = self.portal.portal_catalog(meta_type='Meeting')
 
         for brain in brains:
             meeting = brain.getObject()
