@@ -72,17 +72,24 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
             # dashboard list items
             cfg.setItemColumns(('Creator', 'ModificationDate', 'review_state', 'proposing_group_acronym', 'advices',
                                 'toDiscuss', 'linkedMeetingDate', 'getPreferredMeetingDate', 'actions',))
+            cfg.setDashboardItemsListingsFilters(('c4', 'c6', 'c7', 'c8', 'c9', 'c10', 'c11', 'c13', 'c14', 'c15'))
+            cfg.setMaxShownListings('20')
             # dashboard list available items for meeting
             cfg.setAvailableItemsListVisibleColumns(('Creator', 'ModificationDate', 'review_state',
                                                     'proposing_group_acronym', 'advices',
                                                     'toDiscuss', 'linkedMeetingDate', 'getPreferredMeetingDate',
                                                     'actions',))
+            cfg.setDashboardMeetingAvailableItemsFilters(('c4', 'c6', 'c7', 'c8', 'c9', 'c10', 'c11', 'c13', 'c14', 'c15'))
             cfg.setMaxShownAvailableItems('20')
             # dashboard list presented items in meeting
             cfg.setItemsListVisibleColumns(('item_reference', 'Creator', 'ModificationDate', 'review_state',
                                         'proposing_group_acronym', 'advices',
                                         'toDiscuss', 'actions',))
+            cfg.setDashboardMeetingLinkedItemsFilters(('c4', 'c6', 'c7', 'c8', 'c9', 'c10', 'c11', 'c13', 'c14', 'c15'))
             cfg.setMaxShownMeetingItems('40')
+
+            # Group filter
+            cfg.setItemFieldsToKeepConfigSortingFor(('proposingGroup'))
 
     def _migrateAssemblies(self):
         logger.info('Updating meeting assemblies for IDEA...')
