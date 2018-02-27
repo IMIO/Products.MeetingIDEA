@@ -263,7 +263,7 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
                or str(self.real_context.Creator())
 
     def print_copy_groups(self):
-        copy_groups = self.getAllCopyGroups()
+        copy_groups = self.real_context.getAllCopyGroups()
         res = []
         tool = api.portal.get_tool('portal_plonemeeting')
         for group in copy_groups:
