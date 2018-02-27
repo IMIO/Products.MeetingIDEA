@@ -99,10 +99,10 @@ class Migrate_To_4_0(PMMigrate_To_4_0):
         for brain in brains:
             meeting = brain.getObject()
 
-            meeting.setAssemblyExcused('<p>' + self._getAssemblyPart(meeting.getAssembly(), 'absentee') + '</p>')
-            meeting.setAssemblyAbsents('<p>' + self._getAssemblyPart(meeting.getAssembly(), 'procuration') + '</p>')
-            meeting.setAssemblyProxies('<p>' + self._getAssemblyPart(meeting.getAssembly(), 'excused') + '</p>')
-            meeting.setAssembly('<p>' + self._getAssemblyPart(meeting.getAssembly(), 'present') + '</p>')
+            meeting.setAssemblyExcused(self._getAssemblyPart(meeting.getAssembly(), 'absentee'))
+            meeting.setAssemblyAbsents(self._getAssemblyPart(meeting.getAssembly(), 'procuration'))
+            meeting.setAssemblyProxies(self._getAssemblyPart(meeting.getAssembly(), 'excused'))
+            meeting.setAssembly(self._getAssemblyPart(meeting.getAssembly(), 'present'))
 
     def _getAssemblyPart(self, assembly, filter=''):
         # suppress paragraph
