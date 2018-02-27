@@ -262,6 +262,14 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
                and self.real_context.portal_membership.getMemberInfo(str(self.real_context.Creator()))['fullname']) \
                or str(self.real_context.Creator())
 
+    def print_copy_groups(self):
+        copy_groups = self.getAllCopyGroups()
+        res = []
+        tool = api.portal.get_tool('portal_plonemeeting')
+        for group in copy_groups:
+            res.append(tool.getMeetingGroup(group).Title())
+
+        return ', '.join(res)
 
 class MCMeetingDocumentGenerationHelperView(MeetingDocumentGenerationHelperView):
     """Specific printing methods used for meeting."""
