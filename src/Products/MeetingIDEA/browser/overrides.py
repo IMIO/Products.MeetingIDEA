@@ -267,7 +267,9 @@ class MCItemDocumentGenerationHelperView(ItemDocumentGenerationHelperView):
         res = []
         tool = api.portal.get_tool('portal_plonemeeting')
         for group in copy_groups:
-            res.append(tool.getMeetingGroup(group).Title())
+            group_title = tool.getMeetingGroup(group).Title()
+            if group_title not in res:
+                res.append(group_title)
 
         return ', '.join(res)
 
