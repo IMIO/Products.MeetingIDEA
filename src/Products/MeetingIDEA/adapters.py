@@ -589,29 +589,6 @@ class MeetingCAIDEAWorkflowActions(MeetingCommunesWorkflowActions):
        interface IMeetingCAIDEAWorkflowActions"""
 
     implements(IMeetingCAIDEAWorkflowActions)
-    security = ClassSecurityInfo()
-
-    security.declarePrivate('doDecide')
-
-    def doDecide(self, stateChange):
-        """We pass every item that is 'presented' in the 'itemfrozen'
-           state.  It is the case for late items. Moreover, if
-           MeetingConfig.initItemDecisionIfEmptyOnDecide is True, we
-           initialize the decision field with content of Title+Description
-           if decision field is empty."""
-        tool = getToolByName(self.context, 'portal_plonemeeting')
-        cfg = tool.getMeetingConfig(self.context)
-        if cfg.getInitItemDecisionIfEmptyOnDecide():
-            for item in self.context.getItems():
-                # If deliberation (motivation+decision) is empty,
-                # initialize it the decision field
-                item._initDecisionFieldIfEmpty()
-
-    security.declarePrivate('doBackToPublished')
-
-    def doBackToPublished(self, stateChange):
-        """We do not impact items while going back from decided."""
-        pass
 
 
 class MeetingCAIDEAWorkflowConditions(MeetingCommunesWorkflowConditions):
@@ -619,29 +596,12 @@ class MeetingCAIDEAWorkflowConditions(MeetingCommunesWorkflowConditions):
        interface IMeetingCAIDEAWorkflowConditions"""
 
     implements(IMeetingCAIDEAWorkflowConditions)
-    security = ClassSecurityInfo()
 
     def __init__(self, meeting):
         self.context = meeting
 
         customAcceptItemsStates = ('created', 'frozen', 'decided')
         self.acceptItemsStates = customAcceptItemsStates
-
-    security.declarePublic('mayCorrect')
-
-    def mayCorrect(self, destinationState=None):
-        '''Override to avoid call to _decisionsWereConfirmed.'''
-        if not _checkPermission(ReviewPortalContent, self.context):
-            return
-        return True
-
-    security.declarePublic('mayDecide')
-
-    def mayDecide(self):
-        res = False
-        if _checkPermission(ReviewPortalContent, self.context):
-            res = True
-        return res
 
 
 class MeetingItemCAIDEAWorkflowActions(MeetingItemCommunesWorkflowActions):
@@ -650,21 +610,6 @@ class MeetingItemCAIDEAWorkflowActions(MeetingItemCommunesWorkflowActions):
 
     implements(IMeetingItemCAIDEAWorkflowActions)
     security = ClassSecurityInfo()
-
-    security.declarePrivate('doAccept_but_modify')
-
-    def doAccept_but_modify(self, stateChange):
-        pass
-
-    security.declarePrivate('doPre_accept')
-
-    def doPre_accept(self, stateChange):
-        pass
-
-    security.declarePrivate('doRemove')
-
-    def doRemove(self, stateChange):
-        pass
 
     security.declarePrivate('doProposeToDepartmentHead')
 
@@ -692,15 +637,6 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemCommunesWorkflowConditions)
         'proposeToDepartmentHead', 'proposeToDirector', 'validate', 'present')
 
     security.declarePublic('mayDecide')
-
-    def mayDecide(self):
-        '''We may decide an item if the linked meeting is in relevant state.'''
-        res = False
-        meeting = self.context.getMeeting()
-        if _checkPermission(ReviewPortalContent, self.context) and \
-                meeting and meeting.adapted().isDecided():
-            res = True
-        return res
 
     def mayValidate(self):
         """
