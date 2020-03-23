@@ -385,130 +385,6 @@ class CustomMeeting(MCMeeting):
             res = itemsUids
         return res
 
-    security.declarePublic('getNumberOfItems')
-
-    def getNumberOfItems(self, itemUids, privacy='*', categories=[], late=False):
-        '''Returns the number of items depending on parameters.
-           This is used in templates to know how many items of a particular kind exist and
-           often used to determine the 'firstNumber' parameter of getPrintableItems/getPrintableItemsByCategory.'''
-        # sometimes, some empty elements are inserted in itemUids, remove them...
-        itemUids = [itemUid for itemUid in itemUids if itemUid != '']
-        # no filtering, return the items ordered
-        if not categories and privacy == '*':
-            return len(self.context.getItemsInOrder(late=late, uids=itemUids))
-        # Either, we will have to filter (privacy, categories, late)
-        filteredItemUids = []
-        uid_catalog = getToolByName(self.context, 'uid_catalog')
-        for itemUid in itemUids:
-            obj = uid_catalog(UID=itemUid)[0].getObject()
-            if not (privacy == '*' or obj.getPrivacy() == privacy):
-                continue
-            elif not (categories == [] or obj.getCategory() in categories):
-                continue
-            elif not obj.isLate() == late:
-                continue
-            filteredItemUids.append(itemUid)
-        return len(filteredItemUids)
-
-    security.declarePublic('getPrintableItemsByNumCategory')
-
-    def getPrintableItemsByNumCategory(self, late=False, uids=[],
-                                       catstoexclude=[], exclude=True, allItems=False):
-        '''Returns a list of items ordered by category number. If there are many
-           items by category, there is always only one category, even if the
-           user have chosen a different order. If exclude=True , catstoexclude
-           represents the category number that we don't want to print and if
-           exclude=False, catsexclude represents the category number that we
-           only want to print. This is useful when we want for exemple to
-           exclude a personnal category from the meeting an realize a separate
-           meeeting for this personal category. If allItems=True, we return
-           late items AND items in order.'''
-
-        def getPrintableNumCategory(current_cat):
-            '''Method used here above.'''
-            current_cat_id = current_cat.getId()
-            current_cat_name = current_cat.Title()
-            current_cat_name = current_cat_name[0:2]
-            try:
-                catNum = int(current_cat_name)
-            except ValueError:
-                current_cat_name = current_cat_name[0:1]
-                try:
-                    catNum = int(current_cat_name)
-                except ValueError:
-                    catNum = current_cat_id
-            return catNum
-
-        itemsGetter = self.context.getItems
-        if late:
-            itemsGetter = self.context.getLateItems
-        items = itemsGetter()
-        if allItems:
-            items = self.context.getItems() + self.context.getLateItems()
-        # res contains all items by category, the key of res is the category
-        # number. Pay attention that the category number is obtain by extracting
-        # the 2 first caracters of the categoryname, thus the categoryname must
-        # be for exemple ' 2.travaux' or '10.Urbanisme. If not, the catnum takes
-        # the value of the id + 1000 to be sure to place those categories at the
-        # end.
-        res = {}
-        # First, we create the category and for each category, we create a
-        # dictionary that must contain the list of item in in res[catnum][1]
-        for item in items:
-            if uids:
-                if (item.UID() in uids):
-                    inuid = "ok"
-                else:
-                    inuid = "ko"
-            else:
-                inuid = "ok"
-            if (inuid == "ok"):
-                current_cat = item.getCategory(theObject=True)
-                catNum = getPrintableNumCategory(current_cat)
-                if catNum in res:
-                    res[catNum][1][item.getItemNumber()] = item
-                else:
-                    res[catNum] = {}
-                    # first value of the list is the category object
-                    res[catNum][0] = item.getCategory(True)
-                    # second value of the list is a list of items
-                    res[catNum][1] = {}
-                    res[catNum][1][item.getItemNumber()] = item
-
-        # Now we must sort the res dictionary with the key (containing catnum)
-        # and copy it in the returned array.
-        reskey = res.keys()
-        reskey.sort()
-        ressort = []
-        for i in reskey:
-            if catstoexclude:
-                if (i in catstoexclude):
-                    if exclude is False:
-                        guard = True
-                    else:
-                        guard = False
-                else:
-                    if exclude is False:
-                        guard = False
-                    else:
-                        guard = True
-            else:
-                guard = True
-
-            if guard is True:
-                k = 0
-                ressorti = []
-                ressorti.append(res[i][0])
-                resitemkey = res[i][1].keys()
-                resitemkey.sort()
-                ressorti1 = []
-                for j in resitemkey:
-                    k = k + 1
-                    ressorti1.append([res[i][1][j], k])
-                ressorti.append(ressorti1)
-                ressort.append(ressorti)
-        return ressort
-
     security.declarePublic('getPresenceList')
 
     def getPresenceList(self, filter):
@@ -582,25 +458,12 @@ class CustomMeeting(MCMeeting):
 class CustomMeetingItem(MCMeetingItem):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingItemCustom."""
+
     implements(IMeetingItemCustom)
     security = ClassSecurityInfo()
 
     def __init__(self, item):
         self.context = item
-
-    def _initDecisionFieldIfEmpty(self):
-        '''
-          If decision field is empty, it will be initialized
-          with data coming from title and description.
-        '''
-        # set keepWithNext to False as it will add a 'class' and so
-        # xhtmlContentIsEmpty will never consider it empty...
-        if xhtmlContentIsEmpty(self.getDecision(keepWithNext=False)):
-            self.setDecision("<p>%s</p>%s" % (self.Title(),
-                                              self.Description()))
-            self.reindexObject()
-
-    MCMeetingItem._initDecisionFieldIfEmpty = _initDecisionFieldIfEmpty
 
     security.declarePublic('getObservations')
 
@@ -651,32 +514,8 @@ class CustomMeetingItem(MCMeetingItem):
         return res
 
 
-# class CustomMeetingGroup(MeetingGroup):
-#     '''Adapter that adapts a meeting group implementing IMeetingGroup to the
-#        interface IMeetingGroupCustom.'''
-#
-#     implements(IMeetingGroupCustom)
-#     security = ClassSecurityInfo()
-#
-#     def __init__(self, item):
-#         self.context = item
-#
-#     security.declarePublic('listEchevinServices')
-#
-#     def listEchevinServices(self):
-#         '''Returns a list of groups that can be selected on an group (without isEchevin).'''
-#         res = []
-#         tool = getToolByName(self, 'portal_plonemeeting')
-#         # Get every Plone group related to a MeetingGroup
-#         for group in tool.getMeetingGroups():
-#             res.append((group.id, group.getProperty('title')))
-#
-#         return DisplayList(tuple(res))
-#
-#     MeetingGroup.listEchevinServices = listEchevinServices
-
-
 class CustomMeetingConfig(MCMeetingConfig):
+
     """Adapter that adapts a meetingConfig implementing IMeetingConfig to the
        interface IMeetingConfigCustom."""
 
