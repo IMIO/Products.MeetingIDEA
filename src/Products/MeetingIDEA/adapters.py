@@ -29,15 +29,17 @@ from Products.MeetingIDEA.interfaces import IMeetingCAIDEAWorkflowActions
 from Products.MeetingIDEA.interfaces import IMeetingCAIDEAWorkflowConditions
 from Products.MeetingIDEA.interfaces import IMeetingItemCAIDEAWorkflowActions
 from Products.MeetingIDEA.interfaces import IMeetingItemCAIDEAWorkflowConditions
-from Products.PloneMeeting import PMMessageFactory as _
-from Products.PloneMeeting.Meeting import Meeting
-from Products.PloneMeeting.Meeting import MeetingWorkflowActions
-from Products.PloneMeeting.Meeting import MeetingWorkflowConditions
+
+from Products.MeetingCommunes.adapters import CustomMeeting as MCMeeting
+from Products.MeetingCommunes.adapters import CustomMeetingItem as MCMeetingItem
+from Products.MeetingCommunes.adapters import CustomMeetingConfig as MCMeetingConfig
+from Products.MeetingCommunes.adapters import CustomToolPloneMeeting as MCToolPloneMeeting
+from Products.MeetingCommunes.adapters import MeetingItemCommunesWorkflowActions
+from Products.MeetingCommunes.adapters import MeetingItemCommunesWorkflowConditions
+from Products.MeetingCommunes.adapters import MeetingCommunesWorkflowActions
+from Products.MeetingCommunes.adapters import MeetingCommunesWorkflowConditions
+
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
-from Products.PloneMeeting.MeetingItem import MeetingItem
-from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowActions
-from Products.PloneMeeting.MeetingItem import MeetingItemWorkflowConditions
-from Products.PloneMeeting.ToolPloneMeeting import ToolPloneMeeting
 from Products.PloneMeeting.config import ITEM_NO_PREFERRED_MEETING_VALUE
 from Products.PloneMeeting.interfaces import IMeetingConfigCustom
 from Products.PloneMeeting.interfaces import IMeetingCustom
@@ -77,7 +79,8 @@ adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = ('presented', 'itemfroz
 RETURN_TO_PROPOSING_GROUP_MAPPINGS = {'backTo_presented_from_returned_to_proposing_group':
                                           ['created'],
                                       'backTo_itemfrozen_from_returned_to_proposing_group':
-                                          ['frozen', 'decided', 'published', 'decisions_published', ],
+                                          ['frozen', 'decided', 'published',
+                                           'decisions_published', ],
                                       'NO_MORE_RETURNABLE_STATES': ['closed', 'archived', ]
                                       }
 
@@ -86,61 +89,85 @@ adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(RETURN_TO_PROPOSING_GROUP_
 RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {'meetingitemcaidea_workflow':
                                                 # view permissions
                                                     {'Access contents information':
-                                                         ('Manager', 'MeetingManager', 'MeetingMember',
+                                                         ('Manager', 'MeetingManager',
+                                                          'MeetingMember',
                                                           'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
+                                                          'MeetingReviewer', 'MeetingObserverLocal',
+                                                          'Reader',),
                                                      'View':
-                                                         ('Manager', 'MeetingManager', 'MeetingMember',
+                                                         ('Manager', 'MeetingManager',
+                                                          'MeetingMember',
                                                           'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
+                                                          'MeetingReviewer', 'MeetingObserverLocal',
+                                                          'Reader',),
                                                      'PloneMeeting: Read decision':
-                                                         ('Manager', 'MeetingManager', 'MeetingMember',
+                                                         ('Manager', 'MeetingManager',
+                                                          'MeetingMember',
                                                           'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
+                                                          'MeetingReviewer', 'MeetingObserverLocal',
+                                                          'Reader',),
                                                      'PloneMeeting: Read optional advisers':
-                                                         ('Manager', 'MeetingManager', 'MeetingMember',
+                                                         ('Manager', 'MeetingManager',
+                                                          'MeetingMember',
                                                           'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
+                                                          'MeetingReviewer', 'MeetingObserverLocal',
+                                                          'Reader',),
                                                      'PloneMeeting: Read decision annex':
-                                                         ('Manager', 'MeetingManager', 'MeetingMember',
+                                                         ('Manager', 'MeetingManager',
+                                                          'MeetingMember',
                                                           'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
+                                                          'MeetingReviewer', 'MeetingObserverLocal',
+                                                          'Reader',),
                                                      'PloneMeeting: Read item observations':
-                                                         ('Manager', 'MeetingManager', 'MeetingMember',
+                                                         ('Manager', 'MeetingManager',
+                                                          'MeetingMember',
                                                           'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
+                                                          'MeetingReviewer', 'MeetingObserverLocal',
+                                                          'Reader',),
                                                      'PloneMeeting: Read budget infos':
-                                                         ('Manager', 'MeetingManager', 'MeetingMember',
+                                                         ('Manager', 'MeetingManager',
+                                                          'MeetingMember',
                                                           'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingObserverLocal', 'Reader',),
+                                                          'MeetingReviewer', 'MeetingObserverLocal',
+                                                          'Reader',),
                                                      # edit permissions
                                                      'Modify portal content':
-                                                         ('Manager', 'MeetingMember', 'MeetingDepartmentHead',
+                                                         ('Manager', 'MeetingMember',
+                                                          'MeetingDepartmentHead',
                                                           'MeetingReviewer', 'MeetingManager',),
                                                      'PloneMeeting: Write decision':
-                                                         ('Manager', 'MeetingMember', 'MeetingDepartmentHead',
+                                                         ('Manager', 'MeetingMember',
+                                                          'MeetingDepartmentHead',
                                                           'MeetingReviewer', 'MeetingManager',),
                                                      'Review portal content':
-                                                         ('Manager', 'MeetingMember', 'MeetingDepartmentHead',
+                                                         ('Manager', 'MeetingMember',
+                                                          'MeetingDepartmentHead',
                                                           'MeetingReviewer', 'MeetingManager',),
                                                      'Add portal content':
-                                                         ('Manager', 'MeetingMember', 'MeetingDepartmentHead',
+                                                         ('Manager', 'MeetingMember',
+                                                          'MeetingDepartmentHead',
                                                           'MeetingReviewer', 'MeetingManager',),
                                                      'PloneMeeting: Add annex':
-                                                         ('Manager', 'MeetingMember', 'MeetingDepartmentHead',
+                                                         ('Manager', 'MeetingMember',
+                                                          'MeetingDepartmentHead',
                                                           'MeetingReviewer', 'MeetingManager',),
                                                      'PloneMeeting: Add annexDecision':
-                                                         ('Manager', 'MeetingMember', 'MeetingDepartmentHead',
+                                                         ('Manager', 'MeetingMember',
+                                                          'MeetingDepartmentHead',
                                                           'MeetingReviewer', 'MeetingManager',),
                                                      'PloneMeeting: Add MeetingFile':
-                                                         ('Manager', 'MeetingMember', 'MeetingDepartmentHead',
+                                                         ('Manager', 'MeetingMember',
+                                                          'MeetingDepartmentHead',
                                                           'MeetingReviewer', 'MeetingManager',),
                                                      'PloneMeeting: Write optional advisers':
-                                                         ('Manager', 'MeetingMember', 'MeetingDepartmentHead',
+                                                         ('Manager', 'MeetingMember',
+                                                          'MeetingDepartmentHead',
                                                           'MeetingReviewer', 'MeetingManager',),
                                                      'PloneMeeting: Write budget infos':
-                                                         ('Manager', 'MeetingMember', 'MeetingOfficeManager',
-                                                          'MeetingManager', 'MeetingBudgetImpactEditor',),
+                                                         ('Manager', 'MeetingMember',
+                                                          'MeetingOfficeManager',
+                                                          'MeetingManager',
+                                                          'MeetingBudgetImpactEditor',),
                                                      'PloneMeeting: Write marginal notes':
                                                          ('Manager', 'MeetingManager',),
                                                      # MeetingManagers edit permissions
@@ -155,11 +182,12 @@ RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {'meetingitemcaidea_workflow':
 
 adaptations.RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
 
-RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = {'meetingitemcaidea_workflow': 'meetingitemcaidea_workflow.itemcreated', }
+RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = {
+    'meetingitemcaidea_workflow': 'meetingitemcaidea_workflow.itemcreated', }
 adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
 
 
-class CustomMeeting(Meeting):
+class CustomMeeting(MCMeeting):
     """Adapter that adapts a meeting implementing IMeeting to the
        interface IMeetingCustom."""
 
@@ -307,10 +335,11 @@ class CustomMeeting(Meeting):
     security.declarePublic('getPrintableItemsByCategory')
 
     def getPrintableItemsByCategory(self, itemUids=[], late=False,
-                                          ignore_review_states=[], by_proposing_group=False, group_prefixes={},
-                                          oralQuestion='both', toDiscuss='both', excludeCategories=[],
-                                          includeEmptyCategories=False, includeEmptyDepartment=False,
-                                          includeEmptyGroups=False):
+                                    ignore_review_states=[], by_proposing_group=False,
+                                    group_prefixes={},
+                                    oralQuestion='both', toDiscuss='both', excludeCategories=[],
+                                    includeEmptyCategories=False, includeEmptyDepartment=False,
+                                    includeEmptyGroups=False):
         '''Returns a list of (late-)items (depending on p_late) ordered by
            category. Items being in a state whose name is in
            p_ignore_review_state will not be included in the result.
@@ -384,14 +413,17 @@ class CustomMeeting(Meeting):
                             catExists = True
                             break
                     if catExists:
-                        self._insertItemInCategory(catList, item, by_proposing_group, group_prefixes, groups)
+                        self._insertItemInCategory(catList, item, by_proposing_group,
+                                                   group_prefixes, groups)
                     else:
                         res.append([currentCat])
-                        self._insertItemInCategory(res[-1], item, by_proposing_group, group_prefixes, groups)
+                        self._insertItemInCategory(res[-1], item, by_proposing_group,
+                                                   group_prefixes, groups)
                     previousCatId = currentCatId
                 else:
                     # Append the item to the same category
-                    self._insertItemInCategory(res[-1], item, by_proposing_group, group_prefixes, groups)
+                    self._insertItemInCategory(res[-1], item, by_proposing_group, group_prefixes,
+                                               groups)
         if includeEmptyCategories:
             meetingConfig = self.context.portal_plonemeeting.getMeetingConfig(
                 self.context)
@@ -751,7 +783,7 @@ class CustomMeeting(Meeting):
             label = 'pre_date_after_meeting_date'
             return self.utranslate(label, domain='PloneMeeting')
 
-    Meeting.validate_preMeetingDate = validate_preMeetingDate
+    MCMeeting.validate_preMeetingDate = validate_preMeetingDate
 
     security.declarePublic('getPresenceList')
 
@@ -823,7 +855,7 @@ class CustomMeeting(Meeting):
         return res
 
 
-class CustomMeetingItem(MeetingItem):
+class CustomMeetingItem(MCMeetingItem):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingItemCustom."""
     implements(IMeetingItemCustom)
@@ -844,7 +876,7 @@ class CustomMeetingItem(MeetingItem):
                                               self.Description()))
             self.reindexObject()
 
-    MeetingItem._initDecisionFieldIfEmpty = _initDecisionFieldIfEmpty
+    MCMeetingItem._initDecisionFieldIfEmpty = _initDecisionFieldIfEmpty
 
     security.declarePublic('getObservations')
 
@@ -854,7 +886,8 @@ class CustomMeetingItem(MeetingItem):
         item = self.getSelf()
         res = item.getField('observations').get(item, **kwargs)
         tool = getToolByName(item, 'portal_plonemeeting')
-        if item.hasMeeting() and item.getMeeting().queryState() == 'decided' and not tool.isManager(item):
+        if item.hasMeeting() and item.getMeeting().queryState() == 'decided' and not tool.isManager(
+                item):
             return translate('intervention_under_edit',
                              domain='PloneMeeting',
                              context=item.REQUEST,
@@ -862,8 +895,8 @@ class CustomMeetingItem(MeetingItem):
                                      'edit by managers, you can not access it.</p>')
         return res
 
-    MeetingItem.getObservations = getObservations
-    MeetingItem.getRawObservations = getObservations
+    MCMeetingItem.getObservations = getObservations
+    MCMeetingItem.getRawObservations = getObservations
 
     security.declarePublic('getStrategicAxis')
 
@@ -919,7 +952,7 @@ class CustomMeetingItem(MeetingItem):
 #     MeetingGroup.listEchevinServices = listEchevinServices
 
 
-class CustomMeetingConfig(MeetingConfig):
+class CustomMeetingConfig(MCMeetingConfig):
     """Adapter that adapts a meetingConfig implementing IMeetingConfig to the
        interface IMeetingConfigCustom."""
 
@@ -988,7 +1021,7 @@ class CustomMeetingConfig(MeetingConfig):
         return 'created', 'frozen', 'decided'
 
 
-class MeetingCAIDEAWorkflowActions(MeetingWorkflowActions):
+class MeetingCAIDEAWorkflowActions(MeetingCommunesWorkflowActions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingCAIDEAWorkflowActions"""
 
@@ -1018,7 +1051,7 @@ class MeetingCAIDEAWorkflowActions(MeetingWorkflowActions):
         pass
 
 
-class MeetingCAIDEAWorkflowConditions(MeetingWorkflowConditions):
+class MeetingCAIDEAWorkflowConditions(MeetingCommunesWorkflowConditions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingCAIDEAWorkflowConditions"""
 
@@ -1048,7 +1081,7 @@ class MeetingCAIDEAWorkflowConditions(MeetingWorkflowConditions):
         return res
 
 
-class MeetingItemCAIDEAWorkflowActions(MeetingItemWorkflowActions):
+class MeetingItemCAIDEAWorkflowActions(MeetingItemCommunesWorkflowActions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingItemCAIDEAWorkflowActions"""
 
@@ -1081,7 +1114,7 @@ class MeetingItemCAIDEAWorkflowActions(MeetingItemWorkflowActions):
         pass
 
 
-class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
+class MeetingItemCAIDEAWorkflowConditions(MeetingItemCommunesWorkflowConditions):
     """Adapter that adapts a meeting item implementing IMeetingItem to the
        interface IMeetingItemCAIDEAWorkflowConditions"""
 
@@ -1092,7 +1125,8 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
         self.context = item  # Implements IMeetingItem
         self.sm = getSecurityManager()
         self.useHardcodedTransitionsForPresentingAnItem = True
-        self.transitionsForPresentingAnItem = ('proposeToDepartmentHead', 'proposeToDirector', 'validate', 'present')
+        self.transitionsForPresentingAnItem = (
+        'proposeToDepartmentHead', 'proposeToDirector', 'validate', 'present')
 
     security.declarePublic('mayDecide')
 
@@ -1156,12 +1190,13 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemWorkflowConditions):
         res = False
         meeting = self.context.getMeeting()
         if _checkPermission(ReviewPortalContent, self.context) and \
-                meeting and (meeting.queryState() in ['decided', 'published', 'closed', 'decisions_published', ]):
+                meeting and (meeting.queryState() in ['decided', 'published', 'closed',
+                                                      'decisions_published', ]):
             res = True
         return res
 
 
-class CustomToolPloneMeeting(ToolPloneMeeting):
+class CustomToolPloneMeeting(MCToolPloneMeeting):
     '''Adapter that adapts a tool implementing ToolPloneMeeting to the
        interface IToolPloneMeetingCustom'''
 
@@ -1175,7 +1210,8 @@ class CustomToolPloneMeeting(ToolPloneMeeting):
         '''cachekey method for self.isFinancialUser.'''
         return str(self.context.REQUEST._debug), self.context.REQUEST['AUTHENTICATED_USER']
 
-    def performCustomWFAdaptations(self, meetingConfig, wfAdaptation, logger, itemWorkflow, meetingWorkflow):
+    def performCustomWFAdaptations(self, meetingConfig, wfAdaptation, logger, itemWorkflow,
+                                   meetingWorkflow):
         """ """
         if wfAdaptation == 'no_publication':
             # we override the PloneMeeting's 'no_publication' wfAdaptation
@@ -1203,7 +1239,8 @@ class CustomToolPloneMeeting(ToolPloneMeeting):
             # Update connections between states and transitions
             wf.states['itemfrozen'].setProperties(
                 title='itemfrozen', description='',
-                transitions=['accept', 'accept_but_modify', 'refuse', 'delay', 'pre_accept', 'backToPresented'])
+                transitions=['accept', 'accept_but_modify', 'refuse', 'delay', 'pre_accept',
+                             'backToPresented'])
             for decidedState in ['accepted', 'refused', 'delayed', 'accepted_but_modified']:
                 wf.states[decidedState].setProperties(
                     title=decidedState, description='',
