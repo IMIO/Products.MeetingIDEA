@@ -1,13 +1,13 @@
 from setuptools import setup, find_packages
 import os
 
-version = '4.0'
+version = '4.0.1dev'
 
 setup(name='Products.MeetingIDEA',
       version=version,
       description="Official meetings management for college and council of belgian"
       "communes (PloneMeeting extension profile)",
-      long_description=open("README.txt").read() + "\n" + open(os.path.join("docs", "HISTORY.txt")).read(),
+      long_description=open("README.rst").read() + "\n" + open("CHANGE.rst").read(),
       classifiers=["Programming Language :: Python", ],
       keywords='',
       author='',
@@ -33,6 +33,7 @@ setup(name='Products.MeetingIDEA',
           'setuptools',
           'Products.CMFPlone',
           'Pillow',
-          'Products.PloneMeeting'],
+          'Products.PloneMeeting',
+          'Products.MeetingCommunes'],
       entry_points={},
       )
