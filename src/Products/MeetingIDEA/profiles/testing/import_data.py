@@ -91,7 +91,7 @@ caMeeting.onMeetingTransitionItemTransitionToTrigger = (
                                                          'item_transition': 'accept'},
                                                         {'meeting_transition': 'backToCreated',
                                                          'item_transition': 'backToPresented'},)
-caMeeting.workflowAdaptations = ['no_publication']
+caMeeting.workflowAdaptations = ['return_to_proposing_group']
 
 # Conseil communal
 agMeeting = deepcopy(mc_import_data.councilMeeting)
@@ -114,6 +114,6 @@ agMeeting.onMeetingTransitionItemTransitionToTrigger = (
                                                          'item_transition': 'accept'},
                                                         {'meeting_transition': 'backToCreated',
                                                          'item_transition': 'backToPresented'},)
-agMeeting.workflowAdaptations = ['no_publication']
+agMeeting.workflowAdaptations = ['return_to_proposing_group']
 
 data.meetingConfigs = (caMeeting, agMeeting)
