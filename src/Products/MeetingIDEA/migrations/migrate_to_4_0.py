@@ -5,11 +5,11 @@ import logging
 logger = logging.getLogger('MeetingIDEA')
 
 from plone import api
-from Products.PloneMeeting.migrations.migrate_to_4_0 import Migrate_To_4_0 as PMMigrate_To_4_0
+from Products.PloneMeeting.migrations.migrate_to_4_1 import Migrate_To_4_1 as PMMigrate_To_4_1
 
 
 # The migration class ----------------------------------------------------------
-class Migrate_To_4_0(PMMigrate_To_4_0):
+class Migrate_To_4_0(PMMigrate_To_4_1):
     wfs_to_delete = []
 
     def _cleanCDLD(self):
