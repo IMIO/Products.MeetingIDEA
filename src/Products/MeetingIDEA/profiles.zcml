@@ -38,28 +38,13 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
-  <genericsetup:upgradeStep
-      title="Go to MeetingIDEA 4.0 (Step 1)"
+   <genericsetup:upgradeStep
+      title="Go to MeetingIDEA 4.1"
       description=""
-      source="*"
-      destination="3.4"
-      handler="Products.MeetingIDEA.migrations.migrate_to_4_0.migrate_step1"
+      source="4.0"
+      destination="4.1"
+      handler="Products.MeetingIDEA.migrations.migrate_to_4_1.migrate"
       profile="Products.MeetingIDEA:default" />
 
-  <genericsetup:upgradeStep
-      title="Go to MeetingIDEA 4.0 (Step 2)"
-      description=""
-      source="*"
-      destination="3.5"
-      handler="Products.MeetingIDEA.migrations.migrate_to_4_0.migrate_step2"
-      profile="Products.MeetingIDEA:default" />
-
-  <genericsetup:upgradeStep
-      title="Go to MeetingIDEA 4.0 (Step 3)"
-      description=""
-      source="*"
-      destination="4.0"
-      handler="Products.MeetingIDEA.migrations.migrate_to_4_0.migrate_step3"
-      profile="Products.MeetingIDEA:default" />
 
 </configure>
