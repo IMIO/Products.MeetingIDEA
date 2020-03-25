@@ -92,6 +92,11 @@ caMeeting.onMeetingTransitionItemTransitionToTrigger = (
                                                         {'meeting_transition': 'backToCreated',
                                                          'item_transition': 'backToPresented'},)
 caMeeting.workflowAdaptations = ['return_to_proposing_group']
+caMeeting.useAdvices = True
+caMeeting.selectableAdvisers = ['developers', 'vendors']
+caMeeting.itemAdviceStates = ['proposed_to_director', ]
+caMeeting.itemAdviceEditStates = ['proposed_to_director', 'validated']
+caMeeting.itemAdviceViewStates = ['presented', ]
 
 # Conseil communal
 agMeeting = deepcopy(mc_import_data.councilMeeting)
@@ -115,5 +120,11 @@ agMeeting.onMeetingTransitionItemTransitionToTrigger = (
                                                         {'meeting_transition': 'backToCreated',
                                                          'item_transition': 'backToPresented'},)
 agMeeting.workflowAdaptations = ['return_to_proposing_group']
+agMeeting.useAdvices = False
+agMeeting.selectableAdvisers = []
+agMeeting.itemAdviceStates = ['proposed_to_director', ]
+agMeeting.itemAdviceEditStates = ['proposed_to_director', 'validated']
+agMeeting.itemAdviceViewStates = ['presented', ]
+agMeeting.itemCopyGroupsStates = []
 
 data.meetingConfigs = (caMeeting, agMeeting)
