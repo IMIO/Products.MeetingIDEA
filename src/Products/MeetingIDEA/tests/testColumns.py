@@ -23,10 +23,10 @@
 #
 
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testColumns import testColumns as pmtc
+from Products.MeetingCommunes.tests.testColumns import testColumns as mctc
 
 
-class testColumns(MeetingIDEATestCase, pmtc):
+class testColumns(MeetingIDEATestCase, mctc):
     """ """
 
 def test_suite():

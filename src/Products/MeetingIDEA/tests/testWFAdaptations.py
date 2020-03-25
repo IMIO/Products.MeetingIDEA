@@ -27,7 +27,7 @@ from DateTime import DateTime
 from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
 
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testWFAdaptations import testWFAdaptations as mctwfa
+from Products.MeetingCommunes.tests.testWFAdaptations import testWFAdaptations as mctwfa
 
 
 class testWFAdaptations(MeetingIDEATestCase, mctwfa):

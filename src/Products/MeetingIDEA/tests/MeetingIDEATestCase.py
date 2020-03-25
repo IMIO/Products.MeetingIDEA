@@ -20,13 +20,13 @@
 # 02110-1301, USA.
 #
 
-from Products.PloneMeeting.tests.PloneMeetingTestCase import PloneMeetingTestCase
+from Products.MeetingCommunes.tests.MeetingCommunesTestCase import MeetingCommunesTestCase
 
 from Products.MeetingIDEA.testing import MIDEA_TESTING_PROFILE_FUNCTIONAL
 from Products.MeetingIDEA.tests.helpers import MeetingIDEATestingHelpers
 
 
-class MeetingIDEATestCase(PloneMeetingTestCase, MeetingIDEATestingHelpers):
+class MeetingIDEATestCase(MeetingCommunesTestCase, MeetingIDEATestingHelpers):
     """Base class for defining MeetingIDEA test cases."""
 
     # Some default content
@@ -40,6 +40,6 @@ class MeetingIDEATestCase(PloneMeetingTestCase, MeetingIDEATestingHelpers):
     layer = MIDEA_TESTING_PROFILE_FUNCTIONAL
 
     def setUp(self):
-        PloneMeetingTestCase.setUp(self)
+        MeetingCommunesTestCase.setUp(self)
         self.meetingConfig = getattr(self.tool, 'meeting-config-college')
         self.meetingConfig2 = getattr(self.tool, 'meeting-config-council')

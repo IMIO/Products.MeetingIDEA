@@ -22,7 +22,7 @@
 # 02110-1301, USA.
 #
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testAdvices import testAdvices as mcta
+from Products.MeetingCommunes.tests.testAdvices import testAdvices as mcta
 
 
 class testAdvices(MeetingIDEATestCase, mcta):

@@ -23,10 +23,10 @@
 #
 
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testViews import testViews as pmtv
+from Products.MeetingCommunes.tests.testViews import testViews as mctv
 
 
-class testViews(MeetingIDEATestCase, pmtv):
+class testViews(MeetingIDEATestCase, mctv):
     """ """
 
 def test_suite():

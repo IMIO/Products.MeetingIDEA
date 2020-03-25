@@ -23,7 +23,7 @@
 #
 
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testPortlets import testPortlets as mctp
+from Products.MeetingCommunes.tests.testPortlets import testPortlets as mctp
 
 
 class testPortlets(MeetingIDEATestCase, mctp):

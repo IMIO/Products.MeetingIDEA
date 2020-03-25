@@ -25,7 +25,7 @@
 from AccessControl import Unauthorized
 from DateTime import DateTime
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testWorkflows import testWorkflows as mctw
+from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
 
 
 class testWorkflows(MeetingIDEATestCase, mctw):

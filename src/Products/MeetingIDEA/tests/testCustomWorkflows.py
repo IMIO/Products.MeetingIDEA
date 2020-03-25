@@ -104,6 +104,7 @@ class testCustomWorkflows(MeetingIDEATestCase):
         self.freezeMeeting(meeting)
         self.assertEquals('frozen', meeting.queryState())
         # a MeetingManager can put the item back to presented
+        import ipdb; ipdb.set_trace()
         self.backToState(item7, 'presented')
         self.assertEquals('presented', item7.queryState())
         # we decide the meeting

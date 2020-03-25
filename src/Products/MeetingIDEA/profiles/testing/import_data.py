@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from copy import deepcopy
-from Products.PloneMeeting.profiles.testing import import_data as pm_import_data
 from Products.MeetingCommunes.profiles.testing import import_data as mc_import_data
 from Products.PloneMeeting.config import MEETINGREVIEWERS
 from Products.PloneMeeting.profiles import UserDescriptor
@@ -80,17 +79,6 @@ caMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeeting
 caMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
 caMeeting.transitionsToConfirm = []
 caMeeting.transitionsForPresentingAnItem = ['proposeToDepartmentHead', 'proposeToDirector', 'validate', 'present', ]
-caMeeting.onMeetingTransitionItemTransitionToTrigger = (
-                                                        {'meeting_transition': 'freeze',
-                                                         'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'decide',
-                                                         'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'accept'},
-                                                        {'meeting_transition': 'backToCreated',
-                                                         'item_transition': 'backToPresented'},)
 caMeeting.workflowAdaptations = ['return_to_proposing_group']
 caMeeting.useAdvices = True
 caMeeting.selectableAdvisers = ['developers', 'vendors']
@@ -108,17 +96,6 @@ agMeeting.meetingConditionsInterface = 'Products.MeetingIDEA.interfaces.IMeeting
 agMeeting.meetingActionsInterface = 'Products.MeetingIDEA.interfaces.IMeetingCAIDEAWorkflowActions'
 agMeeting.transitionsToConfirm = []
 agMeeting.transitionsForPresentingAnItem = ['proposeToDepartmentHead', 'proposeToDirector', 'validate', 'present', ]
-agMeeting.onMeetingTransitionItemTransitionToTrigger = (
-                                                        {'meeting_transition': 'freeze',
-                                                         'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'decide',
-                                                         'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'itemfreeze'},
-                                                        {'meeting_transition': 'close',
-                                                         'item_transition': 'accept'},
-                                                        {'meeting_transition': 'backToCreated',
-                                                         'item_transition': 'backToPresented'},)
 agMeeting.workflowAdaptations = ['return_to_proposing_group']
 agMeeting.useAdvices = False
 agMeeting.selectableAdvisers = []

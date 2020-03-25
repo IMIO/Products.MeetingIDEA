@@ -23,10 +23,10 @@
 #
 
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testUtils import testUtils as pmtu
+from Products.MeetingCommunes.tests.testUtils import testUtils as mctu
 
 
-class testUtils(MeetingIDEATestCase, pmtu):
+class testUtils(MeetingIDEATestCase, mctu):
     ''' '''
 
 

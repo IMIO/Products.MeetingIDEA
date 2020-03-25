@@ -20,12 +20,12 @@
 # 02110-1301, USA.
 #
 
-from Products.PloneMeeting.tests.helpers import PloneMeetingTestingHelpers
+from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
 
 from DateTime import DateTime
 
 
-class MeetingIDEATestingHelpers(PloneMeetingTestingHelpers):
+class MeetingIDEATestingHelpers(MeetingCommunesTestingHelpers):
     """Stub class that provides some helper methods about testing."""
 
     TRANSITIONS_FOR_PROPOSING_ITEM_1 = ('proposeToDepartmentHead', 'proposeToDirector',)
@@ -63,7 +63,10 @@ class MeetingIDEATestingHelpers(PloneMeetingTestingHelpers):
                                  'backToProposedToDirector',),
         'validated': ('backToItemFrozen',
                       'backToPresented',
-                      'backToValidated',)}
+                      'backToValidated'),
+
+        'presented': ('backToItemFrozen',
+                      'backToPresented',)}
     BACK_TO_WF_PATH_2 = {
         # MeetingItem
         'itemcreated': ('backToItemFrozen',
@@ -78,7 +81,10 @@ class MeetingIDEATestingHelpers(PloneMeetingTestingHelpers):
                                  'backToProposedToDirector',),
         'validated': ('backToItemFrozen',
                       'backToPresented',
-                      'backToValidated',)}
+                      'backToValidated',),
+
+        'presented': ('backToItemFrozen',
+                      'backToPresented',)}
 
     WF_ITEM_STATE_NAME_MAPPINGS_1 = WF_ITEM_STATE_NAME_MAPPINGS_2 = {'itemcreated': 'itemcreated',
                                                                      'proposed': 'proposed_to_director',
@@ -98,7 +104,7 @@ class MeetingIDEATestingHelpers(PloneMeetingTestingHelpers):
         currentMember = self.portal.portal_membership.getAuthenticatedMember()
         currentMemberRoles = currentMember.getRoles()
         setRoles(self.portal, currentMember.getId(), currentMemberRoles + ['Manager', ])
-        meeting = PloneMeetingTestingHelpers._createMeetingWithItems(self,
+        meeting = MeetingCommunesTestingHelpers._createMeetingWithItems(self,
                                                                         withItems=withItems,
                                                                         meetingDate=meetingDate)
         setRoles(self.portal, currentMember.getId(), currentMemberRoles)
