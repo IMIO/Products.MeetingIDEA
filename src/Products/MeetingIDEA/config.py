@@ -65,10 +65,12 @@ adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(
     MIDEA_RETURN_TO_PROPOSING_GROUP_MAPPINGS
 )
 
-IDEAMEETINGREVIEWERS = OrderedDict(
-    [
-        ("reviewers", "proposed_to_director"),
-        ("departmentheads", "proposed_to_departmenthead"),
-    ]
-)
+IDEAMEETINGREVIEWERS = {
+    "meetingitemcaidea_workflow": OrderedDict(
+        [
+            ("reviewers", ["proposed_to_director"]),
+            ("departmentheads", ["proposed_to_departmenthead"]),
+        ]
+    )
+}
 PMconfig.MEETINGREVIEWERS = IDEAMEETINGREVIEWERS

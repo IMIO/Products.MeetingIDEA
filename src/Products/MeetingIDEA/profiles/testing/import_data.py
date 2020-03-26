@@ -9,17 +9,10 @@ from Products.PloneMeeting.profiles import UserDescriptor
 data = deepcopy(mc_import_data.data)
 
 # Users and groups -------------------------------------------------------------
-pmManager = UserDescriptor('pmManager', [], email="pmmanager@plonemeeting.org", fullname='M. PMManager')
 pmCreator1 = UserDescriptor('pmCreator1', [], email="pmcreator1@plonemeeting.org", fullname='M. PMCreator One')
 pmCreator1b = UserDescriptor('pmCreator1b', [], email="pmcreator1b@plonemeeting.org", fullname='M. PMCreator One bee')
 pmObserver1 = UserDescriptor('pmObserver1', [], email="pmobserver1@plonemeeting.org", fullname='M. PMObserver One')
-pmReviewer1 = UserDescriptor('pmReviewer1', [])
-pmReviewerLevel1 = UserDescriptor('pmReviewerLevel1', [],
-                                  email="pmreviewerlevel1@plonemeeting.org", fullname='M. PMReviewer Level One')
 pmCreator2 = UserDescriptor('pmCreator2', [])
-pmReviewer2 = UserDescriptor('pmReviewer2', [])
-pmReviewerLevel2 = UserDescriptor('pmReviewerLevel2', [],
-                                  email="pmreviewerlevel2@plonemeeting.org", fullname='M. PMReviewer Level Two')
 pmAdviser1 = UserDescriptor('pmAdviser1', [])
 pmDepartmentHead1 = UserDescriptor('pmDepartmentHead1', [])
 pmDirector1 = UserDescriptor('pmDirector1', [])
@@ -56,11 +49,10 @@ developers.reviewers.append(pmManager)
 setattr(developers, 'signatures', 'developers signatures')
 setattr(developers, 'echevinServices', 'developers')
 # put pmReviewerLevel1 in first level of reviewers from what is in MEETINGREVIEWERS
-getattr(developers, MEETINGREVIEWERS.keys()[-1]).append(pmReviewerLevel1)
+getattr(developers, MEETINGREVIEWERS['meetingitemcaidea_workflow'].keys()[-1]).append(pmReviewerLevel1)
 # put pmReviewerLevel2 in second level of reviewers from what is in MEETINGREVIEWERS
-getattr(developers, MEETINGREVIEWERS.keys()[0]).append(pmReviewerLevel2)
+getattr(developers, MEETINGREVIEWERS['meetingitemcaidea_workflow'].keys()[0]).append(pmReviewerLevel2)
 
-# give an advice on recurring items
 vendors = data.orgs[1]
 vendors.creators.append(pmCreator2)
 vendors.reviewers.append(pmReviewer2)

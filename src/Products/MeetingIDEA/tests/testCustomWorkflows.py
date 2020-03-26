@@ -67,8 +67,8 @@ class testCustomWorkflows(MeetingIDEATestCase):
 
         self.freezeMeeting(meeting)
         # when an item is 'itemfrozen' it will stay itemfrozen if nothing
-        # is defined in the meetingConfig.onMeetingTransitionItemTransitionToTrigger
-        self.meetingConfig.setOnMeetingTransitionItemTransitionToTrigger([])
+        # is defined in the meetingConfig.onMeetingTransitionItemActionToExecute
+        self.meetingConfig.setOnMeetingTransitionItemActionToExecute([])
         self.backToState(meeting, 'created')
         self.assertEquals('itemfrozen', item1.queryState())
         self.assertEquals('itemfrozen', item2.queryState())
@@ -163,29 +163,28 @@ class testCustomWorkflows(MeetingIDEATestCase):
 
         # enable prevalidation
         cfg = self.meetingConfig
-        performWorkflowAdaptations(cfg, logger=pm_logger)
         self.changeUser('pmManager')
-        self._turnUserIntoPrereviewer(self.member)
+        if 'pre_validation' in cfg.listWorkflowAdaptations():
+            cfg.setWorkflowAdaptations(('pre_validation',))
+            performWorkflowAdaptations(cfg, logger=pm_logger)
+            self._turnUserIntoPrereviewer(self.member)
         item = self.create('MeetingItem')
         item.setDecision(self.decisionText)
         meeting = self.create('Meeting', date=DateTime('2017/03/27'))
+        for transition in self.TRANSITIONS_FOR_PRESENTING_ITEM_1:
+            import ipdb;ipdb.set_trace()
+            _checkObserverMayView(item)
+            if transition in self.transitions(item):
+                self.do(item, transition)
         _checkObserverMayView(item)
-        self.do(item, 'proposeToDepartmentHead')
+        for transition in self.TRANSITIONS_FOR_CLOSING_MEETING_1:
+            _checkObserverMayView(item)
+            if transition in self.transitions(meeting):
+                self.do(meeting, transition)
         _checkObserverMayView(item)
-        self.do(item, 'proposeToDirector')
-        _checkObserverMayView(item)
-        self.do(item, 'validate')
-        _checkObserverMayView(item)
-        self.do(item, 'present')
-        _checkObserverMayView(item)
-        self.do(meeting, 'freeze')
-        _checkObserverMayView(item)
-        self.do(meeting, 'decide')
-        _checkObserverMayView(item)
-        self.do(meeting, 'publish')
-        _checkObserverMayView(item)
-        self.do(meeting, 'close')
-        _checkObserverMayView(item)
+        # we check that item and meeting did their complete workflow
+        self.assertEqual(item.queryState(), 'accepted')
+        self.assertEqual(meeting.queryState(), 'closed')
 
     def test_WholeDecisionProcess(self):
         """
