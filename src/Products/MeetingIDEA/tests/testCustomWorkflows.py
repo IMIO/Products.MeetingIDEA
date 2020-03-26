@@ -172,7 +172,6 @@ class testCustomWorkflows(MeetingIDEATestCase):
         item.setDecision(self.decisionText)
         meeting = self.create('Meeting', date=DateTime('2017/03/27'))
         for transition in self.TRANSITIONS_FOR_PRESENTING_ITEM_1:
-            import ipdb;ipdb.set_trace()
             _checkObserverMayView(item)
             if transition in self.transitions(item):
                 self.do(item, transition)
