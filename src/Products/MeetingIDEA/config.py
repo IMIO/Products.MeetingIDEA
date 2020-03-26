@@ -43,6 +43,10 @@ PRODUCT_DEPENDENCIES = []
 
 from Products.PloneMeeting import config as PMconfig
 
+IDEAROLES = {}
+IDEAROLES['departmentheads'] = 'MeetingDepartmentHead'
+PMconfig.MEETINGROLES.update(IDEAROLES)
+
 PMconfig.MEETING_STATES_ACCEPTING_ITEMS = ("created", "frozen", "published", "decided")
 PMconfig.MEETING_NOT_CLOSED_STATES = (
     "frozen",
