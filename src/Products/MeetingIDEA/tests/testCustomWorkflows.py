@@ -224,7 +224,7 @@ class testCustomWorkflows(MeetingIDEATestCase):
         # pmCreator2 creates and proposes an item
         self.changeUser('pmCreator2')
         item2 = self.create('MeetingItem', title='The second item',
-                            preferredMeeting=meeting_uid())
+                            preferredMeeting=meeting.UID())
         self.do(item2, 'proposeToDepartmentHead')
         # pmReviewer1 can not validate the item has not in the same proposing group
         self.changeUser('pmReviewer1')
@@ -238,7 +238,7 @@ class testCustomWorkflows(MeetingIDEATestCase):
         # pmManager inserts item1 into the meeting and publishes it
         self.changeUser('pmManager')
         managerAnnex = self.addAnnex(item1)
-        self.portal.restrictedTraverse('@@delete_givenuid')(managerAnnex_uid())
+        self.portal.restrictedTraverse('@@delete_givenuid')(managerAnnex.UID())
         self.do(item1, 'present')
         # Now reviewers can't add annexes anymore
         self.changeUser('pmReviewer1')

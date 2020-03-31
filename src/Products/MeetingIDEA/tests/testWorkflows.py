@@ -22,10 +22,11 @@
 # 02110-1301, USA.
 #
 
-from AccessControl import Unauthorized
 from DateTime import DateTime
+from Products.CMFCore.permissions import View
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
 from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
+from Products.PloneMeeting.config import EXECUTE_EXPR_VALUE
 
 
 class testWorkflows(MeetingIDEATestCase, mctw):
@@ -51,6 +52,93 @@ class testWorkflows(MeetingIDEATestCase, mctw):
     def test_pm_RecurringItems(self):
         """Bypass this test..."""
         pass
+
+    def test_pm_MeetingExecuteActionOnLinkedItemsGiveAccessToAcceptedItemsOfAMeetingToPowerAdvisers(self):
+        '''Test the MeetingConfig.onMeetingTransitionItemActionToExecute parameter :
+           specific usecase, being able to give access to decided items of a meeting only when meeting
+           is closed, even if item is decided before the meeting is closed.'''
+        self.changeUser('siteadmin')
+        cfg = self.meetingConfig
+        cfg.setMeetingManagerMayCorrectClosedMeeting(True)
+        # call updateLocalRoles on item only if it not already decided
+        # as updateLocalRoles is called when item review_state changed
+        self.assertTrue('accepted' in cfg.getItemDecidedStates())
+        cfg.setOnMeetingTransitionItemActionToExecute(
+            [{'meeting_transition': 'decide',
+              'item_action': 'itempublish',
+              'tal_expression': ''},
+             {'meeting_transition': 'decide',
+              'item_action': 'itemfreeze',
+              'tal_expression': ''},
+
+             {'meeting_transition': 'close',
+              'item_action': 'itempublish',
+              'tal_expression': ''},
+             {'meeting_transition': 'close',
+              'item_action': 'itemfreeze',
+              'tal_expression': ''},
+             {'meeting_transition': 'close',
+              'item_action': EXECUTE_EXPR_VALUE,
+              'tal_expression': 'python: item.queryState() in cfg.getItemDecidedStates() and '
+                'item.updateLocalRoles()'},
+             {'meeting_transition': 'close',
+              'item_action': 'accept',
+              'tal_expression': ''},
+             {'meeting_transition': 'backToDecided',
+              'item_action': EXECUTE_EXPR_VALUE,
+              'tal_expression': 'python: item.updateLocalRoles()'},
+             ])
+        # configure access of powerobservers only access if meeting is 'closed'
+        cfg.setPowerObservers([
+            {'item_access_on': 'python: item.getMeeting().queryState() == "closed"',
+             'item_states': ['accepted'],
+             'label': 'Power observers',
+             'meeting_access_on': '',
+             'meeting_states': ['closed'],
+             'row_id': 'powerobservers'}])
+        self.changeUser('pmManager')
+        item1 = self.create('MeetingItem')
+        item1.setDecision(self.decisionText)
+        item2 = self.create('MeetingItem', decision=self.decisionText)
+        item2.setDecision(self.decisionText)
+        meeting = self.create('Meeting', date=DateTime('2019/09/10'))
+        self.presentItem(item1)
+        self.presentItem(item2)
+        self.decideMeeting(meeting)
+        self.do(item1, 'accept')
+        self.assertEqual(item1.queryState(), 'accepted')
+        # power observer does not have access to item1/item2
+        self.changeUser('powerobserver1')
+        self.assertFalse(self.hasPermission(View, item1))
+        self.assertFalse(self.hasPermission(View, item2))
+        self.changeUser('pmManager')
+        self.decideMeeting(meeting)
+        self.do(meeting, 'publish')
+        # make sure we close as a MeetingManager
+        # this test that meetingExecuteActionOnLinkedItems execute TAL exprs as 'Manager'
+        self.do(meeting, 'close')
+        # items are accepted
+        self.assertEqual(item1.queryState(), 'accepted')
+        self.assertEqual(item2.queryState(), 'accepted')
+        # and powerobserver has also access to item1 that was already accepted before meeting was closed
+        self.changeUser('powerobserver1')
+        self.assertTrue(self.hasPermission(View, item1))
+        self.assertTrue(self.hasPermission(View, item2))
+        # when meeting set back to decided, items are no more viewable
+        self.changeUser('pmManager')
+        self.do(meeting, 'backToPublished')
+        self.do(meeting, 'backToDecided')
+        self.changeUser('powerobserver1')
+        self.assertFalse(self.hasPermission(View, item1))
+        self.assertFalse(self.hasPermission(View, item2))
+        # and closed again
+        self.changeUser('pmManager')
+        self.do(meeting, 'publish')
+        self.do(meeting, 'close')
+        self.changeUser('powerobserver1')
+        self.assertTrue(self.hasPermission(View, item1))
+        self.assertTrue(self.hasPermission(View, item2))
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

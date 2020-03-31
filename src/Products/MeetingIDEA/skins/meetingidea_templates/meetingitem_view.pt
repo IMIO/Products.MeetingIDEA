@@ -499,13 +499,6 @@
       <tal:itemNavigation replace="structure context/@@item-navigation-widget" />
     </tal:itemNavigation>
 
-    <!--xxx specific field for idea-->
-    <tal:comment replace="nothing">Internal communication</tal:comment>
-    <tal:field condition="isManager" define="fieldName python: 'internalCommunication'; ajaxEdit python:True">
-       <metal:f use-macro="context/@@pm-macros/viewContentField"/>
-    </tal:field>
-    <!--xxx end specific field for idea-->
-
     <tal:comment replace="nothing">Fields that appear only if the item is defined in a configuration</tal:comment>
     <tal:itemInConfig condition="context/isDefinedInTool">
       <tal:templateUsingGroups condition="python: context.isDefinedInTool(item_type='itemtemplate')">
