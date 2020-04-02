@@ -22,11 +22,8 @@
 # 02110-1301, USA.
 #
 
-from DateTime import DateTime
-from Products.CMFCore.permissions import View
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
 from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
-from Products.PloneMeeting.config import EXECUTE_EXPR_VALUE
 
 
 class testWorkflows(MeetingIDEATestCase, mctw):
