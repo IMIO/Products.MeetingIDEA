@@ -48,6 +48,7 @@ class MeetingIDEATestingHelpers(MeetingCommunesTestingHelpers):
     BACK_TO_WF_PATH_1 = {
         # Meeting
         'created': ('backToPublished',
+                    'backToDecided',
                     'backToFrozen',
                     'backToCreated',),
         # MeetingItem
