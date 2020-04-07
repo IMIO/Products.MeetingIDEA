@@ -20,7 +20,9 @@
 # 02110-1301, USA.
 #
 
-from Products.MeetingCommunes.tests.MeetingCommunesTestCase import MeetingCommunesTestCase
+from Products.MeetingCommunes.tests.MeetingCommunesTestCase import (
+    MeetingCommunesTestCase,
+)
 
 from Products.MeetingIDEA.testing import MIDEA_TESTING_PROFILE_FUNCTIONAL
 from Products.MeetingIDEA.tests.helpers import MeetingIDEATestingHelpers
@@ -30,8 +32,8 @@ class MeetingIDEATestCase(MeetingCommunesTestCase, MeetingIDEATestingHelpers):
     """Base class for defining MeetingIDEA test cases."""
 
     # Some default content
-    descriptionText = '<p>Some description</p>'
-    decisionText = '<p>Some decision.</p>'
+    descriptionText = "<p>Some description</p>"
+    decisionText = "<p>Some decision.</p>"
     # by default, PloneMeeting's test file testPerformances.py and
     # testConversionWithDocumentViewer.py' are ignored, override the subproductIgnoredTestFiles
     # attribute to take these files into account
@@ -39,7 +41,10 @@ class MeetingIDEATestCase(MeetingCommunesTestCase, MeetingIDEATestingHelpers):
 
     layer = MIDEA_TESTING_PROFILE_FUNCTIONAL
 
+    cfg1_id = "meeting-config-ca"
+    cfg2_id = "meeting-config-ag"
+
     def setUp(self):
         MeetingCommunesTestCase.setUp(self)
-        self.meetingConfig = getattr(self.tool, 'meeting-config-college')
-        self.meetingConfig2 = getattr(self.tool, 'meeting-config-council')
+        self.meetingConfig = getattr(self.tool, self.cfg1_id)
+        self.meetingConfig2 = getattr(self.tool, self.cfg2_id)
