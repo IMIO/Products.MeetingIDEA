@@ -40,6 +40,7 @@ from Products.MeetingCommunes.adapters import MeetingCommunesWorkflowActions
 from Products.MeetingCommunes.adapters import MeetingCommunesWorkflowConditions
 
 from Products.PloneMeeting.MeetingConfig import MeetingConfig
+from Products.PloneMeeting.adapters import ItemPrettyLinkAdapter
 from Products.PloneMeeting.config import ITEM_NO_PREFERRED_MEETING_VALUE
 from Products.PloneMeeting.interfaces import IMeetingConfigCustom
 from Products.PloneMeeting.interfaces import IMeetingCustom
@@ -203,11 +204,11 @@ class CustomMeeting(MCMeeting):
     security.declarePublic('getIDEAPrintableItemsByCategory')
 
     def getIDEAPrintableItemsByCategory(self, itemUids=[], late=False,
-                                    ignore_review_states=[], by_proposing_group=False,
-                                    group_prefixes={},
-                                    oralQuestion='both', toDiscuss='both', excludeCategories=[],
-                                    includeEmptyCategories=False, includeEmptyDepartment=False,
-                                    includeEmptyGroups=False):
+                                        ignore_review_states=[], by_proposing_group=False,
+                                        group_prefixes={},
+                                        oralQuestion='both', toDiscuss='both', excludeCategories=[],
+                                        includeEmptyCategories=False, includeEmptyDepartment=False,
+                                        includeEmptyGroups=False):
         '''Returns a list of (late-)items (depending on p_late) ordered by
            category. Items being in a state whose name is in
            p_ignore_review_state will not be included in the result.
@@ -516,7 +517,6 @@ class CustomMeetingItem(MCMeetingItem):
 
 
 class CustomMeetingConfig(MCMeetingConfig):
-
     """Adapter that adapts a meetingConfig implementing IMeetingConfig to the
        interface IMeetingConfigCustom."""
 
@@ -635,7 +635,7 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemCommunesWorkflowConditions)
         self.sm = getSecurityManager()
         self.useHardcodedTransitionsForPresentingAnItem = True
         self.transitionsForPresentingAnItem = (
-        'proposeToDepartmentHead', 'proposeToDirector', 'validate', 'present')
+            'proposeToDepartmentHead', 'proposeToDirector', 'validate', 'present')
 
     security.declarePublic('mayDecide')
 
@@ -833,6 +833,7 @@ class CustomToolPloneMeeting(MCToolPloneMeeting):
 
 
 # ------------------------------------------------------------------------------
+
 InitializeClass(CustomMeeting)
 InitializeClass(CustomMeetingItem)
 InitializeClass(CustomMeetingConfig)
@@ -841,3 +842,36 @@ InitializeClass(MeetingCAIDEAWorkflowConditions)
 InitializeClass(MeetingItemCAIDEAWorkflowActions)
 InitializeClass(MeetingItemCAIDEAWorkflowConditions)
 InitializeClass(CustomToolPloneMeeting)
+
+# -----------------------------------------------------------------------------
+
+
+class MeetingIDEAItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
+    """
+      Override to take into account MeetingIDEA use cases...
+    """
+
+    def _leadingIcons(self):
+        """
+          Manage icons to display before the icons managed by PrettyLink._icons.
+        """
+        # Default PM item icons
+        icons = super(MeetingIDEAItemPrettyLinkAdapter, self)._leadingIcons()
+
+        if self.context.isDefinedInTool():
+            return icons
+
+        itemState = self.context.queryState()
+        # Add our icons for some review states
+        if itemState == 'proposed':
+            icons.append(('proposeToDepartmentHead.png',
+                          translate('icon_help_proposed',
+                                    domain="PloneMeeting",
+                                    context=self.request)))
+
+        if itemState == 'proposed_to_director':
+            icons.append(('proposeToDirector.png',
+                          translate('icon_help_proposed_to_director',
+                                    domain="PloneMeeting",
+                                    context=self.request)))
+        return icons
