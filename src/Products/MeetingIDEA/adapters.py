@@ -57,6 +57,7 @@ from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from appy.gen import No
+from collective.contact.plonegroup.utils import get_organizations
 from imio.helpers.xhtml import xhtmlContentIsEmpty
 from plone import api
 from zope.annotation import IAnnotations
@@ -244,17 +245,13 @@ class CustomMeeting(MCMeeting):
         if printableItemsByCat in ann:
             return ann[printableItemsByCat]
         if 'activeGroupes' not in ann:
-            ann['activeGroupes'] = self.context.portal_plonemeeting.getMeetingGroups()
+            ann['activeGroupes'] = get_organizations()
         res = []
-        items = []
         previousCatId = None
-        # Retrieve the list of items
-        for elt in itemUids:
-            if elt == '':
-                itemUids.remove(elt)
+        items = self.context.getItems(uids=itemUids, listTypes=[], ordered=True)
         if printableItems not in ann:
-            ann[printableItems] = self.context.getItemsInOrder(late=late, uids=itemUids)
-        items = ann[printableItems]
+            ann[printableItems] = items
+
         if by_proposing_group:
             groups = ann['activeGroupes']
         else:
@@ -301,12 +298,12 @@ class CustomMeeting(MCMeeting):
             for cat in allCategories:
                 if cat not in usedCategories:
                     # no empty service, we want only show department
-                    if cat.getAcronym().find('-') > 0:
+                    if cat.get_acronym().find('-') > 0:
                         continue
                     elif not includeEmptyDepartment:
                         dpt_empty = True
                         for uc in usedCategories:
-                            if uc.getAcronym().startswith(cat.getAcronym()):
+                            if uc.get_acronym().startswith(cat.get_acronym()):
                                 dpt_empty = False
                                 break
                         if dpt_empty:
