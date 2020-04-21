@@ -52,13 +52,11 @@ from Products.PloneMeeting.config import PMMessageFactory as _
 
 from AccessControl import ClassSecurityInfo, getSecurityManager
 from AccessControl.class_init import InitializeClass
-from DateTime import DateTime
 from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from appy.gen import No
 from collective.contact.plonegroup.utils import get_organizations
-from imio.helpers.xhtml import xhtmlContentIsEmpty
 from plone import api
 from zope.annotation import IAnnotations
 from zope.i18n import translate
@@ -204,7 +202,7 @@ class CustomMeeting(MCMeeting):
 
     security.declarePublic('getIDEAPrintableItemsByCategory')
 
-    def getIDEAPrintableItemsByCategory(self, itemUids=[], late=False,
+    def getIDEAPrintableItemsByCategory(self, itemUids=[], listTypes=['normal'],
                                         ignore_review_states=[], by_proposing_group=False,
                                         group_prefixes={},
                                         oralQuestion='both', toDiscuss='both', excludeCategories=[],
@@ -235,28 +233,21 @@ class CustomMeeting(MCMeeting):
         # - at positions 1 to n: inner lists that contain:
         #   * at position 0: the proposing group object
         #   * at positions 1 to n: the items belonging to this group.
-        ann = IAnnotations(self.context.REQUEST)
-        if not late:
-            printableItems = 'printableItems'
-            printableItemsByCat = 'printableItemsByCategory'
-        else:
-            printableItems = 'printableLateItems'
-            printableItemsByCat = 'printableItemsLateByCategory'
-        if printableItemsByCat in ann:
-            return ann[printableItemsByCat]
-        if 'activeGroupes' not in ann:
-            ann['activeGroupes'] = get_organizations()
         res = []
-        previousCatId = None
-        items = self.context.getItems(uids=itemUids, listTypes=[], ordered=True)
-        if printableItems not in ann:
-            ann[printableItems] = items
+        tool = getToolByName(self.context, 'portal_plonemeeting')
+        # Retrieve the list of items
+        for elt in itemUids:
+            if elt == '':
+                itemUids.remove(elt)
+
+        items = self.context.getItems(uids=itemUids, listTypes=listTypes, ordered=True)
 
         if by_proposing_group:
-            groups = ann['activeGroupes']
+            groups = get_organizations()
         else:
             groups = None
 
+        previousCatId = None
         if items:
             for item in items:
                 # Check if the review_state has to be taken into account
@@ -346,14 +337,8 @@ class CustomMeeting(MCMeeting):
                                                 groups)
                     # The method does nothing if the group (or another from the
                     # same macro-group) is already there.
-        if printableItemsByCat not in ann:
-            ann[printableItemsByCat] = res
         return res
 
-    security.declarePublic('get_organizations')
-
-    def get_organizations(self):
-        return get_organizations()
 
     security.declarePublic('getAvailableItems')
 
@@ -427,35 +412,6 @@ class CustomMeeting(MCMeeting):
                     continue
                 if filter == '*' or status in filter:
                     res.append({'fullname': a, 'status': status})
-        return res
-
-    security.declarePublic('getIdeaAssembly')
-
-    def getIdeaAssembly(self, filter):
-        '''return formated assembly
-           filer is 'present', 'excused', 'procuration', 'absent' or '*' for all
-           This method is used on template
-        '''
-        # suppress paragraph
-        assembly = self.context.getAssembly().replace('<p>', '').replace('</p>', '')
-        assembly = assembly.split('<br />')
-        res = []
-        status = 'present'
-        for ass in assembly:
-            # ass line "ExcusÃ©:" is used for define list of persons who are excused
-            if ass.find('xcus') >= 0:
-                status = 'excused'
-                continue
-            # ass line "Procurations:" is used for defined list of persons who recieve a procuration
-            if ass.upper().find('PROCURATION') >= 0:
-                status = 'procuration'
-                continue
-            # ass line "Absents:" is used for define list of persons who are excused
-            if ass.upper().find('ABSENT') >= 0:
-                status = 'absentee'
-                continue
-            if filter == '*' or status == filter:
-                res.append(ass)
         return res
 
 
