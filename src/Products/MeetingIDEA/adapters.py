@@ -350,6 +350,11 @@ class CustomMeeting(MCMeeting):
             ann[printableItemsByCat] = res
         return res
 
+    security.declarePublic('get_organizations')
+
+    def get_organizations(self):
+        return get_organizations()
+
     security.declarePublic('getAvailableItems')
 
     def getAvailableItems(self):
