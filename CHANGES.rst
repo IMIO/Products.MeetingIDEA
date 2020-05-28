@@ -7,7 +7,7 @@ The Products.MeetingIDEA version must be the same as the Products.PloneMeeting v
 4.1.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix metadata in setup.py.
 
 
 4.1.2 (2020-05-28)
