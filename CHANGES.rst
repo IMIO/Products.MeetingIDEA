@@ -4,8 +4,8 @@ Products.MeetingIDEA Changelog
 Older versions than 3.0 can be found at http://svn.communesplone.org/svn/communesplone/MeetingIDEA/tags/
 The Products.MeetingIDEA version must be the same as the Products.PloneMeeting version
 
-4.1.1 (unreleased)
-----------------
+4.1.2 (2020-05-28)
+------------------
 - Using MeetingCommunes
 - Compatible for PloneMeeting 4.1
 
