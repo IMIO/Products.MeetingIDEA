@@ -1,13 +1,13 @@
 from setuptools import setup, find_packages
 import os
 
-version = '4.1.3.dev0'
+version = '4.1.2.dev0'
 
 setup(name='Products.MeetingIDEA',
       version=version,
       description="Official meetings management for college and council of belgian"
       "communes (PloneMeeting extension profile)",
-      long_description=open("README.rst").read(),
+      long_description=open("README.rst").read() + "\n" + open("CHANGES.rst").read(),
       classifiers=["Programming Language :: Python", ],
       keywords='',
       author='',
