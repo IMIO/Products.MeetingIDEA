@@ -22,7 +22,7 @@ The Products.MeetingIDEA version must be the same as the Products.PloneMeeting v
   items decision field initialization when meeting 'decide' transition is triggered
 - Field 'MeetingGroup.signatures' was moved to PloneMeeting
 
-3.2.0 (unreleased)
+3.2.0 (2015)
 ------------------
 - Updated regarding changes in PloneMeeting
 - Use getToolByName where necessary
