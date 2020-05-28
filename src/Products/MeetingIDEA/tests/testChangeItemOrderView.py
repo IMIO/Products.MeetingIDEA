@@ -23,10 +23,10 @@
 #
 
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testChangeItemOrderView import testChangeItemOrderView as mctciov
+from Products.MeetingCommunes.tests.testChangeItemOrderView import testChangeItemOrderView as mcciov
 
 
-class testChangeItemOrderView(MeetingIDEATestCase, mctciov):
+class testChangeItemOrderView(MeetingIDEATestCase, mcciov):
     '''Tests the ChangeItemOrderView class methods.'''
 
 

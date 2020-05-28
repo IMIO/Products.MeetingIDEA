@@ -23,10 +23,10 @@
 #
 
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testAnnexes import testAnnexes as pmta
+from Products.MeetingCommunes.tests.testAdvices import testAdvices as mcta
 
 
-class testAnnexes(MeetingIDEATestCase, pmta):
+class testAnnexes(MeetingIDEATestCase, mcta):
     """ """
 def test_suite():
     from unittest import TestSuite, makeSuite

@@ -22,11 +22,11 @@
 # 02110-1301, USA.
 #
 
-from Products.PloneMeeting.tests.testSetup import testSetup as pmts
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
+from Products.MeetingCommunes.tests.testSetup import testSetup as mcts
 
 
-class testSetup(MeetingIDEATestCase, pmts):
+class testSetup(MeetingIDEATestCase, mcts):
     """Tests the setup, especially registered profiles."""
 
 def test_suite():

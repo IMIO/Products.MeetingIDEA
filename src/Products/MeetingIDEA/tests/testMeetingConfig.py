@@ -21,14 +21,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
-import logging
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testMeetingConfig import testMeetingConfig as mctmc
-from Products.PloneMeeting.model.adaptations import performWorkflowAdaptations
+from Products.MeetingCommunes.tests.testMeetingConfig import testMeetingConfig as mctmc
 
 
 class testMeetingConfig(MeetingIDEATestCase, mctmc):
     '''Call testMeetingConfig tests.'''
+
+    def _usersToRemoveFromGroupsForUpdatePersonalLabels(self):
+        """ """
+        return ['pmDepartmentHead1', 'pmDirector1', 'pmReviewerLevel1']
 
 def test_suite():
     from unittest import TestSuite, makeSuite

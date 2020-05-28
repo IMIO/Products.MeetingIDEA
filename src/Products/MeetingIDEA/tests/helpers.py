@@ -20,12 +20,12 @@
 # 02110-1301, USA.
 #
 
-from Products.PloneMeeting.tests.helpers import PloneMeetingTestingHelpers
+from Products.MeetingCommunes.tests.helpers import MeetingCommunesTestingHelpers
 
 from DateTime import DateTime
 
 
-class MeetingIDEATestingHelpers(PloneMeetingTestingHelpers):
+class MeetingIDEATestingHelpers(MeetingCommunesTestingHelpers):
     """Stub class that provides some helper methods about testing."""
 
     TRANSITIONS_FOR_PROPOSING_ITEM_1 = ('proposeToDepartmentHead', 'proposeToDirector',)
@@ -48,6 +48,7 @@ class MeetingIDEATestingHelpers(PloneMeetingTestingHelpers):
     BACK_TO_WF_PATH_1 = {
         # Meeting
         'created': ('backToPublished',
+                    'backToDecided',
                     'backToFrozen',
                     'backToCreated',),
         # MeetingItem
@@ -63,7 +64,10 @@ class MeetingIDEATestingHelpers(PloneMeetingTestingHelpers):
                                  'backToProposedToDirector',),
         'validated': ('backToItemFrozen',
                       'backToPresented',
-                      'backToValidated',)}
+                      'backToValidated'),
+
+        'presented': ('backToItemFrozen',
+                      'backToPresented',)}
     BACK_TO_WF_PATH_2 = {
         # MeetingItem
         'itemcreated': ('backToItemFrozen',
@@ -78,7 +82,10 @@ class MeetingIDEATestingHelpers(PloneMeetingTestingHelpers):
                                  'backToProposedToDirector',),
         'validated': ('backToItemFrozen',
                       'backToPresented',
-                      'backToValidated',)}
+                      'backToValidated',),
+
+        'presented': ('backToItemFrozen',
+                      'backToPresented',)}
 
     WF_ITEM_STATE_NAME_MAPPINGS_1 = WF_ITEM_STATE_NAME_MAPPINGS_2 = {'itemcreated': 'itemcreated',
                                                                      'proposed': 'proposed_to_director',
@@ -89,17 +96,3 @@ class MeetingIDEATestingHelpers(PloneMeetingTestingHelpers):
     # in which state an item must be after an particular meeting transition?
     ITEM_WF_STATE_AFTER_MEETING_TRANSITION = {'publish_decisions': 'accepted',
                                               'close': 'accepted'}
-
-    def _createMeetingWithItems(self, withItems=True, meetingDate=DateTime()):
-        '''Create a meeting with a bunch of items.
-           Overrided to do it as 'Manager' to be able
-           to add recurring items.'''
-        from plone.app.testing.helpers import setRoles
-        currentMember = self.portal.portal_membership.getAuthenticatedMember()
-        currentMemberRoles = currentMember.getRoles()
-        setRoles(self.portal, currentMember.getId(), currentMemberRoles + ['Manager', ])
-        meeting = PloneMeetingTestingHelpers._createMeetingWithItems(self,
-                                                                        withItems=withItems,
-                                                                        meetingDate=meetingDate)
-        setRoles(self.portal, currentMember.getId(), currentMemberRoles)
-        return meeting

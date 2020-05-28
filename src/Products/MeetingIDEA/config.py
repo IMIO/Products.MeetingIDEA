@@ -10,7 +10,7 @@
 #
 
 __author__ = """Andre Nuyens <andre.nuyens@imio.be>"""
-__docformat__ = 'plaintext'
+__docformat__ = "plaintext"
 
 
 # Product configuration.
@@ -29,7 +29,7 @@ PROJECTNAME = "MeetingIDEA"
 
 # Permissions
 DEFAULT_ADD_CONTENT_PERMISSION = "Add portal content"
-setDefaultRoles(DEFAULT_ADD_CONTENT_PERMISSION, ('Manager', 'Owner', 'Contributor'))
+setDefaultRoles(DEFAULT_ADD_CONTENT_PERMISSION, ("Manager", "Owner", "Contributor"))
 
 product_globals = globals()
 
@@ -42,21 +42,39 @@ DEPENDENCIES = []
 PRODUCT_DEPENDENCIES = []
 
 from Products.PloneMeeting import config as PMconfig
+
 IDEAROLES = {}
 IDEAROLES['departmentheads'] = 'MeetingDepartmentHead'
 PMconfig.MEETINGROLES.update(IDEAROLES)
-PMconfig.MEETING_GROUP_SUFFIXES = PMconfig.MEETINGROLES.keys()
-PMconfig.MEETING_STATES_ACCEPTING_ITEMS = ('created', 'frozen', 'published', 'decided')
-PMconfig.MEETING_NOT_CLOSED_STATES = ('frozen', 'published', 'decided', 'decisions_published')
+
+PMconfig.MEETING_STATES_ACCEPTING_ITEMS = ("created", "frozen", "published", "decided")
+PMconfig.MEETING_NOT_CLOSED_STATES = (
+    "frozen",
+    "published",
+    "decided",
+    "decisions_published",
+)
+PMconfig.EXTRA_GROUP_SUFFIXES = [
+    {"fct_title": u"departmentheads", "fct_id": u"departmentheads", "fct_orgs": []}
+]
 
 from Products.PloneMeeting.model import adaptations
-MIDEA_RETURN_TO_PROPOSING_GROUP_MAPPINGS = {'backTo_presented_from_returned_to_proposing_group':
-                                            ['created', ],
-                                            'backTo_itemfrozen_from_returned_to_proposing_group':
-                                            ['frozen', 'decided', ],
-                                            'NO_MORE_RETURNABLE_STATES': ['closed', 'archived', ], }
-adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(MIDEA_RETURN_TO_PROPOSING_GROUP_MAPPINGS)
 
-IDEAMEETINGREVIEWERS = OrderedDict([('reviewers',  'proposed_to_director'),
-                                    ('departmentheads', 'proposed_to_departmenthead'), ])
+MIDEA_RETURN_TO_PROPOSING_GROUP_MAPPINGS = {
+    "backTo_presented_from_returned_to_proposing_group": ["created"],
+    "backTo_itemfrozen_from_returned_to_proposing_group": ["frozen", "decided"],
+    "NO_MORE_RETURNABLE_STATES": ["closed", "archived"],
+}
+adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(
+    MIDEA_RETURN_TO_PROPOSING_GROUP_MAPPINGS
+)
+
+IDEAMEETINGREVIEWERS = {
+    "meetingitemcaidea_workflow": OrderedDict(
+        [
+            ("reviewers", ["proposed_to_director"]),
+            ("departmentheads", ["proposed_to_departmenthead"]),
+        ]
+    )
+}
 PMconfig.MEETINGREVIEWERS = IDEAMEETINGREVIEWERS

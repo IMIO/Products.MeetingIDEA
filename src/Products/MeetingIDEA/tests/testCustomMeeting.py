@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-# File: testVotes.py
+# File: testCustomMeeting.py
 #
-# Copyright (c) 2013 by Imio.be
+# Copyright (c) 2007-2012 by CommunesPlone.org
 #
 # GNU General Public License (GPL)
 #
@@ -23,15 +23,20 @@
 #
 
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testVotes import testVotes as mctv
+from collective.contact.plonegroup.utils import get_organization
+from Products.PloneMeeting.utils import org_id_to_uid
 
+class testCustomMeeting(MeetingIDEATestCase):
+    """Tests the MeetingItem adapted methods."""
 
-class testVotes(MeetingIDEATestCase, mctv):
-    '''Tests various aspects of votes management.'''
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(testVotes, prefix='test_pm_'))
-    return suite
+    def test_idea_getIDEAPrintableItems(self):
+        self.changeUser('admin')
+        group = get_organization(org_id_to_uid('developers'))
+        group.Title = u"Développeurs - DSI"
+        self.changeUser('pmManager')
+        meeting = self.create('Meeting', date='2007/12/11 09:00:00')
+        item1 = self.create('MeetingItem', title='The first item')
+        self.presentItem(item1)
+        item2 = self.create('MeetingItem', title='The second item')
+        self.presentItem(item2)
+        meeting.adapted().getIDEAPrintableItemsByCategory()

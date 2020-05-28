@@ -22,10 +22,8 @@
 # 02110-1301, USA.
 #
 
-from AccessControl import Unauthorized
-from DateTime import DateTime
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testWorkflows import testWorkflows as mctw
+from Products.MeetingCommunes.tests.testWorkflows import testWorkflows as mctw
 
 
 class testWorkflows(MeetingIDEATestCase, mctw):
@@ -51,6 +49,7 @@ class testWorkflows(MeetingIDEATestCase, mctw):
     def test_pm_RecurringItems(self):
         """Bypass this test..."""
         pass
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

@@ -23,7 +23,7 @@
 #
 
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
-from Products.PloneMeeting.tests.testMeetingItem import testMeetingItem as mctmi
+from Products.MeetingCommunes.tests.testMeetingItem import testMeetingItem as mctmi
 
 
 class testMeetingItem(MeetingIDEATestCase, mctmi):
