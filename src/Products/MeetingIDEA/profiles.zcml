@@ -28,7 +28,7 @@
       title="Go to MeetingIDEA 4.1"
       description=""
       source="4.0"
-      destination="4.1"
+      destination="4.1.1"
       handler="Products.MeetingIDEA.migrations.migrate_to_4_1.migrate"
       profile="Products.MeetingIDEA:default" />
 
