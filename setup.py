@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '4.0.1dev'
+version = '4.1.1dev0'
 
 setup(name='Products.MeetingIDEA',
       version=version,
@@ -33,7 +33,6 @@ setup(name='Products.MeetingIDEA',
           'setuptools',
           'Products.CMFPlone',
           'Pillow',
-          'Products.PloneMeeting',
           'Products.MeetingCommunes'],
       entry_points={},
       )
