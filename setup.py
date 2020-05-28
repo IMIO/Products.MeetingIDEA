@@ -7,7 +7,7 @@ setup(name='Products.MeetingIDEA',
       version=version,
       description="Official meetings management for college and council of belgian"
       "communes (PloneMeeting extension profile)",
-      long_description=open("README.rst").read() + "\n" + open("CHANGE.rst").read(),
+      long_description=open("README.rst").read(),
       classifiers=["Programming Language :: Python", ],
       keywords='',
       author='',
