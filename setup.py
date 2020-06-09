@@ -1,18 +1,24 @@
 from setuptools import setup, find_packages
 import os
 
-version = '4.1.3'
+version = '4.1.4.dev0'
 
 setup(name='Products.MeetingIDEA',
       version=version,
       description="Official meetings management for college and council of belgian"
       "communes (PloneMeeting extension profile)",
       long_description=open("README.rst").read() + "\n" + open("CHANGES.rst").read(),
-      classifiers=["Programming Language :: Python", ],
+      classifiers=[
+        "Environment :: Web Environment",
+        "Framework :: Plone",
+        "Framework :: Plone :: 4.3",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2.7",
+      ],
       keywords='',
-      author='',
-      author_email='',
-      url='http://www.imio.be/produits/gestion-des-deliberations',
+      author='Gauthier Bastien',
+      author_email='gauthier@imio.be',
+      url='https://www.imio.be/nos-applications/ia-delib',
       license='GPL',
       packages=find_packages('src'),
       package_dir={'': 'src'},

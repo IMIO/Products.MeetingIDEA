@@ -24,6 +24,22 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
+  <genericsetup:registerProfile
+      name="idea_ag"
+      title="MeetingIDEA / AG"
+      directory="profiles/idea_ag"
+      description="Extension profile for MeetingIDEA (Mons)"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+  <genericsetup:registerProfile
+      name="idea_be"
+      title="MeetingIDEA / BE"
+      directory="profiles/idea_executive_office"
+      description="Extension profile for MeetingIDEA (Mons)"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
    <genericsetup:upgradeStep
       title="Go to MeetingIDEA 4.1"
       description=""
