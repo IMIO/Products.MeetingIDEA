@@ -4,21 +4,13 @@ Products.MeetingIDEA Changelog
 Older versions than 3.0 can be found at http://svn.communesplone.org/svn/communesplone/MeetingIDEA/tags/
 The Products.MeetingIDEA version must be the same as the Products.PloneMeeting version
 
-<<<<<<< HEAD
-4.1.3 (2020-05-28)
-=======
 4.1.4 (unreleased)
->>>>>>> remotes/origin/master
 ------------------
-
-- Nothing changed yet.
-
+- Added 2 profiles (BE and AG) to MeetingIDEA.
 
 4.1.3 (2020-05-28)
 ------------------
-
 - Fix metadata in setup.py.
-
 
 4.1.2 (2020-05-28)
 ------------------
