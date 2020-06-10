@@ -6,7 +6,7 @@ from Products.PloneMeeting.profiles import PloneMeetingConfiguration
 
 
 config = deepcopy(simple_import_data.simpleMeeting)
-config.id = 'ag'
+config.id = 'meeting-config-ag'
 config.title = 'Assemblée Générale'
 config.folderTitle = 'Assemblée Générale'
 config.shortName = 'AG'

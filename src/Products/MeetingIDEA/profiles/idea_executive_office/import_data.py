@@ -6,7 +6,7 @@ from Products.PloneMeeting.profiles import PloneMeetingConfiguration
 
 
 config = deepcopy(simple_import_data.simpleMeeting)
-config.id = 'executive'
+config.id = 'meeting-config-executive'
 config.title = 'Bureau exécutif'
 config.folderTitle = 'Bureau exécutif'
 config.shortName = 'Executive'

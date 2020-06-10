@@ -79,7 +79,7 @@ adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(RETURN_TO_PROPOSING_GROUP_
 
 RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = {
     'meetingitemcaidea_workflow': 'meetingitemcaidea_workflow.proposed_to_director',
-    'meetingitem_workflow': 'meetingitem_workflow.itemcreated',
+    'meetingitemcommunes_workflow': 'meetingitemcommunes_workflow.itemcreated',
 }
 
 adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
