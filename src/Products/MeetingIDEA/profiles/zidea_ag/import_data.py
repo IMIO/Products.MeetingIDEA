@@ -14,7 +14,9 @@ config.shortName = 'AG'
 config.workflowAdaptations = [
     'no_publication',
     'return_to_proposing_group',
-    'refused']
+    'refused'
+]
+
 
 data = PloneMeetingConfiguration(
     meetingFolderTitle='Mes séances',

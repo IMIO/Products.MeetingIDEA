@@ -11,9 +11,7 @@ config.title = 'Bureau exécutif'
 config.folderTitle = 'Bureau exécutif'
 config.shortName = 'Executive'
 
-config.workflowAdaptations = [
-    'no_publication',
-    'return_to_proposing_group', 'only_creator_may_delete']
+config.workflowAdaptations = ['return_to_proposing_group']
 
 
 config.itemWorkflow = "meetingitemcaidea_workflow"

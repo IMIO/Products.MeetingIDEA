@@ -28,6 +28,7 @@ from Products.PloneMeeting.model.adaptations import RETURN_TO_PROPOSING_GROUP_CU
 
 from Products.MeetingIDEA.tests.MeetingIDEATestCase import MeetingIDEATestCase
 from Products.MeetingCommunes.tests.testWFAdaptations import testWFAdaptations as mctwfa
+from zope.i18n import translate
 
 
 class testWFAdaptations(MeetingIDEATestCase, mctwfa):
@@ -35,7 +36,10 @@ class testWFAdaptations(MeetingIDEATestCase, mctwfa):
 
     def test_pm_WFA_availableWFAdaptations(self):
         '''Most of wfAdaptations makes no sense, just make sure most are disabled.'''
-        self.assertEquals(sorted(self.meetingConfig.listWorkflowAdaptations().keys()), ['return_to_proposing_group'])
+        self.assertEquals(
+            sorted(self.meetingConfig.listWorkflowAdaptations().keys()),
+            ['no_publication', 'refused', 'return_to_proposing_group']
+        )
 
     def _return_to_proposing_group_active_state_to_clone(self):
         '''Helper method to test 'return_to_proposing_group' wfAdaptation regarding the
@@ -98,6 +102,44 @@ class testWFAdaptations(MeetingIDEATestCase, mctwfa):
         # the item should be now in the item state corresponding to the meeting frozen state, so 'itemfrozen'
         self.do(item, 'return_to_proposing_group')
 
+    def _no_publication_inactive(self):
+        '''
+        Tests while 'no_publication' wfAdaptation is inactive.
+        Override for MIDEA. In this WF, item doesn't have itempublished state
+        '''
+        meeting = self._createMeetingWithItems()
+        self.publishMeeting(meeting)
+        self.assertEqual(meeting.queryState(), 'published')
+
+    def test_pm_Validate_workflowAdaptations_added_no_publication(self):
+        """Test MeetingConfig.validate_workflowAdaptations that manage addition
+           of wfAdaptations 'no_publication' that is not possible if some meeting
+           or items are 'published'.
+           Override for MIDEA. In this WF, item doesn't have itempublished state
+           """
+        # ease override by subproducts
+        if 'no_publication' not in self.meetingConfig.listWorkflowAdaptations():
+            return
+
+        no_publication_added_error = translate('wa_added_no_publication_error',
+                                               domain='PloneMeeting',
+                                               context=self.request)
+        cfg = self.meetingConfig
+        # make sure we do not have recurring items
+        self.changeUser('pmManager')
+        # create a meeting with an item and publish it
+        meeting = self.create('Meeting', date='2016/01/15')
+        item = self.create('MeetingItem')
+        self.presentItem(item)
+        self.publishMeeting(meeting)
+        self.assertEquals(meeting.queryState(), 'published')
+        self.assertEquals(
+            cfg.validate_workflowAdaptations(('no_publication', )),
+            no_publication_added_error)
+
+    def test_pm_WFA_refused(self):
+        """Not needed in MeetingIdea WF"""
+        pass
 
 def test_suite():
     from unittest import TestSuite, makeSuite
