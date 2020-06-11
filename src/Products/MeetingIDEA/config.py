@@ -75,6 +75,13 @@ IDEAMEETINGREVIEWERS = {
             ("reviewers", ["proposed_to_director"]),
             ("departmentheads", ["proposed_to_departmenthead"]),
         ]
-    )
+    ),
+    "meetingitemcommunes_workflow": OrderedDict([('reviewers', ['proposed']),
+                                                 ('prereviewers', ['proposed']), ]),
 }
+
 PMconfig.MEETINGREVIEWERS = IDEAMEETINGREVIEWERS
+
+
+# import at the bottom so monkeypatches are done because PMconfig is imported in MCconfig
+from Products.MeetingCommunes import config as MCconfig

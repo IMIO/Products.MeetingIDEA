@@ -29,6 +29,10 @@ from Products.MeetingCommunes.tests.testToolPloneMeeting import testToolPloneMee
 class testToolPloneMeeting(MeetingIDEATestCase, mctt):
     '''Tests the ToolPloneMeeting class methods.'''
 
+    def test_pm_RemoveAnnexesPreviews(self):
+        """ Not used """
+        pass
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

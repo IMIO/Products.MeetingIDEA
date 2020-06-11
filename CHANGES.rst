@@ -6,9 +6,11 @@ The Products.MeetingIDEA version must be the same as the Products.PloneMeeting v
 
 4.1.4 (unreleased)
 ------------------
+- Added 2 profiles (BE and AG) to MeetingIDEA.
 
-- Nothing changed yet.
-
+4.1.3 (2020-05-28)
+------------------
+- Fix metadata in setup.py.
 
 4.1.3 (2020-05-28)
 ------------------

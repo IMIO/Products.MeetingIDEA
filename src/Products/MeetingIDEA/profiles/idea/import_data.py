@@ -15,6 +15,7 @@ data.persons = []
 caMeeting = deepcopy(mc_import_data.collegeMeeting)
 caMeeting.id = "meeting-config-ca"
 caMeeting.title = "CA"
+caMeeting.shortName = "CA"
 caMeeting.itemWorkflow = "meetingitemcaidea_workflow"
 caMeeting.meetingWorkflow = "meetingcaidea_workflow"
 caMeeting.itemConditionsInterface = (

@@ -42,75 +42,23 @@ def postInstall(context):
         return
     logStep("postInstall", context)
     site = context.getSite()
-    add_CA_AG_Searches(context, site)
     # need to reinstall PloneMeeting after reinstalling MC workflows to re-apply wfAdaptations
     reinstallPloneMeeting(context, site)
     showHomeTab(context, site)
     reorderSkinsLayers(context, site)
 
-def add_CA_AG_Searches(context, portal):
-    '''
-       Add additional searches to the 'meeting-config-ag' and 'meeting-config-ca' MeetingConfig
-    '''
-    if isNotMeetingIDEAProfile(context):
-        return
-
-    logStep("add_CA_AG_Searches", context)
-    topicsInfo = (
-        # Items in state 'proposed_to_departmenthead'
-        ('searchdepartmentheaditems', (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),),
-        ('proposed_to_departmenthead', ), '', 'python: not here.portal_plonemeeting.userIsAmong("departmenthead")',),
-        # Items in state 'proposed_to_director'
-        # Used in the "todo" portlet
-        ('searchdirectoritems', (('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ),
-        ('proposed_to_director', ), '', 'python: here.portal_plonemeeting.userIsAmong("reviewer")',),
-        # Items in state 'validated'
-        ('searchvalidateditems', (('Type', 'ATPortalTypeCriterion', 'MeetingItem'), ), ('validated', ), '', '',),
-        # All 'decided' items
-        ('searchdecideditems', (('Type', 'ATPortalTypeCriterion', 'MeetingItem'),),
-        ('accepted', 'refused', 'delayed', 'accepted_but_modified'), '', '',), )
-    mcs = portal.portal_plonemeeting.objectValues("MeetingConfig")
-    if not mcs:
-        return
-
-    #Add these searches by meeting config
-    for meetingConfig in mcs:
-        if not meetingConfig.getId() == 'meeting-config-CA' and not meetingConfig.getId() == 'meeting-config-AG':
-            continue
-        for topicId, topicCriteria, stateValues, topicSearchScript, topicTalExpr in topicsInfo:
-            #if reinstalling, we need to check if the topic does not already exist
-            if hasattr(meetingConfig.topics, topicId):
-                continue
-            meetingConfig.topics.invokeFactory('Topic', topicId)
-            topic = getattr(meetingConfig.topics, topicId)
-            topic.setExcludeFromNav(True)
-            topic.setTitle(topicId)
-            for criterionName, criterionType, criterionValue in topicCriteria:
-                criterion = topic.addCriterion(field=criterionName, criterion_type=criterionType)
-                topic.manage_addProperty(TOPIC_TYPE, criterionValue, 'string')
-                criterionValue = '%s%s' % (criterionValue, meetingConfig.getShortName())
-                criterion.setValue([criterionValue])
-
-            stateCriterion = topic.addCriterion(field='review_state', criterion_type='ATListCriterion')
-            stateCriterion.setValue(stateValues)
-            topic.manage_addProperty(TOPIC_SEARCH_SCRIPT, topicSearchScript, 'string')
-            topic.manage_addProperty(TOPIC_TAL_EXPRESSION, topicTalExpr, 'string')
-            topic.setLimitNumber(True)
-            topic.setItemCount(20)
-            topic.setSortCriterion('created', True)
-            topic.setCustomView(True)
-            topic.setCustomViewFields(['Title', 'CreationDate', 'Creator', 'review_state'])
-            topic.reindexObject()
 
 def logStep(method, context):
     logger.info("Applying '%s' in profile '%s'" %
                 (method, '/'.join(context._profile_path.split(os.sep)[-3:])))
 
+
 def isMeetingIDEAConfigureProfile(context):
     return context.readDataFile("MeetingIDEA_idea_marker.txt") or \
-        context.readDataFile("MeetingIDEA_codir_marker.txt") or \
-        context.readDataFile("MeetingIDEA_coges_marker.txt") or \
+        context.readDataFile("MeetingIDEA_idea_executive_office_marker.txt") or \
+        context.readDataFile("MeetingIDEA_idea_ag_marker.txt") or \
         context.readDataFile("MeetingIDEA_testing_marker.txt")
+
 
 def isNotMeetingIDEADemoProfile(context):
     return context.readDataFile("MeetingIDEA_demo_marker.txt") is None

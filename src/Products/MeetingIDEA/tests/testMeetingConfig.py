@@ -32,6 +32,10 @@ class testMeetingConfig(MeetingIDEATestCase, mctmc):
         """ """
         return ['pmDepartmentHead1', 'pmDirector1', 'pmReviewerLevel1']
 
+    def test_pm_RemoveAnnexesPreviewsOnMeetingClosure(self):
+        """ Not used """
+        pass
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

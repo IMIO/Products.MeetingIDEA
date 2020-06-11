@@ -58,22 +58,11 @@ from Products.CMFCore.utils import getToolByName
 from appy.gen import No
 from collective.contact.plonegroup.utils import get_organizations
 from plone import api
-from zope.annotation import IAnnotations
 from zope.i18n import translate
 from zope.interface import implements
 
-# # Names of available workflow adaptations.
-# customwfAdaptations = list(MeetingConfig.wfAdaptations)
-# # remove the 'creator_initiated_decisions' as this is always the case in our wfs
-# if 'creator_initiated_decisions' in customwfAdaptations:
-#     customwfAdaptations.remove('creator_initiated_decisions')
-# # remove the 'archiving' as we do not handle archive in our wfs
-# if 'archiving' in customwfAdaptations:
-#     customwfAdaptations.remove('archiving')
-#
-# MeetingConfig.wfAdaptations = customwfAdaptations
 
-MeetingConfig.wfAdaptations = ['return_to_proposing_group']
+MeetingConfig.wfAdaptations = ['return_to_proposing_group', 'no_publication', 'refused']
 # configure parameters for the returned_to_proposing_group wfAdaptation
 adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = ('presented', 'itemfrozen',)
 
@@ -87,105 +76,109 @@ RETURN_TO_PROPOSING_GROUP_MAPPINGS = {'backTo_presented_from_returned_to_proposi
 
 adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(RETURN_TO_PROPOSING_GROUP_MAPPINGS)
 
-RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {'meetingitemcaidea_workflow':
-                                                # view permissions
-                                                    {'Access contents information':
-                                                         ('Manager', 'MeetingManager',
-                                                          'MeetingMember',
-                                                          'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingObserverLocal',
-                                                          'Reader',),
-                                                     'View':
-                                                         ('Manager', 'MeetingManager',
-                                                          'MeetingMember',
-                                                          'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingObserverLocal',
-                                                          'Reader',),
-                                                     'PloneMeeting: Read decision':
-                                                         ('Manager', 'MeetingManager',
-                                                          'MeetingMember',
-                                                          'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingObserverLocal',
-                                                          'Reader',),
-                                                     'PloneMeeting: Read optional advisers':
-                                                         ('Manager', 'MeetingManager',
-                                                          'MeetingMember',
-                                                          'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingObserverLocal',
-                                                          'Reader',),
-                                                     'PloneMeeting: Read decision annex':
-                                                         ('Manager', 'MeetingManager',
-                                                          'MeetingMember',
-                                                          'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingObserverLocal',
-                                                          'Reader',),
-                                                     'PloneMeeting: Read item observations':
-                                                         ('Manager', 'MeetingManager',
-                                                          'MeetingMember',
-                                                          'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingObserverLocal',
-                                                          'Reader',),
-                                                     'PloneMeeting: Read budget infos':
-                                                         ('Manager', 'MeetingManager',
-                                                          'MeetingMember',
-                                                          'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingObserverLocal',
-                                                          'Reader',),
-                                                     # edit permissions
-                                                     'Modify portal content':
-                                                         ('Manager', 'MeetingMember',
-                                                          'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingManager',),
-                                                     'PloneMeeting: Write decision':
-                                                         ('Manager', 'MeetingMember',
-                                                          'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingManager',),
-                                                     'Review portal content':
-                                                         ('Manager', 'MeetingMember',
-                                                          'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingManager',),
-                                                     'Add portal content':
-                                                         ('Manager', 'MeetingMember',
-                                                          'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingManager',),
-                                                     'PloneMeeting: Add annex':
-                                                         ('Manager', 'MeetingMember',
-                                                          'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingManager',),
-                                                     'PloneMeeting: Add annexDecision':
-                                                         ('Manager', 'MeetingMember',
-                                                          'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingManager',),
-                                                     'PloneMeeting: Add MeetingFile':
-                                                         ('Manager', 'MeetingMember',
-                                                          'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingManager',),
-                                                     'PloneMeeting: Write optional advisers':
-                                                         ('Manager', 'MeetingMember',
-                                                          'MeetingDepartmentHead',
-                                                          'MeetingReviewer', 'MeetingManager',),
-                                                     'PloneMeeting: Write budget infos':
-                                                         ('Manager', 'MeetingMember',
-                                                          'MeetingOfficeManager',
-                                                          'MeetingManager',
-                                                          'MeetingBudgetImpactEditor',),
-                                                     'PloneMeeting: Write marginal notes':
-                                                         ('Manager', 'MeetingManager',),
-                                                     # MeetingManagers edit permissions
-                                                     'Delete objects':
-                                                         ['Manager', 'MeetingManager', ],
-                                                     'PloneMeeting: Write item observations':
-                                                         ('Manager', 'MeetingManager',),
-                                                     'PloneMeeting: Write item MeetingManager reserved fields':
-                                                         ('Manager', 'MeetingManager',),
-                                                     }
-                                                }
+RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = {
+    'meetingitemcaidea_workflow': 'meetingitemcaidea_workflow.proposed_to_director',
+    'meetingitemcommunes_workflow': 'meetingitemcommunes_workflow.itemcreated',
+}
+
+adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
+
+RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = {
+    'meetingitemcaidea_workflow': {
+        # view permissions
+        'Access contents information':
+            ('Manager', 'MeetingManager',
+             'MeetingMember',
+             'MeetingDepartmentHead',
+             'MeetingReviewer', 'MeetingObserverLocal',
+             'Reader',),
+        'View':
+            ('Manager', 'MeetingManager',
+             'MeetingMember',
+             'MeetingDepartmentHead',
+             'MeetingReviewer', 'MeetingObserverLocal',
+             'Reader',),
+        'PloneMeeting: Read decision':
+            ('Manager', 'MeetingManager',
+             'MeetingMember',
+             'MeetingDepartmentHead',
+             'MeetingReviewer', 'MeetingObserverLocal',
+             'Reader',),
+        'PloneMeeting: Read optional advisers':
+            ('Manager', 'MeetingManager',
+             'MeetingMember',
+             'MeetingDepartmentHead',
+             'MeetingReviewer', 'MeetingObserverLocal',
+             'Reader',),
+        'PloneMeeting: Read decision annex':
+            ('Manager', 'MeetingManager',
+             'MeetingMember',
+             'MeetingDepartmentHead',
+             'MeetingReviewer', 'MeetingObserverLocal',
+             'Reader',),
+        'PloneMeeting: Read item observations':
+            ('Manager', 'MeetingManager',
+             'MeetingMember',
+             'MeetingDepartmentHead',
+             'MeetingReviewer', 'MeetingObserverLocal',
+             'Reader',),
+        'PloneMeeting: Read budget infos':
+            ('Manager', 'MeetingManager',
+             'MeetingMember',
+             'MeetingDepartmentHead',
+             'MeetingReviewer', 'MeetingObserverLocal',
+             'Reader',),
+        # edit permissions
+        'Modify portal content':
+            ('Manager', 'MeetingMember',
+             'MeetingDepartmentHead',
+             'MeetingReviewer', 'MeetingManager',),
+        'PloneMeeting: Write decision':
+            ('Manager', 'MeetingMember',
+             'MeetingDepartmentHead',
+             'MeetingReviewer', 'MeetingManager',),
+        'Review portal content':
+            ('Manager', 'MeetingMember',
+             'MeetingDepartmentHead',
+             'MeetingReviewer', 'MeetingManager',),
+        'Add portal content':
+            ('Manager', 'MeetingMember',
+             'MeetingDepartmentHead',
+             'MeetingReviewer', 'MeetingManager',),
+        'PloneMeeting: Add annex':
+            ('Manager', 'MeetingMember',
+             'MeetingDepartmentHead',
+             'MeetingReviewer', 'MeetingManager',),
+        'PloneMeeting: Add annexDecision':
+            ('Manager', 'MeetingMember',
+             'MeetingDepartmentHead',
+             'MeetingReviewer', 'MeetingManager',),
+        'PloneMeeting: Add MeetingFile':
+            ('Manager', 'MeetingMember',
+             'MeetingDepartmentHead',
+             'MeetingReviewer', 'MeetingManager',),
+        'PloneMeeting: Write optional advisers':
+            ('Manager', 'MeetingMember',
+             'MeetingDepartmentHead',
+             'MeetingReviewer', 'MeetingManager',),
+        'PloneMeeting: Write budget infos':
+            ('Manager', 'MeetingMember',
+             'MeetingOfficeManager',
+             'MeetingManager',
+             'MeetingBudgetImpactEditor',),
+        'PloneMeeting: Write marginal notes':
+            ('Manager', 'MeetingManager',),
+        # MeetingManagers edit permissions
+        'Delete objects':
+            ('Manager', 'MeetingManager',),
+        'PloneMeeting: Write item observations':
+            ('Manager', 'MeetingManager',),
+        'PloneMeeting: Write item MeetingManager reserved fields':
+            ('Manager', 'MeetingManager',),
+    }
+}
 
 adaptations.RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS = RETURN_TO_PROPOSING_GROUP_CUSTOM_PERMISSIONS
-
-RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = {
-    'meetingitemcaidea_workflow': 'meetingitemcaidea_workflow.itemcreated', }
-adaptations.RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE = RETURN_TO_PROPOSING_GROUP_STATE_TO_CLONE
 
 
 class CustomMeeting(MCMeeting):
@@ -671,6 +664,9 @@ class CustomToolPloneMeeting(MCToolPloneMeeting):
     def performCustomWFAdaptations(self, meetingConfig, wfAdaptation, logger, itemWorkflow,
                                    meetingWorkflow):
         """ """
+        if wfAdaptation == 'refused' and itemWorkflow.states.has_key('refused'):
+            return True
+
         if wfAdaptation == 'no_publication':
             # we override the PloneMeeting's 'no_publication' wfAdaptation
             # First, update the meeting workflow
