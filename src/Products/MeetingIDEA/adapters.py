@@ -664,7 +664,7 @@ class CustomToolPloneMeeting(MCToolPloneMeeting):
     def performCustomWFAdaptations(self, meetingConfig, wfAdaptation, logger, itemWorkflow,
                                    meetingWorkflow):
         """ """
-        if wfAdaptation == 'refused' and itemWorkflow.states.has_key('refused'):
+        if wfAdaptation == 'refused' and 'refused' in itemWorkflow.states:
             return True
 
         if wfAdaptation == 'no_publication':

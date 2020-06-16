@@ -8,6 +8,7 @@ The Products.MeetingIDEA version must be the same as the Products.PloneMeeting v
 ------------------
 
 - Removed AG profile because it was unecessary and renamed correctly executive_office profile
+- Fixed issue in performCustomWFAdaptations where 'refused' may no be in item WF
 
 4.1.4 (2020-06-11)
 ------------------
