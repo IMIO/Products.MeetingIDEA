@@ -1,5 +1,5 @@
 ========================
-Products.MeetingCommunes
+Products.MeetingIDEA
 ========================
 
-``Products.MeetingCommunes`` is a custom profile for ``Products.PloneMeeting``.
+``Products.MeetingIDEA`` is a custom profile for ``Products.PloneMeeting``.
