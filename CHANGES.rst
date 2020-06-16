@@ -4,7 +4,7 @@ Products.MeetingIDEA Changelog
 Older versions than 3.0 can be found at http://svn.communesplone.org/svn/communesplone/MeetingIDEA/tags/
 The Products.MeetingIDEA version must be the same as the Products.PloneMeeting version
 
-4.1.5 (unreleased)
+4.1.5 (2020-06-16)
 ------------------
 
 - Removed AG profile because it was unecessary and renamed correctly executive_office profile
