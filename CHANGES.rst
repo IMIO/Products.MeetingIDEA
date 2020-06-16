@@ -7,8 +7,7 @@ The Products.MeetingIDEA version must be the same as the Products.PloneMeeting v
 4.1.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Removed AG profile because it was unecessary and renamed correctly executive_office profile
 
 4.1.4 (2020-06-11)
 ------------------
