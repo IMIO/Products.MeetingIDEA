@@ -4,7 +4,7 @@ Products.MeetingIDEA Changelog
 Older versions than 3.0 can be found at http://svn.communesplone.org/svn/communesplone/MeetingIDEA/tags/
 The Products.MeetingIDEA version must be the same as the Products.PloneMeeting version
 
-4.1.6 (unreleased)
+4.1.6 (2020-06-24)
 ------------------
 
 - Fixed guards so groupsInCharge field is required (if applicable) to make a WF transition.
