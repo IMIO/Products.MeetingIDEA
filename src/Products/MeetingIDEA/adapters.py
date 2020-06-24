@@ -55,7 +55,6 @@ from AccessControl.class_init import InitializeClass
 from Products.CMFCore.permissions import ReviewPortalContent
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
-from appy.gen import No
 from collective.contact.plonegroup.utils import get_organizations
 from plone import api
 from zope.i18n import translate
@@ -595,12 +594,14 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemCommunesWorkflowConditions)
           The MeetingManager can bypass the validation process and validate an item
           that is in the state 'itemcreated'
         """
+
+        # Check if there are category and groupsInCharge, if applicable
+        msg = self._check_required_data()
+        if msg is not None:
+            return msg
+
         res = False
-        if not self.context.getCategory():
-            return No(translate('required_category_ko',
-                                domain="PloneMeeting",
-                                context=self.context.REQUEST))
-        # first of all, the use must have the 'Review portal content permission'
+        # User must have the 'Review portal content permission'
         if _checkPermission(ReviewPortalContent, self.context):
             res = True
             # if the current item state is 'itemcreated', only the MeetingManager can validate
@@ -615,8 +616,11 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemCommunesWorkflowConditions)
         '''We may propose an item if the workflow permits it and if the
            necessary fields are filled.  In the case an item is transferred from
            another meetingConfig, the category could not be defined.'''
-        if not self.context.getCategory():
-            return No(_('required_category_ko'))
+
+        # Check if there are category and groupsInCharge, if applicable
+        msg = self._check_required_data()
+        if msg is not None:
+            return msg
         if _checkPermission(ReviewPortalContent, self.context):
             return True
 
@@ -626,10 +630,13 @@ class MeetingItemCAIDEAWorkflowConditions(MeetingItemCommunesWorkflowConditions)
         """
           Check that the user has the 'Review portal content'
         """
-        res = False
+
+        # Check if there are category and groupsInCharge, if applicable
+        msg = self._check_required_data()
+        if msg is not None:
+            return msg
         if _checkPermission(ReviewPortalContent, self.context):
-            res = True
-        return res
+            return True
 
     security.declarePublic('mayRemove')
 

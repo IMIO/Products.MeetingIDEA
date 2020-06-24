@@ -7,7 +7,7 @@ The Products.MeetingIDEA version must be the same as the Products.PloneMeeting v
 4.1.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed guards so groupsInCharge field is required (if applicable) to make a WF transition.
 
 
 4.1.5 (2020-06-16)
