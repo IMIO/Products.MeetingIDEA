@@ -55,7 +55,7 @@ PMconfig.MEETING_NOT_CLOSED_STATES = (
     "decisions_published",
 )
 PMconfig.EXTRA_GROUP_SUFFIXES = [
-    {"fct_title": u"departmentheads", "fct_id": u"departmentheads", "fct_orgs": []}
+    {"fct_title": u"departmentheads", "fct_id": u"departmentheads", "fct_orgs": [], 'enabled': True}
 ]
 
 from Products.PloneMeeting.model import adaptations
