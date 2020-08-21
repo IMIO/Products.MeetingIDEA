@@ -37,8 +37,8 @@
     <metal:field use-macro="python:here.widget('proposingGroup', mode='edit')"/>
     <metal:field use-macro="python:here.widget('proposingGroupWithGroupInCharge', mode='edit')"/>
     <metal:field use-macro="python:here.widget('groupsInCharge', mode='edit')"/>
-    <metal:field use-macro="python:here.widget('strategicAxis', mode='edit')"/>
     <tal:comment replace="nothing">XXX Added by MeetingIDEA</tal:comment>
+    <metal:field use-macro="python:here.widget('strategicAxis', mode='edit')"/>
     <metal:field use-macro="python:here.widget('category', mode='edit')"/>
     <metal:field use-macro="python:here.widget('classifier', mode='edit')"/>
 
@@ -123,6 +123,9 @@
       <metal:f use-macro="context/@@pm-macros/editContentField"/>
     </tal:field>
     <tal:field define="fieldName python: 'decision'">
+      <metal:f use-macro="context/@@pm-macros/editContentField"/>
+    </tal:field>
+    <tal:field define="fieldName python: 'decisionSuite'">
       <metal:f use-macro="context/@@pm-macros/editContentField"/>
     </tal:field>
     <tal:field define="fieldName python: 'inAndOutMoves'">

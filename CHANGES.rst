@@ -7,7 +7,8 @@ The Products.MeetingIDEA version must be the same as the Products.PloneMeeting v
 4.1.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Adapted templates regarding last changes in Products.PloneMeeting.
+  [gbastien]
 
 
 4.1.6 (2020-06-24)
