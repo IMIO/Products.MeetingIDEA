@@ -1,4 +1,4 @@
-pmPipeline {
+pmDockerPipeline {
   profileName = 'idea'
   testSuiteName = 'testidea'
   unitTestParameter = '--test=!robot'
