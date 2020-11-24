@@ -7,7 +7,8 @@ The Products.MeetingIDEA version must be the same as the Products.PloneMeeting v
 4.1.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Updated meetingitem_view.pt templates.
+  [aduchene]
 
 
 4.1.7 (2020-08-21)
