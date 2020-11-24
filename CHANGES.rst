@@ -7,7 +7,8 @@ The Products.MeetingIDEA version must be the same as the Products.PloneMeeting v
 4.1.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Migrated strategicAxis field to classifier field.
+  [aduchene]
 
 
 4.1.8 (2020-11-24)
