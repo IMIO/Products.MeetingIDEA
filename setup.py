@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '4.1.9.1'
+version = '4.1.10.dev0'
 
 setup(name='Products.MeetingIDEA',
       version=version,
