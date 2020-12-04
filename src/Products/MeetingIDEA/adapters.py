@@ -456,15 +456,6 @@ class CustomMeetingItem(MCMeetingItem):
         if item.hasMeeting():
             return True
 
-    def getExtraFieldsToCopyWhenCloning(self, cloned_to_same_mc, cloned_from_item_template):
-        """
-          Keep some new fields when item is cloned (to another mc or from itemtemplate).
-        """
-        res = ['internalCommunication', 'strategicAxis']
-        if cloned_to_same_mc:
-            res = res + []
-        return res
-
 
 class CustomMeetingConfig(MCMeetingConfig):
     """Adapter that adapts a meetingConfig implementing IMeetingConfig to the
