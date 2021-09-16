@@ -4,7 +4,7 @@ Products.MeetingIDEA Changelog
 Older versions than 3.0 can be found at http://svn.communesplone.org/svn/communesplone/MeetingIDEA/tags/
 The Products.MeetingIDEA version must be the same as the Products.PloneMeeting version
 
-4.1.10 (unreleased)
+4.1.10 (2021-09-16)
 -------------------
 
 - Optimize print methods to be more efficient.
