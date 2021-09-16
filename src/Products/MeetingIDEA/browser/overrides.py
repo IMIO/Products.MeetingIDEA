@@ -15,6 +15,16 @@ from collective.contact.plonegroup.utils import get_organizations
 
 class MCBaseDocumentGenerationHelperView(object):
 
+    def __init__(self, context, request):
+        self.DptForItem_by_group_id = {}
+        self.DptPos_by_group_id = {}
+        self.CountDptItems_by_dpt_id = {}
+        self.serviceIsEmpty_by_group_id = {}
+        self.servicePos_by_group_id = {}
+        self.Dpt_by_group_id = {}
+        self.ItemPosInCategorie_by_item_uid = {}
+        super(MCBaseDocumentGenerationHelperView, self).__init__(context, request)
+
     def getIdeaAssembly(self, filter):
         '''return formated assembly
            filer is 'present', 'excused', 'procuration', 'absent' or '*' for all
@@ -47,22 +57,30 @@ class MCBaseDocumentGenerationHelperView(object):
     # TODO Totally inefficient methods used in PODTemplates that need to be refactored... some day
 
     def getCountDptItems(self, meeting=None, dptid='', late=False):
+        if dptid in self.CountDptItems_by_dpt_id.keys():
+            return self.CountDptItems_by_dpt_id[dptid]
         long = 0
         listTypes = ['late'] if late else ['normal']
         for sublist in meeting.adapted().getPrintableItemsByCategory(listTypes=listTypes):
             if sublist[0].id == dptid:
                 long = len(sublist) - 1  # remove categories
-                return long
+                break
+        self.CountDptItems_by_dpt_id[dptid] = long
         return long
 
     def getDepartment(self, group):
         # return position, title and class for department
+        if group.id in self.Dpt_by_group_id.keys():
+            return self.Dpt_by_group_id[group.id]
         cpt_dpt = self.getDptPos(group.id)
         res = '%d. %s' % (cpt_dpt, group.Title())
+        self.Dpt_by_group_id[group.id] = res
         return res
 
-    def getDptForItem(selg, groupid):
+    def getDptForItem(self, groupid):
         # return department
+        if groupid in self.DptForItem_by_group_id.keys():
+            return self.DptForItem_by_group_id[groupid]
         res = ''
         groups = get_organizations()
         for group in groups:
@@ -71,11 +89,13 @@ class MCBaseDocumentGenerationHelperView(object):
                 res = group.id
             if group.id == groupid:
                 break
+        self.DptForItem_by_group_id[groupid] = res
         return res
 
     def getDptPos(self, groupid):
         # return department position in active groups list
-        res = ''
+        if groupid in self.DptPos_by_group_id.keys():
+            return self.DptPos_by_group_id[groupid]
         groups = get_organizations()
         cpt_dpt = 0
         for group in groups:
@@ -85,11 +105,14 @@ class MCBaseDocumentGenerationHelperView(object):
             if group.id == groupid:
                 break
         res = cpt_dpt
+        self.DptPos_by_group_id[groupid] = res
         return res
 
     def getItemPosInCategorie(self, item=None, late=False):
         if not item:
             return ''
+        if item.UID() in self.ItemPosInCategorie_by_item_uid.keys():
+            return self.ItemPosInCategorie_by_item_uid[item.UID()]
         meeting = item.getMeeting()
         pg = item.getProposingGroup()
         if late:
@@ -103,19 +126,27 @@ class MCBaseDocumentGenerationHelperView(object):
                     break
                 if elt.getProposingGroup() == pg:
                     cpt = cpt + 1
+
+        self.ItemPosInCategorie_by_item_uid[item.UID()] = cpt
         return cpt
 
     def getServiceIsEmpty(self, groupid, meeting=None, late=False):
+        if groupid in self.serviceIsEmpty_by_group_id.keys():
+            return self.serviceIsEmpty_by_group_id[groupid]
         listTypes = ['late'] if late else ['normal']
+        isEmpty = True
         for sublist in meeting.adapted().getIDEAPrintableItemsByCategory(listTypes=listTypes):
             if sublist[0].id == groupid:
                 isEmpty = len(sublist) <= 1
-                return isEmpty
-        return True
+                break
+        self.serviceIsEmpty_by_group_id[groupid] = isEmpty
+        return isEmpty
 
     def getServicePos(self, group, meeting=None, late=False):
         # return service position in active groups list incremented by item for department
         groupid = group.id
+        if groupid in self.servicePos_by_group_id.keys():
+            return self.servicePos_by_group_id[groupid]
         cpt_srv = 0
         groups = get_organizations()
         for gr in groups:
@@ -130,6 +161,7 @@ class MCBaseDocumentGenerationHelperView(object):
                 break
         dptid = self.getDptForItem(group.id)
         cpt_srv = cpt_srv + self.getCountDptItems(meeting, dptid, late)
+        self.servicePos_by_group_id[groupid] = cpt_srv
         return cpt_srv
 
 
