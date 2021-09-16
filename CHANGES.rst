@@ -7,7 +7,8 @@ The Products.MeetingIDEA version must be the same as the Products.PloneMeeting v
 4.1.10 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Optimize print methods to be more efficient.
+  [aduchene]
 
 
 4.1.9.1 (2020-12-04)
