@@ -40,5 +40,20 @@
       handler="Products.MeetingIDEA.migrations.migrate_to_4_1.migrate"
       profile="Products.MeetingIDEA:default" />
 
+    <genericsetup:upgradeStep
+      title="Go to MeetingIDEA 4.2"
+      description=""
+      source="*"
+      destination="4200"
+      handler="Products.MeetingIDEA.migrations.migrate_to_4200.migrate"
+      profile="Products.MeetingIDEA:default" />
+
+    <genericsetup:upgradeStep
+      title="Go to MeetingCommunes"
+      description=""
+      source="4200"
+      destination="4200"
+      handler="Products.MeetingIDEA.migrations.uninstall.migrate"
+      profile="Products.MeetingIDEA:default" />
 
 </configure>

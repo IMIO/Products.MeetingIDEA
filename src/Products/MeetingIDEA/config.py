@@ -43,45 +43,53 @@ PRODUCT_DEPENDENCIES = []
 
 from Products.PloneMeeting import config as PMconfig
 
-IDEAROLES = {}
-IDEAROLES['departmentheads'] = 'MeetingDepartmentHead'
-PMconfig.MEETINGROLES.update(IDEAROLES)
-
-PMconfig.MEETING_STATES_ACCEPTING_ITEMS = ("created", "frozen", "published", "decided")
-PMconfig.MEETING_NOT_CLOSED_STATES = (
-    "frozen",
-    "published",
-    "decided",
-    "decisions_published",
-)
 PMconfig.EXTRA_GROUP_SUFFIXES = [
-    {"fct_title": u"departmentheads", "fct_id": u"departmentheads", "fct_orgs": [], 'enabled': True}
+    {
+        "fct_title": u"departmentheads",
+        "fct_id": u"departmentheads",
+        "fct_orgs": [],
+        "fct_management": False,
+        "enabled": True,
+    },
 ]
 
-from Products.PloneMeeting.model import adaptations
 
-MIDEA_RETURN_TO_PROPOSING_GROUP_MAPPINGS = {
-    "backTo_presented_from_returned_to_proposing_group": ["created"],
-    "backTo_itemfrozen_from_returned_to_proposing_group": ["frozen", "decided"],
-    "NO_MORE_RETURNABLE_STATES": ["closed", "archived"],
-}
-adaptations.RETURN_TO_PROPOSING_GROUP_MAPPINGS.update(
-    MIDEA_RETURN_TO_PROPOSING_GROUP_MAPPINGS
+IDEA_ITEM_WF_VALIDATION_LEVELS = (
+    {
+        "state": "itemcreated",
+        "state_title": "itemcreated",
+        "leading_transition": "-",
+        "leading_transition_title": "-",
+        "back_transition": "backToItemCreated",
+        "back_transition_title": "backToItemCreated",
+        "suffix": "creators",
+        # only creators may manage itemcreated item
+        "extra_suffixes": [],
+        "enabled": "1",
+    },
+    {
+        "state": "proposedToValidationLevel1",
+        "state_title": "Proposé au chef de service",
+        "leading_transition": "proposeToValidationLevel1",
+        "leading_transition_title": "Proposer au chef de service",
+        "back_transition": "backToProposedToValidationLevel1",
+        "back_transition_title": "Renvoyer au chef de Service",
+        "suffix": "departmentheads",
+        "extra_suffixes": [],
+        "enabled": "1",
+    },
+    {
+        "state": " proposedToValidationLevel2",
+        "state_title": "Proposé au directeur",
+        "leading_transition": "proposeToValidationLevel2",
+        "leading_transition_title": "Proposer au directeur",
+        "back_transition": "backToProposedToValidationLevel2",
+        "back_transition_title": "Renvoyer au directeur",
+        "suffix": "reviewers",
+        "enabled": "1",
+        "extra_suffixes": [],
+    }
 )
-
-IDEAMEETINGREVIEWERS = {
-    "meetingitemcaidea_workflow": OrderedDict(
-        [
-            ("reviewers", ["proposed_to_director"]),
-            ("departmentheads", ["proposed_to_departmenthead"]),
-        ]
-    ),
-    "meetingitemcommunes_workflow": OrderedDict([('reviewers', ['proposed']),
-                                                 ('prereviewers', ['proposed']), ]),
-}
-
-PMconfig.MEETINGREVIEWERS = IDEAMEETINGREVIEWERS
-
 
 # import at the bottom so monkeypatches are done because PMconfig is imported in MCconfig
 from Products.MeetingCommunes import config as MCconfig

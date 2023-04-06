@@ -52,9 +52,4 @@
            factory="Products.MeetingIDEA.adapters.CustomMeetingConfig"
            provides="Products.PloneMeeting.interfaces.IMeetingConfigCustom"/>
 
-    <!-- IPrettyLink for MeetingItem -->
-    <adapter for="Products.PloneMeeting.interfaces.IMeetingItem"
-           factory=".adapters.MeetingIDEAItemPrettyLinkAdapter"
-           provides="imio.prettylink.interfaces.IPrettyLink" />
-
 </configure>

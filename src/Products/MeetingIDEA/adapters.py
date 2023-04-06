@@ -61,7 +61,7 @@ from zope.i18n import translate
 from zope.interface import implements
 
 
-MeetingConfig.wfAdaptations = ['return_to_proposing_group', 'no_publication', 'refused']
+# MeetingConfig.wfAdaptations = ['return_to_proposing_group', 'no_publication', 'refused']
 # configure parameters for the returned_to_proposing_group wfAdaptation
 adaptations.RETURN_TO_PROPOSING_GROUP_FROM_ITEM_STATES = ('presented', 'itemfrozen',)
 
@@ -668,53 +668,6 @@ class CustomToolPloneMeeting(MCToolPloneMeeting):
         '''cachekey method for self.isFinancialUser.'''
         return str(self.context.REQUEST._debug), self.context.REQUEST['AUTHENTICATED_USER']
 
-    def performCustomWFAdaptations(self, meetingConfig, wfAdaptation, logger, itemWorkflow,
-                                   meetingWorkflow):
-        """ """
-        if wfAdaptation == 'refused' and 'refused' in itemWorkflow.states:
-            return True
-
-        if wfAdaptation == 'no_publication':
-            # we override the PloneMeeting's 'no_publication' wfAdaptation
-            # First, update the meeting workflow
-            wf = meetingWorkflow
-            # Delete transitions 'publish' and 'backToPublished'
-            for tr in ('publish', 'backToPublished'):
-                if tr in wf.transitions:
-                    wf.transitions.deleteTransitions([tr])
-            # Update connections between states and transitions
-            wf.states['frozen'].setProperties(
-                title='frozen', description='',
-                transitions=['backToCreated', 'decide'])
-            wf.states['decided'].setProperties(
-                title='decided', description='', transitions=['backToFrozen', 'close'])
-            # Delete state 'published'
-            if 'published' in wf.states:
-                wf.states.deleteStates(['published'])
-            # Then, update the item workflow.
-            wf = itemWorkflow
-            # Delete transitions 'itempublish' and 'backToItemPublished'
-            for tr in ('itempublish', 'backToItemPublished'):
-                if tr in wf.transitions:
-                    wf.transitions.deleteTransitions([tr])
-            # Update connections between states and transitions
-            wf.states['itemfrozen'].setProperties(
-                title='itemfrozen', description='',
-                transitions=['accept', 'accept_but_modify', 'refuse', 'delay', 'pre_accept',
-                             'backToPresented'])
-            for decidedState in ['accepted', 'refused', 'delayed', 'accepted_but_modified']:
-                wf.states[decidedState].setProperties(
-                    title=decidedState, description='',
-                    transitions=['backToItemFrozen', ])
-            wf.states['pre_accepted'].setProperties(
-                title='pre_accepted', description='',
-                transitions=['accept', 'accept_but_modify', 'backToItemFrozen'])
-            # Delete state 'published'
-            if 'itempublished' in wf.states:
-                wf.states.deleteStates(['itempublished'])
-            logger.info(WF_APPLIED % ("no_publication", meetingConfig.getId()))
-            return True
-        return False
 
     security.declarePublic('getSpecificAssemblyFor')
 
@@ -793,8 +746,6 @@ class CustomToolPloneMeeting(MCToolPloneMeeting):
         logger.info('Done.')
 
 
-# ------------------------------------------------------------------------------
-
 InitializeClass(CustomMeeting)
 InitializeClass(CustomMeetingItem)
 InitializeClass(CustomMeetingConfig)
@@ -803,36 +754,3 @@ InitializeClass(MeetingCAIDEAWorkflowConditions)
 InitializeClass(MeetingItemCAIDEAWorkflowActions)
 InitializeClass(MeetingItemCAIDEAWorkflowConditions)
 InitializeClass(CustomToolPloneMeeting)
-
-# -----------------------------------------------------------------------------
-
-
-class MeetingIDEAItemPrettyLinkAdapter(ItemPrettyLinkAdapter):
-    """
-      Override to take into account MeetingIDEA use cases...
-    """
-
-    def _leadingIcons(self):
-        """
-          Manage icons to display before the icons managed by PrettyLink._icons.
-        """
-        # Default PM item icons
-        icons = super(MeetingIDEAItemPrettyLinkAdapter, self)._leadingIcons()
-
-        if self.context.isDefinedInTool():
-            return icons
-
-        itemState = self.context.queryState()
-        # Add our icons for some review states
-        if itemState == 'proposed':
-            icons.append(('proposeToDepartmentHead.png',
-                          translate('icon_help_proposed',
-                                    domain="PloneMeeting",
-                                    context=self.request)))
-
-        if itemState == 'proposed_to_director':
-            icons.append(('proposeToDirector.png',
-                          translate('icon_help_proposed_to_director',
-                                    domain="PloneMeeting",
-                                    context=self.request)))
-        return icons
